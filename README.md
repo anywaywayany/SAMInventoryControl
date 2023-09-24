@@ -6,12 +6,12 @@
 
 *ssh*
 ```sh
-git clone git@github.com:<your username>/SAMInventoryControl.git
+git@github.com:anywaywayany/SAMInventoryControl.git
 ```
 
 *http*
 ```sh
-git clone https://github.com/<your username>/SAMInventoryControl.git
+https://github.com/anywaywayany/SAMInventoryControl.git
 ```
 
 # Git Cheatsheet
