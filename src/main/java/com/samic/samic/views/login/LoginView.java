@@ -18,43 +18,37 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private final AuthenticatedUser authenticatedUser;
 
     private final LoginOverlay loginOverlay = new LoginOverlay();
+    private static final String USERNAME_LABEL = "Username";
+    private static final String PASSWORD_LABEL = "Password";
+    private static final boolean HAS_FORGOT_PASSWORD = false;
 
     public LoginView(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
+        initUI();
 
-        // Mulit Language Support
 
+
+    }
+
+    private void initUI() {
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(new LoginI18n.Header());
-        i18n.getHeader().setTitle("SOME");
-        i18n.getHeader().setDescription("Inventory Control");
+        i18n.getForm().setUsername(USERNAME_LABEL);
+        i18n.getForm().setPassword(PASSWORD_LABEL);
 
-        Anchor register = new Anchor("register", "Create an Account");
-        register.setWidthFull();
+
         loginOverlay.setI18n(i18n);
-        loginOverlay.getCustomFormArea().add(register);
-        loginOverlay.getFooter().add(register);
-        // end::snippet[]
-        add(loginOverlay);
+        loginOverlay.setForgotPasswordButtonVisible(HAS_FORGOT_PASSWORD);
         loginOverlay.setOpened(true);
+        add(loginOverlay);
         // Prevent the example from stealing focus when browsing the
         // documentation
         loginOverlay.getElement().setAttribute("no-autofocus", "");
-
         // Login does not work without this one
         loginOverlay.setAction(
                 RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
     }
 
-/*
-i18n.getHeader().setDescription("No Demo User Credentials");
-i18n.setAdditionalInformation(null);
-i18n.getForm().setForgotPassword("Forgot Password");
-setI18n(i18n);
-
-setForgotPasswordButtonVisible(true);
-setOpened(true);
-*/
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
