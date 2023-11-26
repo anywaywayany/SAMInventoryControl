@@ -13,8 +13,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Hello World")
-@Route(value = "dashboard", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@Route(value = "helloworld", layout = MainLayout.class)
 @PermitAll
 public class HelloWorldView extends HorizontalLayout {
 
