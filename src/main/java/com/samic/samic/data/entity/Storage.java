@@ -8,17 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity(name = "storages")
+
 public class Storage extends AbstractPersistable<Long>{
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_storage_objects")
-    private StorageObject storageObject;
+    @OneToMany(mappedBy ="storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinColumn(name = "storage_objects")
+    private List<StorageObject> storageObject;
 
 
     @Embedded

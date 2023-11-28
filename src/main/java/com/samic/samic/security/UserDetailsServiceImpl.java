@@ -1,9 +1,16 @@
 package com.samic.samic.security;
 
-import com.samic.samic.data.User;
-import com.samic.samic.data.UserRepository;
+import com.samic.samic.data.entity.Role;
+import com.samic.samic.data.entity.User;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.samic.samic.data.persistence.RepositoryUser;
+import com.samic.samic.services.ServiceUser;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,30 +20,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private final ServiceUser serviceUser;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+//        User user1 = serviceUser.findByUsername(username);
+        User user = serviceUser.findUser(username);
         if (user == null) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getHashedPassword(),
+            return new org.springframework.security.core.userdetails.User(user.getProfile().getUsername(), user.getHashedPassword(),
                     getAuthorities(user));
         }
     }
 
-    private static List<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
 
+
+//    private static List<GrantedAuthority> getAuthorities(User user) {
+//        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+//                .collect(Collectors.toList());
+//
+//    }
+
+    private static List<GrantedAuthority> getAuthorities(User user){
+        Role userRole = user.getRole();
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+userRole));
     }
 
 }

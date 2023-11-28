@@ -9,6 +9,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -21,9 +23,9 @@ public class User extends AbstractPersistable<Long>{
 
 
 
-    @ManyToOne(/*mappedBy = "storedAtUser",*/ fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    //    @JoinColumn(name = "fk_storageObject")2810
-    private StorageObject storageObject;
+    @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//        @JoinColumn(name = "fk_storageObject")
+    private List<StorageObject> storageObject = new ArrayList<>();
 
     //    @OneToOne(targetEntity = StorageObject.class,fetch = FetchType.LAZY)
     //    @JoinColumn(name = "storage_object" )

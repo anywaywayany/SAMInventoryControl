@@ -31,14 +31,14 @@ public class StorageObject extends AbstractPersistable<Long>{
     @Column(name = "remark", length = ConstantsDomain.DEFAULT_LENGTH)
     private @NotBlank String remark;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
-    @JoinColumn(name = "fk_stored_at_user")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_storaed_at_user")
     private User storedAtUser;
 
     //Einseitige Beziehung
-   /* @OneToMany(targetEntity = Storage.class,fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "storage")
-    private Storage storage;*/
+    @ManyToOne(targetEntity = Storage.class,fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "storageObject", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
+    private Storage storage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status"/*, length = 1*//*,columnDefinition = "CHAR(1)CHECK (Status IN ('C','R','M','P','A'))"*/)

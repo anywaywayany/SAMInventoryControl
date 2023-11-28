@@ -1,12 +1,11 @@
 package com.samic.samic.views;
 
-import com.samic.samic.data.User;
+import com.samic.samic.data.entity.User;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.views.dashboard.DashboardView;
 import com.samic.samic.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
@@ -19,9 +18,9 @@ import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import java.util.Optional;
-import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -90,7 +89,7 @@ public class MainLayout extends AppLayout {
     private Footer createFooter() {
         Footer layout = new Footer();
 
-        Optional<User> maybeUser = authenticatedUser.get();
+        Optional<User> maybeUser = authenticatedUser.getUser();
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
@@ -108,7 +107,7 @@ public class MainLayout extends AppLayout {
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
             //div.add(avatar);
-            div.add(user.getName());
+            div.add(user.getProfile().getFirstName());  //habs hier ändern müssen. Kannst aber anpassen.
             div.add(new Icon("lumo", "dropdown"));
             div.getElement().getStyle().set("display", "flex");
             div.getElement().getStyle().set("align-items", "center");

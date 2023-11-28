@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
 @Builder
 @Table(name = "producer")
 public class Producer extends AbstractPersistable<Long>{
