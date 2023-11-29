@@ -39,7 +39,7 @@ public class User extends AbstractPersistable<Long>{
     private Profile profile;
 
     @JsonIgnore
-    @NotBlank
+   /* @NotBlank*/
     @Column(name = "password")
     private String password;
 
@@ -59,9 +59,11 @@ public class User extends AbstractPersistable<Long>{
     private Boolean activated;
 
     @Email
+    @Column(name = "email")
     private String mail;
 
     @JsonIgnore
+    @Column(name = "hashed_password")
     private String hashedPassword;
 
 //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})

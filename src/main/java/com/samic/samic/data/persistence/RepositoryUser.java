@@ -1,6 +1,5 @@
 package com.samic.samic.data.persistence;
 
-import com.samic.samic.data.entity.Profile;
 import com.samic.samic.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,5 +15,13 @@ public interface RepositoryUser extends JpaRepository<User, Long>, JpaSpecificat
 //    User findByProfile(Profile profile);
 
 
-    User findByUsername(String username);
+//    User findByUsername(String username);
+
+
+//   User findByUsername2(String username);
+//
+//    User findByProfileUsername(String username);
+
+    User findByProfile_Username(String username);
+    User save(User user);
 }

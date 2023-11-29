@@ -23,8 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+//    @Autowired
+//    private final ServiceUser serviceUser;
     @Autowired
-    private final ServiceUser serviceUser;
+    private final RepositoryUser repositoryUser;
 
 
 
@@ -32,12 +34,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        User user1 = serviceUser.findByUsername(username);
-        User user = serviceUser.findUser(username);
-        if (user == null) {
+//        User user = serviceUser.findUser(username);
+        User user1 = repositoryUser.findByProfile_Username(username);
+
+        if (user1 == null) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {
-            return new org.springframework.security.core.userdetails.User(user.getProfile().getUsername(), user.getHashedPassword(),
-                    getAuthorities(user));
+            return new org.springframework.security.core.userdetails.User(user1.getProfile().getUsername(), user1.getHashedPassword(),
+                    getAuthorities(user1));
         }
     }
 

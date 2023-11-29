@@ -20,17 +20,17 @@ public class Profile /*extends AbstractPersistable<Long>*/{ //extend hier entfer
 
 
     @Column(name = "user_name", length = ConstantsDomain.DEFAULT_LENGTH)
-    @NotBlank
+//    @NotBlank
     private  String username;
 
     @Column(name = "first_name", length = ConstantsDomain.DEFAULT_LENGTH)
-    private @NotBlank String firstName;
+    private /*@NotBlank */String firstName;
 
     @Column(name = "last_name", length = ConstantsDomain.DEFAULT_LENGTH)
-    private @NotBlank String lastName;
+    private /*@NotBlank*/ String lastName;
 
     @Column(name = "phone")
-    private @NotBlank String phone;
+    private/* @NotBlank*/ String phone;
 
 
 }
