@@ -38,10 +38,10 @@ public class User extends AbstractPersistable<Long>{
     @Embedded
     private Profile profile;
 
-    @JsonIgnore
+//    @JsonIgnore
    /* @NotBlank*/
-    @Column(name = "password")
-    private String password;
+//    @Column(name = "password")
+//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")

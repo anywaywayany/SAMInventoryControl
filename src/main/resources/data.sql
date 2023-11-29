@@ -115,9 +115,9 @@
 -- values(1, 'Storageadmin', '2019-05-26', '2023-05-26', true, 'agnes.toccafondi@viipo.ae','$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe',
 --         'management', 'Eula', 'Lane', '(762) 526-5961')
 
-insert into user_storage(id, hashed_password, user_name, role) values (1, '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management', 'MANAGMENT' );
-
--- insert into user_storage(id, role, created_At, last_login, activated, email, hashed_password, user_name, first_name, last_name,phone) values (3, 'Fieldservicetechnician', '2019-05-26', '2023-05-26', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' )
+-- insert into user_storage(id, hashed_password, user_name, role) values (1, '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management', 'Management' );
+insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(1,date '2019-05-26',date '2023-05-26','Eula','Lane','management','agnes.toccafondi@viipo.ae','$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','(762) 526-5961','MANAGMENT');
+-- insert into user_storage(id, role, activated, email, hashed_password, user_name, first_name, last_name,phone) values (3, 'Fieldservicetechnician', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' );
 -- insert into user_storage(id, role, created_At, last_login, activated, email, hashed_password, user_name, first_name, last_name,phone) values (4, 'Orderfullfillment', '2019-05-26', '2023-05-26', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' )
 -- insert into user_storage(id, role, created_At, last_login, activated, email, hashed_password, user_name, first_name, last_name,phone) values (5, 'Projectmanager', '2019-05-26', '2023-05-26', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' )
 -- insert into user_storage(id, role, created_At, last_login, activated, email, hashed_password, user_name, first_name, last_name,phone) values (5, 'Support', '2019-05-26', '2023-05-26', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' )
