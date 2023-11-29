@@ -17,7 +17,7 @@ public class ServiceUser{
 
 
     public User findUser(String username){
-        return repositoryUser.findByUsername(username);
+        return repositoryUser.findByProfile_Username(username);
     }
 
     public User save(User user){

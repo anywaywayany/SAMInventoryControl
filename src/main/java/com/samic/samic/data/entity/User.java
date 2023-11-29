@@ -38,10 +38,10 @@ public class User extends AbstractPersistable<Long>{
     @Embedded
     private Profile profile;
 
-    @JsonIgnore
-    @NotBlank
-    @Column(name = "password")
-    private String password;
+//    @JsonIgnore
+   /* @NotBlank*/
+//    @Column(name = "password")
+//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -59,9 +59,11 @@ public class User extends AbstractPersistable<Long>{
     private Boolean activated;
 
     @Email
+    @Column(name = "email")
     private String mail;
 
     @JsonIgnore
+    @Column(name = "hashed_password")
     private String hashedPassword;
 
 //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
