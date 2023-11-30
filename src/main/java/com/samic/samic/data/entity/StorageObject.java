@@ -4,14 +4,12 @@ package com.samic.samic.data.entity;
 import com.samic.samic.data.constants.ConstantsDomain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,8 +44,8 @@ public class StorageObject extends AbstractPersistable<Long>{
     @Column(name = "status"/*, length = 1*//*,columnDefinition = "CHAR(1)CHECK (Status IN ('C','R','M','P','A'))"*/)
     private Status status;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_reservation")    //foreignKey should be named only reservation
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //Shared Primary Key
+    @JoinColumn(name = "fk_reservation"/*, referencedColumnName = "id"*/,foreignKey = @ForeignKey(name = "fk_reservation_2_storageObject"))    //foreignKey should be named only reservation
     private Reservation reservation;
 
 //    @OneToMany(fetch = FetchType.LAZY)
@@ -63,7 +61,7 @@ public class StorageObject extends AbstractPersistable<Long>{
     private SFP sfp;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
-    @JoinColumn(name = "supply", foreignKey = @ForeignKey(name = "fk_supply_2_storageObjecct"))
+    @JoinColumn(name = "supply", foreignKey = @ForeignKey(name = "fk_supply_2_storageObject"))
     private Supply supply;
 
     @OneToMany(mappedBy = "storageObject", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})

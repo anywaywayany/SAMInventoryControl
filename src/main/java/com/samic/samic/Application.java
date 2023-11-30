@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDatabaseInitializer;
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.sql.DataSource;
 
@@ -23,6 +24,8 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @NpmPackage(value = "@fontsource/inter", version = "4.5.0")
 @Theme(value = "samic")
+@ComponentScan(basePackages = {"com.samic.samic.data.persistence"})
+@ComponentScan(basePackages = {"com.samic.samic.services"})
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {

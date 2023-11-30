@@ -9,9 +9,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Data
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -32,6 +33,12 @@ public class Address{
     @Min(1)
     @Max(1000)
     private Integer doorNo;
+
+    @Column(name = "zip_code")
+    @Positive()
+    @Min(1)
+    @Max(99999)
+    private Integer zipCode;
 
     @Column(name = "city", length = ConstantsDomain.OBJECTNAME_LENGTH)
     private String city;

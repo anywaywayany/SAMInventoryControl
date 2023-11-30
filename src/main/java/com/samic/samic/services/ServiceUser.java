@@ -20,12 +20,30 @@ public class ServiceUser{
         return repositoryUser.findByProfile_Username(username);
     }
 
-    public User save(User user){
+    public User saveUser(User user){
         return repositoryUser.save(user);
     }
 
     public long userCount(){
         return repositoryUser.count();
+    }
+    ////////////////////////////////////////////////////
+
+    public User findUserByID(Long id){
+        return repositoryUser.findById(id).get();
+    }
+
+
+    public void deleteUserById(Long id){
+        repositoryUser.deleteById(id);
+    }
+
+    public void deleteByObject(User user){
+        repositoryUser.delete(user);
+    }
+
+    public boolean doesObjectExistById(Long id){
+        return repositoryUser.existsById(id);
     }
 
 }
