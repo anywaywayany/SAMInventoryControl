@@ -20,6 +20,9 @@ public class Producer extends AbstractPersistable<Long>{
     @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<SFP> sfp;
 
+    @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<CPE> cpe;
+
     @Column(name="short_name")
     private String shortname;
 

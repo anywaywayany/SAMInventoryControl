@@ -148,7 +148,7 @@ Profile <-- User : embedded /'so profile doesn't get loaded always'/
 Address <--up Storage : embedded
 Role .down. User
 
-Reservation "1..n" --* "0..1" StorageObject
+Reservation "1" --* "1" StorageObject
 Customer <-left Reservation : "embedded"
 
 

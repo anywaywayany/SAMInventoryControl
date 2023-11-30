@@ -1,4 +1,45 @@
 package com.samic.samic.data.entity;
 
-public class StorageObjectHistory{
+import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
+public class StorageObjectHistory extends AbstractPersistable<Long>{
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_storageObject_history", foreignKey = @ForeignKey(name = "fk_storageObject_2_storageObjectHistory"))
+    private StorageObject storageObject;
+
+    @Column(name = "inser_date_time")
+    @PastOrPresent
+    private LocalDateTime insertDateTime;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name = "until_Date_Time")
+    @PastOrPresent
+    private LocalDateTime untilDateTime;
+
+    @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name= "fk_storage_2_storageObjectHistory"))
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Storage storage;
+
+    @JoinColumn(name = "fk_reservation", foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Reservation reservation;
 }

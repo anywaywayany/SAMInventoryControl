@@ -31,8 +31,12 @@ public class SFP extends AbstractPersistable<Long>{
     @Column(name = "type")
     private Type type;
 
+     @Enumerated
+     @Column(name = "type_SFP")
+     private SFPType sfpType;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_producer")
+    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
     private Producer producer;
 
 

@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,12 +34,12 @@ public class StorageObject extends AbstractPersistable<Long>{
     private @NotBlank String remark;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_storaed_at_user")
+    @JoinColumn(name = "fk_storaed_at_user", foreignKey = @ForeignKey(name = "fk_User_2_storageObject"))
     private User storedAtUser;
 
     //Einseitige Beziehung
     @ManyToOne(targetEntity = Storage.class,fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "storageObject", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
+    @JoinColumn(name = "fk_storageObject", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
     private Storage storage;
 
     @Enumerated(EnumType.STRING)
@@ -52,17 +54,19 @@ public class StorageObject extends AbstractPersistable<Long>{
 //    @JoinColumn(name = "cpe")
 //    private CPE /*Set<CPE>*/ cpe;
 
+    @JoinColumn(name = "fk_CPE", foreignKey = @ForeignKey(name = "fk_cpe_2_storageObject"))
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "CPE")
-//    @OneToMany
     private CPE cpe;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} ) //Viele StorageObj. die auf einen SFP zeigen.
-    @JoinColumn(name = "SFP")
+    @JoinColumn(name = "SFP", foreignKey = @ForeignKey(name = "fk_sfp_2_storageObject"))
     private SFP sfp;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
-    @JoinColumn(name = "supply")
+    @JoinColumn(name = "supply", foreignKey = @ForeignKey(name = "fk_supply_2_storageObjecct"))
     private Supply supply;
+
+    @OneToMany(mappedBy = "storageObject", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<StorageObjectHistory> storageObjectHistory;
 
 }
