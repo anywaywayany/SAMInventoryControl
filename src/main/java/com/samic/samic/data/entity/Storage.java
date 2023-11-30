@@ -2,21 +2,18 @@ package com.samic.samic.data.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity(name = "storages")
-
 public class Storage extends AbstractPersistable<Long>{
 
 

@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Builder
 @Entity
 @NoArgsConstructor

@@ -1,9 +1,12 @@
 package com.samic.samic.data.entity;
 
 
-//@Getter
-//@AllArgsConstructor
-//@NoArgsConstructor
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public enum Status{
 
     CUSTOMER("Customer", "C"),

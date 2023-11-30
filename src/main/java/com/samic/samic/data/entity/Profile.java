@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Embeddable
 public class Profile /*extends AbstractPersistable<Long>*/{ //extend hier entferenen weil eine entity nicht
-    // lgeichzeitig ein embaddable sein kann!!!
+    // gleichzeitig ein embaddable sein kann!!!
 
 
     @Column(name = "user_name", length = ConstantsDomain.DEFAULT_LENGTH)

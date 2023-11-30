@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@Data
 @Builder
 @Entity
 @Table(name = "reservations")
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Reservation extends AbstractPersistable<Long>{
 
-    @OneToOne(mappedBy = "reservation",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "reservation",fetch = FetchType.LAZY) //Shared Primary Key
     private StorageObject storageObject;
 
     @PastOrPresent

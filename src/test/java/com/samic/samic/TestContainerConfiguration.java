@@ -4,6 +4,7 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.devtools.restart.RestartScope;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -33,6 +34,7 @@ class TestContainerConfiguration {
 //    }
 
     @Bean
+    @RestartScope
     @ServiceConnection
     OracleContainer oracleContainer(){
         final int exposedPort = 1521;
