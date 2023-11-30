@@ -33,6 +33,12 @@ public class Address{
     @Max(1000)
     private Integer doorNo;
 
+    @Column(name = "zip_code")
+    @Positive()
+    @Min(1)
+    @Max(99999)
+    private Integer zipCode;
+
     @Column(name = "city", length = ConstantsDomain.OBJECTNAME_LENGTH)
     private String city;
 

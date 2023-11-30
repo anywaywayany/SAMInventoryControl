@@ -31,6 +31,9 @@ public class Storage extends AbstractPersistable<Long>{
     @Embedded
     private @Valid Address address;
 
+    @Column(name = "storage_name")
+    private String name;
+
 //
 //    public Storage addAddress(Address storageAddress){
 //        return this;
