@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,11 +22,17 @@ public class Storage extends AbstractPersistable<Long>{
 
     @OneToMany(mappedBy ="storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 //    @JoinColumn(name = "storage_objects")
-    private List<StorageObject> storageObject;
+    private List<StorageObject> storageObject = new ArrayList<>();
 
+    @Column(name = "storage_Onjekt_history")
+    @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<StorageObjectHistory> storageObjectHistory;
 
     @Embedded
     private @Valid Address address;
+
+    @Column(name = "storage_name")
+    private String name;
 
 //
 //    public Storage addAddress(Address storageAddress){

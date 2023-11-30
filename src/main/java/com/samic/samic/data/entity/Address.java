@@ -23,10 +23,8 @@ public class Address{
     private String street;
 
     @Column(name = "house_no")
-    //    @NotBlank
     @Min(1)
     @Max(1000)
-    //    @Valid
     private Integer houseNo;
 
     @Column(name = "door_no")
@@ -34,6 +32,12 @@ public class Address{
     @Min(1)
     @Max(1000)
     private Integer doorNo;
+
+    @Column(name = "zip_code")
+    @Positive()
+    @Min(1)
+    @Max(99999)
+    private Integer zipCode;
 
     @Column(name = "city", length = ConstantsDomain.OBJECTNAME_LENGTH)
     private String city;

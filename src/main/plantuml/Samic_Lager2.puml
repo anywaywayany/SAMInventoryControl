@@ -1,0 +1,183 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam linetype ortho
+top to bottom direction
+
+/'classes'/
+
+entity User {
+    -email : String
+    -password : String
+    -role : Role
+    -createdAt: LocalDateTime
+    -lastLogin: LocalDateTime
+    -activated: boolean
+}
+
+entity Profile << (V,#FF7700) ValueObject >>{ /' could be called Profile as well or summarized with user?'/
+    - username : String /'Probably a combination of firstName and lastName generated automatically'/
+    - firstName : String
+    - lastName : String
+    - phone : String
+}
+
+enum Role {
+    MANAGEMENT /' is allowed to add users or if teamlead is allowed,storageadmin has to activate it'/
+    STORAGEADMIN /' The only one who is allowed to see all Lagerobjects?'/
+    FIELDSERVICETECHNICIAN /' can see only unbooked Lagerobjects and Lagerobjects he booked himself'/
+    ORDERFULLFILLMENT
+    PROJECTMANAGER
+    SUPPORT
+}
+
+entity CPE {
+    - serialNumber : String
+    - macAddress : String
+    - type : Type
+    - producer : Producer
+}
+
+entity SFP {
+    - wavelength : String
+    - nic_speed : int
+    - serialnumber : String
+    - type: Type
+    - producer : Producer
+}
+
+/'
+Da es nicht im ER ist
+enum SfpType {
+    SM
+    MM
+    WDM
+}
+'/
+
+entity StorageObject {
+    - name
+    - projectDevice : boolean
+    - storedAtCostumer : Customer
+    - remark : String
+    - storedAtUser : User
+    - storage : Storage
+    - status : Status
+    - reservation : Reservation
+    - cpe : CPE
+    - sfp : SFP
+    - supply : Supply
+}
+
+
+entity StorageObjectHistory {
+    - storageObject : StorageObject
+    - insertDateTime: LocalDateTime
+    - status : Status
+    - untilDateTime: LocalDateTime
+    - storage : Storage
+    - reservation : Reservation
+}
+
+
+entity Address << (V,#FF7700) ValueObject >> {
+    - street : String
+    - houseNo : int
+    - doorNo : int
+    - zipCode : int
+    - city : String
+}
+
+
+enum Status {
+    CUSTOMER
+    RESERVED
+    MISSING
+    PROJECT
+    AVAILABLE
+}
+
+enum Type {
+    IP_PHONE
+    ROUTER
+    SWITCH
+
+}
+
+enum SFPType {
+   SM
+   MM
+   WDM
+}
+
+entity Producer {
+    shortName: String
+    name : String
+}
+
+class Reservation {
+    - reservedAt : LocalDateTime
+    - reservedDescription : String
+    - reservedFrom : User
+    - reservedFor: Customer
+    - completed : boolean
+    - lastModified: LocalDateTime /' probably redundant'/
+}
+
+
+entity Storage {
+    -name : String
+    -address : Adress
+}
+
+class Customer << (R,#009000) ValueObject >> {
+    - connectionNo : int
+}
+
+
+entity Supply {
+    - description : String
+    - amount : int
+}
+
+
+
+
+/'relations'/
+
+Profile <-- User : embedded /'so profile doesn't get loaded always'/
+Address <--up Storage : embedded
+Role .down. User
+
+Reservation "1" --* "1" StorageObject
+Customer <-left Reservation : "embedded"
+
+
+User "0..n" *-- "1" Reservation
+User "0..n" -- "0..1" StorageObject
+
+StorageObjectHistory "1" -up- "1..n" StorageObject
+
+
+SFP "1" -up- "1..n" Producer
+Producer "1..n " -down-  "1" CPE
+
+SFP -[hidden]- CPE
+
+SFP  "1..n" -right- "0..1"StorageObject
+CPE "1..n" -right- "0..1" StorageObject
+Supply "0..n" --up "0..1" StorageObject
+CPE -[hidden] Supply
+
+SFP .down. SFPType
+SFP .. Type
+CPE .up. Type
+
+
+
+StorageObject --> Customer : embedded
+
+
+Storage "1..n" -up- "1" StorageObject
+Status .up. StorageObject
+
+@endum

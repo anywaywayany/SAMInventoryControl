@@ -32,8 +32,8 @@ public class User extends AbstractPersistable<Long>{
     //    private StorageObject storageObject;
 
 
-    @OneToOne(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private Reservation reservation;
+    @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Reservation> reservation = new ArrayList<>();
 
     @Embedded
     private Profile profile;
