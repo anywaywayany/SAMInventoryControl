@@ -1,27 +1,24 @@
 package com.samic.samic.views.dashboard;
 
+import com.samic.samic.components.UIFactory;
 import com.samic.samic.views.MainLayout;
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @PageTitle("Dashboard")
 @Route(value = "dashboard", layout = MainLayout.class)
@@ -30,23 +27,22 @@ import java.util.stream.Collectors;
 public class DashboardView extends VerticalLayout {
 
     public DashboardView() {
+        initUI();
+    }
 
-        //STATS
-        VerticalLayout statsContainer = new VerticalLayout();
+    private void initUI() {
+        initStats();
+        initQuickAccess();
+        initHardware();
+        initReservation();
+    }
 
-        statsContainer.add(new H4("Statistiken"));
-        statsContainer.addClassName("container");
-        add(statsContainer);
+    private void initStats() {
+        //STATS - Container
+        VerticalLayout statsContainer = UIFactory.rootComponentContainer("Statistiken");
+        HorizontalLayout statsComponents = UIFactory.childContainer(JustifyContentMode.EVENLY);
 
-        HorizontalLayout statsChildren = new HorizontalLayout();
-        statsContainer.add(statsChildren);
-
-        statsChildren.setJustifyContentMode(JustifyContentMode.BETWEEN);
-        statsChildren.setWidthFull();
         HashMap<String, List<Integer>> map = new HashMap<>();
-
-
-        //Example Data
         map.put("Gerät Typ1", List.of(100, 50));
         map.put("Gerät Typ2", List.of(50, 50));
         map.put("Gerät Typ3", List.of(100, 1));
@@ -60,70 +56,59 @@ public class DashboardView extends VerticalLayout {
             } else {
                 sp.getElement().getThemeList().add("badge success");
             }
-            statsChildren.add(sp);
+            statsComponents.add(sp);
         });
-        statsChildren.add(new Span("Empty example"));
-        statsChildren.add(new Span("Empty example"));
-        statsChildren.add(new Span("Empty example"));
+        statsContainer.add(statsComponents);
+        add(statsContainer);
+    }
 
+    private void initQuickAccess() {
+        //CSS porperties
+        HashMap<String, String> cssValues = new HashMap<>(
+                Map.of(
+                        "flex", "1 250px"
+                ));
+        //QUICK_ACCESS - PUT TOGETHER UI
+        add(
+                UIFactory
+                        .rootComponentContainer(
+                                "Quick-Access",
+                                UIFactory
+                                        .childContainer(
+                                                JustifyContentMode.BETWEEN,
+                                                UIFactory.btnPrimary("Lagerobjekt erfassen", cssValues),
+                                                UIFactory.btnPrimary("Reservierung hinzufügen", cssValues),
+                                                UIFactory.btnPrimary("Lagerobjekt aufnehmen", cssValues),
+                                                UIFactory.btnPrimary("Lager hinzufügen", cssValues),
+                                                UIFactory.btnPrimary("Benutzer hinzufügen", cssValues)
+                                        )
+                        )
+        );
+    }
 
-        //QUICK_ACCESS
-
-
-        VerticalLayout actionContainer = new VerticalLayout();
-        actionContainer.add(new H4("Quick-Access"));
-        actionContainer.addClassName("container");
-        add(actionContainer);
-
-        HorizontalLayout actionChildren = new HorizontalLayout();
-        actionChildren.setWidthFull();
-        actionChildren.setJustifyContentMode(JustifyContentMode.AROUND);
-
-        actionContainer.add(actionChildren);
-
-
-        Button btnSoCreate = new Button("Lagerobjekt erfassen");
-        btnSoCreate.getStyle().setBackground("#108AB2");
-        btnSoCreate.getStyle().setColor("#FFFFFF");
-
-        Button btnResAdd = new Button("Reservierung hinzufügen");
-        btnResAdd.getStyle().setBackground("#108AB2");
-        btnResAdd.getStyle().setColor("#FFFFFF");
-
-        Button btnSoAdd = new Button("Lagerobjekt aufnehmen");
-        btnSoAdd.getStyle().setBackground("#108AB2");
-        btnSoAdd.getStyle().setColor("#FFFFFF");
-
-        Button btnStadd = new Button("Lager hinzufügen");
-        btnStadd.getStyle().setBackground("#108AB2");
-        btnStadd.getStyle().setColor("#FFFFFF");
-
-        Button btnUserAdd = new Button("Benutzer hinzufügen");
-        btnUserAdd.getStyle().setBackground("#108AB2");
-        btnUserAdd.getStyle().setColor("#FFFFFF");
-
-        actionChildren.add(btnSoCreate,btnResAdd, btnSoAdd, btnStadd, btnUserAdd);
-
-
-
-        //MY_HARDWARE
-
-        VerticalLayout myHardwareContainer = new VerticalLayout();
-        myHardwareContainer.add(new H4("Meine Hardware (Fake Überschriften im Grid!!)"));
-        myHardwareContainer.addClassName("container");
-        add(myHardwareContainer);
-
-        HorizontalLayout myHardwareChildren = new HorizontalLayout();
-        myHardwareChildren.setWidthFull();
-
-
-        Grid<ExampleData> hardwareGrid = new Grid<>(ExampleData.class,false);
-
+    private void initHardware() {
+        //MY_HARDWARE - PREPARE GRID
+        Grid<ExampleData> hardwareGrid = new Grid<>(ExampleData.class,true);
         hardwareGrid.isAllRowsVisible();
         hardwareGrid.setMaxHeight("300px");
+        hardwareGrid.setItems(initData());
+        //MY_HARDWARE - PUT UI TOGETHER
+        add(UIFactory.rootComponentContainer("Meine Hardware", hardwareGrid));
+    }
 
+    private void initReservation() {
+        //MY_RESERVATIONS
+        Grid<ExampleData> reservationGrid = new Grid<>(ExampleData.class,true);
+        reservationGrid.isAllRowsVisible();
+        reservationGrid.setMaxHeight("300px");
+        reservationGrid.setItems(initData());
+        //MY RESERVATION - PUT UI TOGETHER
+        add(UIFactory.rootComponentContainer("Meine Reservierungen", reservationGrid));
+    }
 
-
+    private List<ExampleData> initData() {
+        //PREPARE DATA FOR HARDWARE
+        //TODO use Service Method for Data and remove sub Class
         List<ExampleData> exampleDataList = new ArrayList<>();
 
         exampleDataList.add(ExampleData.builder().name("Gerät 1").type("Typ 1")
@@ -136,57 +121,13 @@ public class DashboardView extends VerticalLayout {
                 .status("Status 4").location("Lagerort 4").reserved("Reserviert 4").reservedUntil("Reserviert bis 4").build());
         exampleDataList.add(ExampleData.builder().name("Gerät 5").type("Typ 5")
                 .status("Status 5").location("Lagerort 5").reserved("Reserviert 5").reservedUntil("Reserviert bis 5").build());
-
-
-        hardwareGrid.addColumn(ExampleData::getName).setHeader("Name");
-        hardwareGrid.addColumn(ExampleData::getType).setHeader("Typ");
-        hardwareGrid.addColumn(ExampleData::getStatus).setHeader("Status");
-        hardwareGrid.addColumn(ExampleData::getLocation).setHeader("Lagerort");
-        hardwareGrid.addColumn(ExampleData::getReserved).setHeader("Reserviert");
-        hardwareGrid.addColumn(ExampleData::getReservedUntil).setHeader("Reserviert bis");
-
-        hardwareGrid.setItems(exampleDataList);
-
-        myHardwareContainer.add(myHardwareChildren);
-        myHardwareChildren.add(hardwareGrid);
-
-
-        //MY_RESERVATIONS
-
-        VerticalLayout myReservationContainer = new VerticalLayout();
-        myReservationContainer.add(new H4("Meine Reservierungen (Fake Überschriften im Grid!!)"));
-        myReservationContainer.addClassName("container");
-        add(myReservationContainer);
-
-        HorizontalLayout myReservationChildren = new HorizontalLayout();
-        myReservationChildren.setWidthFull();
-
-
-        Grid<ExampleData> reservationGrid = new Grid<>(ExampleData.class,false);
-
-        reservationGrid.isAllRowsVisible();
-        reservationGrid.setMaxHeight("300px");
-
-
-
-        reservationGrid.addColumn(ExampleData::getName).setHeader("Name");
-        reservationGrid.addColumn(ExampleData::getType).setHeader("Typ");
-        reservationGrid.addColumn(ExampleData::getStatus).setHeader("Status");
-        reservationGrid.addColumn(ExampleData::getLocation).setHeader("Lagerort");
-        reservationGrid.addColumn(ExampleData::getReserved).setHeader("Reserviert");
-        reservationGrid.addColumn(ExampleData::getReservedUntil).setHeader("Reserviert bis");
-
-        reservationGrid.setItems(exampleDataList);
-
-        myReservationContainer.add(myReservationChildren);
-        myReservationChildren.add(reservationGrid);
-
-
+        return exampleDataList;
     }
 
-
-
     @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
     static protected class ExampleData{
         private String name;
         private String type;
@@ -194,40 +135,5 @@ public class DashboardView extends VerticalLayout {
         private String location;
         private String reserved;
         private String reservedUntil;
-
-        public ExampleData exampleData(String name, String type, String status, String location, String reserved, String reservedUntil) {
-            this.name = name;
-            this.type = type;
-            this.status = status;
-            this.location = location;
-            this.reserved = reserved;
-            this.reservedUntil = reservedUntil;
-
-            return this;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public String getReserved() {
-            return reserved;
-        }
-
-        public String getReservedUntil() {
-            return reservedUntil;
-        }
     }
 }
