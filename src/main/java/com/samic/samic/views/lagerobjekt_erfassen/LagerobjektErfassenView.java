@@ -7,6 +7,7 @@ import com.samic.samic.components.form.SupplyForm;
 import com.samic.samic.data.entity.*;
 import com.samic.samic.services.*;
 import com.samic.samic.views.MainLayout;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,7 +20,6 @@ import java.util.List;
 @Route(value = "lagerobjektErfassen", layout = MainLayout.class)
 @PermitAll
 public class LagerobjektErfassenView extends VerticalLayout {
-
     private Storage storage;
     private StorageObject storageObject;
     private SFP sfp;
@@ -32,8 +32,6 @@ public class LagerobjektErfassenView extends VerticalLayout {
     private VerticalLayout storageContainer;
     HorizontalLayout formChildContainer =  UIFactory.childContainer(JustifyContentMode.START);
 
-
-    //TODO change Repositories to Services when the latter one has been finished
     private final ServiceSupply supplyService;
     private final ServiceSFP sfpService;
     private final ServiceCPE cpeService;
@@ -64,8 +62,6 @@ public class LagerobjektErfassenView extends VerticalLayout {
                 storageObjectService.saveStorageObject(StorageObject.builder().build()));
 
     }
-
-
     private void initUI() {
         ComboBox<Storage> storageComboBox = new ComboBox<>("Lager auswählen");
         storageComboBox.setItems(storageService.stream().toList());
@@ -113,23 +109,25 @@ public class LagerobjektErfassenView extends VerticalLayout {
 
     private void onCancel() {
         storageObjectService.deleteStorageObjectById(storageObject.getId());
-        //TODO make only the rootCompnentContainer reload that contains the form
+        UI.getCurrent().getPage().reload();
     }
 
     private void onSave(Type selectedType, Storage value) {
-        storageObject = cpeForm.saveStorageObject();
-        cpe = cpeForm.saveCPE();
-        producer = cpeForm.saveProducer();
-        //System.out.println(storageObject.toString() + cpe.toString() + producer.toString());
-        storageObject.setCpe(cpe);
-        storageObject.getCpe().setProducer(producer);
-        storageObjectService.saveStorageObject(storageObject);
+        if (selectedType.equals(Type.ROUTER) || selectedType.equals(Type.SWITCH) || selectedType.equals(Type.IP_PHONE)) {
+            var storageObject = saveCPE();
+            storageObjectService.saveStorageObject(storageObject);
+        } else if (selectedType.equals(Type.SFP)) {
+            var storageObject = saveSFP();
+            storageObjectService.saveStorageObject(storageObject);
+        } else if (selectedType.equals(Type.SUPPLY)) {
+            var storageObject = saveSupply();
+            storageObjectService.saveStorageObject(storageObject);
+        }
 
         var saved = storageObjectService.findStorageObjectById(storageObject.getId());
 
         System.out.println(saved.toString());
         //UI.getCurrent().getPage().reload();
-        cpeForm.refresh();
 
     }
 }
