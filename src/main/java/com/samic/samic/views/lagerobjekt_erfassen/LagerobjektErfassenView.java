@@ -26,7 +26,6 @@ public class LagerobjektErfassenView extends VerticalLayout {
     private CPE cpe;
     private Supply supply;
     private Producer producer;
-
     List<Storage> storageService = List.of(Storage.builder().name("Hauptlager").build(),Storage.builder().name("1Lager").build());
 
     private VerticalLayout storageContainer;
@@ -57,9 +56,9 @@ public class LagerobjektErfassenView extends VerticalLayout {
         this.supplyForm = supplyForm;
     //----------------------------
 
-        initUI();
         cpeForm.setCPEBeans(Producer.builder().build(), CPE.builder().build(),
                 storageObjectService.saveStorageObject(StorageObject.builder().build()));
+        initUI();
 
     }
     private void initUI() {
@@ -76,6 +75,21 @@ public class LagerobjektErfassenView extends VerticalLayout {
                 UIFactory.childContainer(JustifyContentMode.START,
                         storageComboBox));
         add(storageContainer);
+<<<<<<< HEAD
+
+
+        VerticalLayout formRootContainer = UIFactory.rootComponentContainer("",
+                UIFactory.childContainer(JustifyContentMode.START, typeComboBox));
+
+
+        formRootContainer.add(formChildContainer,UIFactory.childContainer(JustifyContentMode.END,
+                UIFactory.btnPrimary("Speichern", buttonClickEvent -> onSave(typeComboBox.getValue(),
+                        storageComboBox.getValue())),
+                UIFactory.btnPrimaryError("Abbrechen", buttonClickEvent -> onCancel())));
+
+        add(formRootContainer);
+=======
+>>>>>>> 21e3b0a (Refactor LagerObjektErfassen view, add CPEForm, SFPForm and SupplyForm)
 
 
         VerticalLayout formRootContainer = UIFactory.rootComponentContainer("",
@@ -89,6 +103,22 @@ public class LagerobjektErfassenView extends VerticalLayout {
 
         add(formRootContainer);
 
+    }
+
+    private void changeForm(Type value) {
+        if (value.equals(Type.ROUTER) || value.equals(Type.SWITCH) || value.equals(Type.IP_PHONE)) {
+            formChildContainer.remove(sfpForm);
+            formChildContainer.remove(supplyForm);
+            formChildContainer.add(cpeForm);
+        } else if (value.equals(Type.SFP)) {
+            formChildContainer.remove(supplyForm);
+            formChildContainer.remove(cpeForm);
+            formChildContainer.add(sfpForm);
+        } else if (value.equals(Type.SUPPLY)) {
+            formChildContainer.remove(sfpForm);
+            formChildContainer.remove(cpeForm);
+            formChildContainer.add(supplyForm);
+        }
     }
 
     private void changeForm(Type value) {
@@ -123,11 +153,5 @@ public class LagerobjektErfassenView extends VerticalLayout {
             var storageObject = saveSupply();
             storageObjectService.saveStorageObject(storageObject);
         }
-
-        var saved = storageObjectService.findStorageObjectById(storageObject.getId());
-
-        System.out.println(saved.toString());
-        //UI.getCurrent().getPage().reload();
-
     }
 }
