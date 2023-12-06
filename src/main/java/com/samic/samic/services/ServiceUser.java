@@ -1,11 +1,13 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.User;
-import com.samic.samic.data.persistence.RepositoryUser;
+import com.samic.samic.data.service.RepositoryUser;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -46,4 +48,7 @@ public class ServiceUser{
         return repositoryUser.existsById(id);
     }
 
+    public Stream<User> findAll(){
+        return repositoryUser.findAll().stream();
+    }
 }

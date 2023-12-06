@@ -1,11 +1,12 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Producer;
-import com.samic.samic.data.entity.SFP;
-import com.samic.samic.data.persistence.RepositoryProducer;
+import com.samic.samic.data.service.RepositoryProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,10 @@ public class ServiceProducer{
 
     public boolean doesObjectExistById(Long id){
         return repositoryProducer.existsById(id);
+    }
+
+    public Stream<Producer> findAll(){
+        return repositoryProducer.findAll().stream();
     }
 
 }

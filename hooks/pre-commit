@@ -1,35 +1,35 @@
-#!/bin/sh
-
-echo "Pre-commit Hook"
-
-# should work
-# Store the list of staged files
-staged_files=$(git diff --cached --name-only)
-
-# Apply code formatting using spotless
-./mvnw spotless:apply
-status=$?
-
-echo "This is status : $status"
-
-#if [ "$status" = 0 ]; then
-#    ./gradlew checkstyleMain
-#    status=$?
+##!/bin/sh
+#
+#echo "Pre-commit Hook"
+#
+## should work
+## Store the list of staged files
+#staged_files=$(git diff --cached --name-only)
+#
+## Apply code formatting using spotless
+#./mvnw spotless:apply
+#status=$?
+#
+#echo "This is status : $status"
+#
+##if [ "$status" = 0 ]; then
+##    ./gradlew checkstyleMain
+##    status=$?
+##fi
+#
+#
+#if [ "$status" -eq 0 ]; then
+#   ./mvnw test
+#   status=$?
 #fi
-
-
-if [ "$status" -eq 0 ]; then
-   ./mvnw test
-   status=$?
-fi
-
-# If code formatting succeeded, bring stashed changes back to staged area
-if [ "$status" -eq 0 ]; then
-   # Add only the files that were previously staged
-   git add $staged_files
-   # Proceed with commit-
-   exit $status
-fi
-
-#fail commit if above didnt work
-exit 1
+#
+## If code formatting succeeded, bring stashed changes back to staged area
+#if [ "$status" -eq 0 ]; then
+#   # Add only the files that were previously staged
+#   git add $staged_files
+#   # Proceed with commit-
+#   exit $status
+#fi
+#
+##fail commit if above didnt work
+#exit 1

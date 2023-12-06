@@ -21,7 +21,9 @@ import java.util.List;
 public class User extends AbstractPersistable<Long>{
 
 
-
+    /*
+    relations
+     */
     @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 //        @JoinColumn(name = "fk_storageObject")
     private List<StorageObject> storageObject = new ArrayList<>();
@@ -34,13 +36,17 @@ public class User extends AbstractPersistable<Long>{
     @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Reservation> reservation = new ArrayList<>();
 
+
+    //    @JsonIgnore
+    /* @NotBlank*/
+    //    @Column(name = "password")
+    //    private String password;
+
+    /*
+    attributes
+     */
     @Embedded
     private Profile profile;
-
-//    @JsonIgnore
-   /* @NotBlank*/
-//    @Column(name = "password")
-//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")

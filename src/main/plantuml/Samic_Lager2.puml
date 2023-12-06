@@ -55,7 +55,7 @@ enum SfpType {
 '/
 
 entity StorageObject {
-    - name
+    - StorageType : ObjectName
     - projectDevice : boolean
     - storedAtCostumer : Customer
     - remark : String
@@ -66,6 +66,10 @@ entity StorageObject {
     - cpe : CPE
     - sfp : SFP
     - supply : Supply
+}
+
+entity ObjectType {
+    - String : name
 }
 
 
@@ -176,8 +180,9 @@ CPE .up. Type
 
 StorageObject --> Customer : embedded
 
+StorageObject "1" -right- "1" ObjectType
 
-Storage "1..n" -up- "1" StorageObject
+Storage "1" -up- "1..n" StorageObject
 Status .up. StorageObject
 
 @endum

@@ -23,10 +23,20 @@ public class CPE extends AbstractPersistable<Long>{
 ////    @JoinColumn(name = "cpe")
 //    private StorageObject storageObject;
 
+    /*
+    relations
+     */
     @Column(name = "storageObject")
     @OneToMany(mappedBy = "cpe", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<StorageObject> storageObject = new ArrayList<>();
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_cpe"))
+    private Producer producer;
+
+    /*
+    attributes
+     */
     @Column(name = "serialnumber")
     private @NotBlank String serialnumber;
 
@@ -37,7 +47,4 @@ public class CPE extends AbstractPersistable<Long>{
     @Column(name = "type")
     private Type type;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_cpe"))
-    private Producer producer;
 }

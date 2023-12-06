@@ -18,7 +18,9 @@ import lombok.NoArgsConstructor;
 public class Profile /*extends AbstractPersistable<Long>*/{ //extend hier entferenen weil eine entity nicht
     // gleichzeitig ein embaddable sein kann!!!
 
-
+    /*
+        relations
+         */
     @Column(name = "user_name", length = ConstantsDomain.DEFAULT_LENGTH)
 //    @NotBlank
     private  String username;

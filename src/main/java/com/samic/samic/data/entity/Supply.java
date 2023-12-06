@@ -18,10 +18,16 @@ import java.util.List;
 @Table(name = "supply")
 public class Supply extends AbstractPersistable<Long>{
 
+    /*
+    relations
+     */
     @Column(name = "supply")
     @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     private List<StorageObject> storageObject = new ArrayList<>();
 
+    /*
+    attributes
+     */
     @Column(name = "description")
     @NotBlank
     private String description;

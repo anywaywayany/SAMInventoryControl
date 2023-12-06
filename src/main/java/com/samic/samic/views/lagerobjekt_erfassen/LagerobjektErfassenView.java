@@ -69,7 +69,7 @@ public LagerobjektErfassenView(
 	this.sfpForm = sfpForm;
 	this.supplyForm = supplyForm;
 	// ----------------------------
-	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
+//	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
 
 	initUI();
 }
@@ -174,7 +174,7 @@ private void onSave(Type selectedType, Storage value) {
 				return;
 			}
         }
-        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
+//        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
         changeForm(selectedType, value);
     }
 

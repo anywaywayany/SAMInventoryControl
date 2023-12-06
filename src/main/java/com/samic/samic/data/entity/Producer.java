@@ -17,12 +17,18 @@ import java.util.List;
 @Table(name = "producer")
 public class Producer extends AbstractPersistable<Long>{
 
+    /*
+    relations
+     */
     @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<SFP> sfp;
 
     @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CPE> cpe;
 
+    /*
+    attributes
+     */
     @Column(name="short_name")
     private String shortname;
 

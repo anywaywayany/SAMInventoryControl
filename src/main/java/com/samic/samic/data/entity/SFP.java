@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+
 @Data
 @Builder
 @Entity
@@ -16,6 +17,16 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Table(name = "sfps")
 public class SFP extends AbstractPersistable<Long>{
 
+    /*
+    relations
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
+    private Producer producer;
+
+    /*
+    attributes
+     */
     @NotBlank
     @Column(name = "wavelength")
     private String wavelength;
@@ -32,13 +43,9 @@ public class SFP extends AbstractPersistable<Long>{
     @Column(name = "type")
     private Type type;
 
-     @Enumerated
-     @Column(name = "type_SFP")
-     private SFPType sfpType;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
-    private Producer producer;
+    @Enumerated
+    @Column(name = "type_SFP")
+    private SFPType sfpType;
 
 
 }

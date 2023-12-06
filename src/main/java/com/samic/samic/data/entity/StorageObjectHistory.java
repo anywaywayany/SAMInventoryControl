@@ -17,17 +17,12 @@ import java.time.LocalDateTime;
 @Data
 public class StorageObjectHistory extends AbstractPersistable<Long>{
 
+    /*
+    relations
+     */
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_storageObject_history", foreignKey = @ForeignKey(name = "fk_storageObject_2_storageObjectHistory"))
     private StorageObject storageObject;
-
-    @Column(name = "inser_date_time")
-    @PastOrPresent
-    private LocalDateTime insertDateTime;
-
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
     @Column(name = "until_Date_Time")
     @PastOrPresent
@@ -40,4 +35,15 @@ public class StorageObjectHistory extends AbstractPersistable<Long>{
     @JoinColumn(name = "fk_reservation", foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Reservation reservation;
+
+    /*
+    attributes
+     */
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name = "inser_date_time")
+    @PastOrPresent
+    private LocalDateTime insertDateTime;
 }

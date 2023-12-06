@@ -16,15 +16,20 @@ import java.util.List;
 @Entity(name = "storages")
 public class Storage extends AbstractPersistable<Long>{
 
-
+    /*
+    relations
+    */
     @OneToMany(mappedBy ="storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 //    @JoinColumn(name = "storage_objects")
     private List<StorageObject> storageObject = new ArrayList<>();
 
-    @Column(name = "storage_Onjekt_history")
+    @Column(name = "storage_Objekt_history")
     @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<StorageObjectHistory> storageObjectHistory;
 
+    /*
+    attributes
+     */
     @Embedded
     private @Valid Address address;
 
