@@ -4,15 +4,11 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HexFormat;
 
 public class UIFactory {
 
@@ -35,7 +31,7 @@ public class UIFactory {
         HorizontalLayout childContainer = new HorizontalLayout();
 
         //Style
-        childContainer.setJustifyContentMode(justifyContentMode);
+        //childContainer.setJustifyContentMode(justifyContentMode);
         //make it wrap content
         childContainer.getStyle().set("flex-wrap", "wrap");
         childContainer.setWidthFull();
@@ -63,30 +59,18 @@ public class UIFactory {
 
     public static Button btnPrimary(String text, HashMap<String, String> cssKeyValue) {
         Button btnPrimary = UIFactory.btnPrimary(text);
-        cssKeyValue.forEach((cssKey, cssValue) -> {
-            btnPrimary.getStyle().set(cssKey, cssValue);
+        cssKeyValue.forEach((k,v) -> {
+            btnPrimary.getStyle().set(k,v);
         });
         return btnPrimary;
     }
 
     public static Button btnPrimary(String text, ComponentEventListener<ClickEvent<Button>> listener, HashMap<String, String> cssKeyValuePairs) {
-        Button btnPrimary = UIFactory.btnPrimary(text, cssKeyValuePairs);
+        Button btnPrimary = UIFactory.btnPrimary(text);
         btnPrimary.addClickListener(listener);
-        return btnPrimary;
-    }
-
-    public static Button btnPrimaryError(String text) {
-        Button btnPrimary = new Button(text);
-        btnPrimary
-                .getStyle()
-                .setBackground("#FF3101")
-                .setColor("#FFFFFF");
-        return btnPrimary;
-    }
-
-    public static Button btnPrimaryError(String text, ComponentEventListener<ClickEvent<Button>> listener) {
-        Button btnPrimary = UIFactory.btnPrimaryError(text);
-        btnPrimary.addClickListener(listener);
+        cssKeyValuePairs.forEach((cssKey, cssValue) -> {
+            btnPrimary.getStyle().set(cssKey, cssValue);
+        });
         return btnPrimary;
     }
 }

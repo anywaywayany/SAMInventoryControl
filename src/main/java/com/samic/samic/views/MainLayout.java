@@ -3,7 +3,7 @@ package com.samic.samic.views;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.views.dashboard.DashboardView;
-import com.samic.samic.views.lagerobjekt_erfassen.LagerobjektErfassenView;
+import com.samic.samic.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -77,8 +77,8 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
         }
 
-        if (accessChecker.hasAccess(LagerobjektErfassenView.class)) {
-            nav.addItem(new SideNavItem("Lagerobjekt erfassen", LagerobjektErfassenView.class, LineAwesomeIcon.DASHCUBE.create()));
+        if (accessChecker.hasAccess(HelloWorldView.class)) {
+            nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
 
         }
 
