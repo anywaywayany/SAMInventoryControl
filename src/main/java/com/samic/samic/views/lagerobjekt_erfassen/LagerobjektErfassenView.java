@@ -12,6 +12,8 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeLeaveEvent;
+import com.vaadin.flow.router.BeforeLeaveObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
@@ -21,7 +23,7 @@ import java.util.List;
 @PageTitle("Lagerobjekt erfassen")
 @Route(value = "lagerobjektErfassen", layout = MainLayout.class)
 @PermitAll
-public class LagerobjektErfassenView extends VerticalLayout {
+public class LagerobjektErfassenView extends VerticalLayout implements BeforeLeaveObserver {
 
 private Storage storage;
 private StorageObject storageObject;
@@ -175,4 +177,9 @@ private void onSave(Type selectedType, Storage value) {
         this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
         changeForm(selectedType, value);
     }
+
+	@Override
+	public void beforeLeave(BeforeLeaveEvent beforeLeaveEvent) {
+		storageObjectService.deleteStorageObjectById(storageObject.getId());
+	}
 }
