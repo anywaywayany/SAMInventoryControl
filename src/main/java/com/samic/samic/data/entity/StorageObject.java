@@ -29,7 +29,7 @@ public class StorageObject extends AbstractPersistable<Long>{
     private Customer storedAtCustomer;
 
     @Column(name = "remark", length = ConstantsDomain.DEFAULT_LENGTH)
-    private @NotBlank String remark;
+    private String remark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_storaed_at_user", foreignKey = @ForeignKey(name = "fk_User_2_storageObject"))

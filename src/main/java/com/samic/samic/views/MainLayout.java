@@ -18,122 +18,123 @@ import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import java.util.Optional;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-import java.util.Optional;
-
-/**
- * The main view is a top-level placeholder for other views.
- */
+/** The main view is a top-level placeholder for other views. */
 public class MainLayout extends AppLayout {
 
-    private H2 viewTitle;
+private H2 viewTitle;
 
-    private AuthenticatedUser authenticatedUser;
-    private AccessAnnotationChecker accessChecker;
+private AuthenticatedUser authenticatedUser;
+private AccessAnnotationChecker accessChecker;
 
-    public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
-        this.authenticatedUser = authenticatedUser;
-        this.accessChecker = accessChecker;
+public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
+	this.authenticatedUser = authenticatedUser;
+	this.accessChecker = accessChecker;
 
-        setPrimarySection(Section.DRAWER);
-        addDrawerContent();
-        addHeaderContent();
-    }
+	setPrimarySection(Section.DRAWER);
+	addDrawerContent();
+	addHeaderContent();
+}
 
-    private void addHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.setAriaLabel("Menu toggle");
+private void addHeaderContent() {
+	DrawerToggle toggle = new DrawerToggle();
+	toggle.setAriaLabel("Menu toggle");
 
+	viewTitle = new H2();
+	viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
+	Image logo = new Image("/images/logo_samic.svg", "Samic logo");
+	logo.setHeight("34px");
 
-        viewTitle = new H2();
-        viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+	addToNavbar(true, toggle, viewTitle, logo);
 
-        Image logo = new Image("/images/logo_samic.svg", "Samic logo");
-        logo.setHeight("34px");
+	logo.getStyle().setFloat(Style.FloatCss.RIGHT);
+	logo.getStyle().setPosition(Style.Position.ABSOLUTE);
+	logo.getStyle().setRight("20px");
+}
 
-        addToNavbar(true, toggle, viewTitle, logo);
+private void addDrawerContent() {
+	H1 appName = new H1("");
+	appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+	Header header = new Header(appName);
 
-        logo.getStyle().setFloat(Style.FloatCss.RIGHT);
-        logo.getStyle().setPosition(Style.Position.ABSOLUTE);
-        logo.getStyle().setRight("20px");
-    }
+	Scroller scroller = new Scroller(createNavigation());
 
-    private void addDrawerContent() {
-        H1 appName = new H1("");
-        appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        Header header = new Header(appName);
+	addToDrawer(header, scroller, createFooter());
+}
 
-        Scroller scroller = new Scroller(createNavigation());
+private SideNav createNavigation() {
+	SideNav nav = new SideNav();
 
-        addToDrawer(header, scroller, createFooter());
-    }
+	if (accessChecker.hasAccess(DashboardView.class)) {
+	nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
+	}
 
-    private SideNav createNavigation() {
-        SideNav nav = new SideNav();
+	if (accessChecker.hasAccess(LagerobjektErfassenView.class)) {
+	nav.addItem(
+		new SideNavItem(
+			"Lagerobjekt erfassen",
+			LagerobjektErfassenView.class,
+			LineAwesomeIcon.DASHCUBE.create()));
+	}
 
-        if (accessChecker.hasAccess(DashboardView.class)) {
-            nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
-        }
+	return nav;
+}
 
-        if (accessChecker.hasAccess(LagerobjektErfassenView.class)) {
-            nav.addItem(new SideNavItem("Lagerobjekt erfassen", LagerobjektErfassenView.class, LineAwesomeIcon.DASHCUBE.create()));
+private Footer createFooter() {
+	Footer layout = new Footer();
 
-        }
+	Optional<User> maybeUser = authenticatedUser.getUser();
+	if (maybeUser.isPresent()) {
+	User user = maybeUser.get();
 
+	/* TODO remove if attribute gets deleted in backend
+	Avatar avatar = new Avatar(user.getName());
+	StreamResource resource = new StreamResource("profile-pic",
+			() -> new ByteArrayInputStream(user.getProfilePicture()));
+	avatar.setImageResource(resource);
+	avatar.setThemeName("xsmall");
+	avatar.getElement().setAttribute("tabindex", "-1");*/
 
-        return nav;
-    }
+	MenuBar userMenu = new MenuBar();
+	userMenu.setThemeName("tertiary-inline contrast");
 
-    private Footer createFooter() {
-        Footer layout = new Footer();
+	MenuItem userName = userMenu.addItem("");
+	Div div = new Div();
+	// div.add(avatar);
+	div.add(user.getProfile().getFirstName()); // habs hier ändern müssen. Kannst aber anpassen.
+	div.add(new Icon("lumo", "dropdown"));
+	div.getElement().getStyle().set("display", "flex");
+	div.getElement().getStyle().set("align-items", "center");
+	div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
+	userName.add(div);
+	userName
+		.getSubMenu()
+		.addItem(
+			"Sign out",
+			e -> {
+				authenticatedUser.logout();
+			});
 
-        Optional<User> maybeUser = authenticatedUser.getUser();
-        if (maybeUser.isPresent()) {
-            User user = maybeUser.get();
+	layout.add(userMenu);
+	} else {
+	Anchor loginLink = new Anchor("login", "Sign in");
+	layout.add(loginLink);
+	}
 
-            /* TODO remove if attribute gets deleted in backend
-            Avatar avatar = new Avatar(user.getName());
-            StreamResource resource = new StreamResource("profile-pic",
-                    () -> new ByteArrayInputStream(user.getProfilePicture()));
-            avatar.setImageResource(resource);
-            avatar.setThemeName("xsmall");
-            avatar.getElement().setAttribute("tabindex", "-1");*/
+	return layout;
+}
 
-            MenuBar userMenu = new MenuBar();
-            userMenu.setThemeName("tertiary-inline contrast");
+@Override
+protected void afterNavigation() {
+	super.afterNavigation();
+	viewTitle.setText(getCurrentPageTitle());
+}
 
-            MenuItem userName = userMenu.addItem("");
-            Div div = new Div();
-            //div.add(avatar);
-            div.add(user.getProfile().getFirstName());  //habs hier ändern müssen. Kannst aber anpassen.
-            div.add(new Icon("lumo", "dropdown"));
-            div.getElement().getStyle().set("display", "flex");
-            div.getElement().getStyle().set("align-items", "center");
-            div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
-            userName.add(div);
-            userName.getSubMenu().addItem("Sign out", e -> {
-                authenticatedUser.logout();
-            });
-
-            layout.add(userMenu);
-        } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
-        }
-
-        return layout;
-    }
-
-    @Override
-    protected void afterNavigation() {
-        super.afterNavigation();
-        viewTitle.setText(getCurrentPageTitle());
-    }
-
-    private String getCurrentPageTitle() {
-        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
-        return title == null ? "" : title.value();
-    }
+private String getCurrentPageTitle() {
+	PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
+	return title == null ? "" : title.value();
+}
 }
