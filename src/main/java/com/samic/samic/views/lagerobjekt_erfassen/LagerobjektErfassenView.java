@@ -9,6 +9,7 @@ import com.samic.samic.services.*;
 import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -135,15 +136,41 @@ UI.getCurrent().getPage().reload();
 }
 
 private void onSave(Type selectedType, Storage value) {
+            StorageObject saved;
+            StorageObject persisted;
         if (selectedType.equals(Type.ROUTER) || selectedType.equals(Type.SWITCH) || selectedType.equals(Type.IP_PHONE)) {
-            var saved = cpeForm.saveStorageObject();
-            storageObjectService.saveStorageObject(saved);
+			if (cpeForm.isValid()) {
+				saved = cpeForm.saveStorageObject();
+				persisted = storageObjectService.saveStorageObject(saved);
+				if (persisted != null) {
+					UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+				}
+			} else {
+				UIFactory.NotificationError("Speichern nicht möglich. Eingaben kontrollieren").open();
+				return;
+			}
         } else if (selectedType.equals(Type.SFP)) {
-            var saved = sfpForm.saveStorageObject();
-            storageObjectService.saveStorageObject(saved);
+			if (sfpForm.isValid()) {
+				saved = sfpForm.saveStorageObject();
+				persisted = storageObjectService.saveStorageObject(saved);
+				if (persisted != null) {
+					UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+				}
+			} else {
+				UIFactory.NotificationError("Speichern nicht möglich . Eingaben kontrollieren").open();
+				return;
+			}
         } else if (selectedType.equals(Type.SUPPLY)) {
-            var saved = supplyForm.saveStorageObject();
-            storageObjectService.saveStorageObject(saved);
+			if (supplyForm.isValid()) {
+				saved = supplyForm.saveStorageObject();
+				persisted = storageObjectService.saveStorageObject(saved);
+				if (persisted != null) {
+					UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+				}
+			} else {
+				UIFactory.NotificationError("Speichern nicht möglich. Eingaben kontrollieren").open();
+				return;
+			}
         }
         this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
         changeForm(selectedType, value);
