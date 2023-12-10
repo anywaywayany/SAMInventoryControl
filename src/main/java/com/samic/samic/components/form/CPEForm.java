@@ -38,6 +38,8 @@ private HorizontalLayout projectEquipmentContainer =
 @PostConstruct
 private void initUI() {
 	storageObjectID.setReadOnly(true);
+	name.setRequired(true);
+	macAdress.setRequired(true);
 	type.setReadOnly(true);
 
 	add(storageObjectID, name, producerName, macAdress, serialnumber, type, isProjectEquipment);
@@ -58,10 +60,10 @@ private void initBinder() {
 	binderStorageObject.forField(storageObjectID).withConverter(
 			new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 	binderStorageObject.bind(isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);
-	binderStorageObject.bind(name, StorageObject::getName, StorageObject::setName);
+	binderStorageObject.forField(name).asRequired("Lagerobjekt kann nicht ohne namen gespeichert werden").bind(StorageObject::getName, StorageObject::setName);
 
-	binderCPE.bind(serialnumber, CPE::getSerialnumber, CPE::setSerialnumber);
-	binderCPE.bind(macAdress, CPE::getMacAddress, CPE::setMacAddress);
+	binderCPE.forField(serialnumber).asRequired("Seriennummer darf nicht leer sein").bind(CPE::getSerialnumber, CPE::setSerialnumber);
+	binderCPE.forField(macAdress).asRequired("Mac Adresse darf nicht leer sein").bind(CPE::getMacAddress, CPE::setMacAddress);
 
 	binderProducer.bind(producerName, Producer::getName, Producer::setName);
 }
@@ -98,4 +100,10 @@ public Producer saveProducer() {
 
 	return binderProducer.getBean();
 }
+	public Boolean isValid() {
+		binderStorageObject.validate();
+		binderCPE.validate();
+		binderProducer.validate();
+		return binderStorageObject.isValid() && binderCPE.isValid() && binderProducer.isValid();
+	}
 }

@@ -5,9 +5,12 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+
 import java.util.HashMap;
 
 public class UIFactory {
@@ -86,4 +89,21 @@ public static Button btnPrimaryError(
 	btnPrimary.addClickListener(listener);
 	return btnPrimary;
 }
+
+public static Notification NotificationSuccess(String text){
+	Notification notification = new Notification(text);
+	notification.setDuration(5000);
+	notification.setPosition(Notification.Position.BOTTOM_CENTER);
+	notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+	return notification;
+}
+
+	public static Notification NotificationError(String text) {
+	Notification notification = new Notification(text);
+		notification.setDuration(5000);
+		notification.setPosition(Notification.Position.BOTTOM_CENTER);
+		notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+		return notification;
+	}
+
 }

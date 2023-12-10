@@ -6,6 +6,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToLongConverter;
+import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -35,8 +36,8 @@ private void initBinder() {
 			new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 	binderStorageObject.bind(name, StorageObject::getName, StorageObject::setName);
 
-	binderSupply.bind(description, Supply::getDescription, Supply::setDescription);
-	binderSupply.bind(amount, Supply::getAmount, Supply::setAmount);
+	binderSupply.forField(description).asRequired("Beschreibung darf nicht leer sein").bind(Supply::getDescription, Supply::setDescription);
+	binderSupply.forField(amount).asRequired("Anzahl darf nicht leer sein").withValidator(new IntegerRangeValidator("Anzahl darf nicht 0 sein", 1, 1000)).bind(Supply::getAmount, Supply::setAmount);
 }
 
 public void setSupplyBeans(Producer producer, Supply supply, StorageObject storageObject, Type type, Storage storage) {
@@ -57,4 +58,9 @@ public StorageObject saveStorageObject() {
 public Supply saveSFP() {
 	return binderSupply.getBean();
 }
+	public Boolean isValid() {
+		binderStorageObject.validate();
+		binderSupply.validate();
+		return binderStorageObject.isValid() && binderSupply.isValid();
+	}
 }
