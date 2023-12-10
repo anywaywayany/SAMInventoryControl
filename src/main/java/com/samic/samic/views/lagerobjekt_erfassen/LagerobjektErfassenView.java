@@ -16,7 +16,6 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @PageTitle("Lagerobjekt erfassen")
 @Route(value = "lagerobjektErfassen", layout = MainLayout.class)
@@ -106,7 +105,6 @@ private void initUI() {
 }
 
 private void changeForm(Type value, Storage storage) {
-
 	if (value.equals(Type.ROUTER) || value.equals(Type.SWITCH) || value.equals(Type.IP_PHONE)) {
 		this.cpeForm.setCPEBeans(
 				Producer.builder().build(),
@@ -115,14 +113,14 @@ private void changeForm(Type value, Storage storage) {
 	formChildContainer.remove(supplyForm);
 	formChildContainer.add(cpeForm);
 	} else if (value.equals(Type.SFP)) {
-		this.sfpForm.setCPEBeans(
+		this.sfpForm.setSFPBeans(
 				Producer.builder().build(),
 				SFP.builder().build(), this.storageObject, value, storage);
 	formChildContainer.remove(supplyForm);
 	formChildContainer.remove(cpeForm);
 	formChildContainer.add(sfpForm);
 	} else if (value.equals(Type.SUPPLY)) {
-		this.supplyForm.setCPEBeans(
+		this.supplyForm.setSupplyBeans(
 				Producer.builder().build(),
 				Supply.builder().build(), this.storageObject, value, storage);
 	formChildContainer.remove(sfpForm);
@@ -147,7 +145,7 @@ private void onSave(Type selectedType, Storage value) {
             var saved = supplyForm.saveStorageObject();
             storageObjectService.saveStorageObject(saved);
         }
-        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name¢").build());
+        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
         changeForm(selectedType, value);
     }
 }

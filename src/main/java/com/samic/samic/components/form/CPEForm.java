@@ -62,6 +62,8 @@ private void initBinder() {
 
 	binderCPE.bind(serialnumber, CPE::getSerialnumber, CPE::setSerialnumber);
 	binderCPE.bind(macAdress, CPE::getMacAddress, CPE::setMacAddress);
+
+	binderProducer.bind(producerName, Producer::getName, Producer::setName);
 }
 
 

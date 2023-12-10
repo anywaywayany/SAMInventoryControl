@@ -39,7 +39,7 @@ private void initBinder() {
 	binderSupply.bind(amount, Supply::getAmount, Supply::setAmount);
 }
 
-public void setCPEBeans(Producer producer, Supply supply, StorageObject storageObject, Type type, Storage storage) {
+public void setSupplyBeans(Producer producer, Supply supply, StorageObject storageObject, Type type, Storage storage) {
 	storageObject.setStorage(storage);
 	binderStorageObject.setBean(storageObject);
 	binderSupply.setBean(supply);

@@ -75,7 +75,7 @@ private void initBinder() {
 	binderProducer.bind(producerName, Producer::getName, Producer::setName);
 }
 
-public void setCPEBeans(Producer producer, SFP sfp, StorageObject storageObject, Type type, Storage storage) {
+public void setSFPBeans(Producer producer, SFP sfp, StorageObject storageObject, Type type, Storage storage) {
 	storageObject.setStorage(storage);
 	sfp.setType(type);
 	sfp.setProducer(producer);
