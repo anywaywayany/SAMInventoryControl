@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 @RequiredArgsConstructor
 public class ServiceStorage{
@@ -38,5 +41,9 @@ public class ServiceStorage{
 
     public Storage findStorageByName(String name){
        return repositoryStorage.findStorageByName(name);
+    }
+
+    public Stream<Storage> findAll(){
+        return repositoryStorage.findAll().stream();
     }
 }
