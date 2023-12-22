@@ -45,6 +45,6 @@ class TestContainerConfiguration {
                            cmd.withName("samic-oracle");
                            cmd.withHostConfig(new HostConfig()
                                                       .withPortBindings(new PortBinding(Ports.Binding.bindPort(1521), new ExposedPort(1521))));
-                       });
+                       }).withReuse(true);
     }
 }

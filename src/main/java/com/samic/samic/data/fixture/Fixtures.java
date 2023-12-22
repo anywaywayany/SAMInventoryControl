@@ -376,7 +376,6 @@ public class Fixtures{
                        .storage(giveStorage1())
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
-                       .objectTypeName(giveObjectType1())
                        .storedAtUser(giveUser1())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
@@ -393,7 +392,6 @@ public class Fixtures{
                        .storage(giveStorage1())
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
-                       .objectTypeName(giveObjectType1())
                        .storedAtUser(giveUser1())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
@@ -406,19 +404,19 @@ public class Fixtures{
 
     public static ObjectType giveObjectType1(){
         return ObjectType.builder()
-                       .name("CB183LKNO")
+                       .name("AAA-CB183LKNO")
                        .build();
     }
 
     public static ObjectType giveObjectType2(){
         return ObjectType.builder()
-                       .name("CB183LKNO")
+                       .name("BBB-CB183LKNO")
                        .build();
     }
 
     public static ObjectType giveObjectType3(){
         return ObjectType.builder()
-                       .name("CB183LKNO")
+                       .name("CCC-CB183LKNO")
                        .build();
     }
 

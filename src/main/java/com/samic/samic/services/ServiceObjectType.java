@@ -19,11 +19,11 @@ public class ServiceObjectType{
     private RepositoryObjectType repositoryObjectType;
 
     public ObjectType saveObjectTypeByObject(ObjectType objectType){
-//        try{
+        try{
             return repositoryObjectType.save(objectType);
-//        }catch(SamicException e){
-//            throw new SamicException("ObjectType "+ objectType + " not valid!");
-//        }
+        }catch(SamicException e){
+            throw new SamicException("ObjectType "+ objectType + " not valid!");
+        }
     }
 
     public ObjectType findObjectTypeByID(Long id){
