@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "supply")
-public class Supply extends AbstractPersistable<Long>{
+public class Supply extends AbstractIdentityClass<Long>{
 
     /*
     relations

@@ -1,4 +1,4 @@
-package com.samic.samic.data.service;
+package com.samic.samic.data.repositories;
 
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -198,5 +200,86 @@ public class TestPersistenceStorageObject{
 
             }
         }
+    }
+
+
+    @Test
+    void find_free_storageObjects(){
+        //given
+        int freeStorageObjects = 0;
+        StorageObject storageObject1 = Fixtures.giveStorageObject1();
+        StorageObject storageObject2 = Fixtures.giveStorageObject2();
+        StorageObject storageObject3 = Fixtures.giveStorageObject3();
+        StorageObject storageObject4 = Fixtures.giveStorageObject4();
+        StorageObject storageObject5 = Fixtures.giveStorageObject5();
+
+        //when
+        var saved1 = serviceStorageObject.saveStorageObject(storageObject1);
+        if(storageObject1.getReservation() == null){
+            freeStorageObjects++;
+        }
+        var saved2 = serviceStorageObject.saveStorageObject(storageObject2);
+            if(storageObject2.getReservation() == null){
+                  freeStorageObjects++;
+            }
+        var saved3 = serviceStorageObject.saveStorageObject(storageObject3);
+            if(storageObject3.getReservation() == null){
+                  freeStorageObjects++;
+            }
+        var saved4 = serviceStorageObject.saveStorageObject(storageObject4);
+            if(storageObject4.getReservation() == null){
+                  freeStorageObjects++;
+            }
+        var saved5 = serviceStorageObject.saveStorageObject(storageObject5);
+            if(storageObject5.getReservation() == null){
+                  freeStorageObjects++;
+            }
+
+
+        List<StorageObject> res = serviceStorageObject.findNotReservedStorageObjects();
+        int freeAmount = res.size();
+
+        //then
+        assertThat(freeAmount).isSameAs(freeStorageObjects);
+    }
+
+    @Test
+    void find_reserved_storageObjects(){
+        //given
+        int countReserved = 0;
+        StorageObject storageObject1 = Fixtures.giveStorageObject1();
+        StorageObject storageObject2 = Fixtures.giveStorageObject2();
+        StorageObject storageObject3 = Fixtures.giveStorageObject3();
+        StorageObject storageObject4 = Fixtures.giveStorageObject4();
+        StorageObject storageObject5 = Fixtures.giveStorageObject5();
+
+        //when
+        var saved1 = serviceStorageObject.saveStorageObject(storageObject1);
+        if(storageObject1.getReservation() != null){
+            countReserved++;
+        }
+        var saved2 = serviceStorageObject.saveStorageObject(storageObject2);
+            if(storageObject2.getReservation() != null){
+                  countReserved++;
+            }
+        var saved3 = serviceStorageObject.saveStorageObject(storageObject3);
+            if(storageObject3.getReservation() != null){
+                  countReserved++;
+            }
+        var saved4 = serviceStorageObject.saveStorageObject(storageObject4);
+            if(storageObject4.getReservation() != null){
+                  countReserved++;
+            }
+        var saved5 = serviceStorageObject.saveStorageObject(storageObject5);
+            if(storageObject5.getReservation() != null){
+                  countReserved++;
+            }
+
+
+        List<StorageObject> res = serviceStorageObject.findReservedStorageObjects();
+        int reservedAmount = res.size();
+
+        //then
+        assertThat(reservedAmount).isSameAs(countReserved);
     }
 }

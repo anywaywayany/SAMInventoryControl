@@ -6,7 +6,7 @@ import com.samic.samic.data.entity.User;
 import java.util.Collections;
 import java.util.List;
 
-import com.samic.samic.data.service.RepositoryUser;
+import com.samic.samic.data.repositories.RepositoryUser;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

@@ -5,7 +5,6 @@ import com.samic.samic.data.constants.ConstantsDomain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "storage_objects")
-public class StorageObject extends AbstractPersistable<Long>{
+public class StorageObject extends AbstractIdentityClass<Long>{
 
     /*
     relations
@@ -50,14 +49,13 @@ public class StorageObject extends AbstractPersistable<Long>{
     private Customer storedAtCustomer;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "fk_storaed_at_user", foreignKey = @ForeignKey(name = "fk_User_2_storageObject"))
     private User storedAtUser;
 
     //Einseitige Beziehung
     @ManyToOne(targetEntity = Storage.class,fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_storageObject", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
-    @NotNull
     private Storage storage;
 
     /*

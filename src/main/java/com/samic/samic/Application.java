@@ -1,6 +1,6 @@
 package com.samic.samic;
 
-import com.samic.samic.data.service.RepositoryUser;
+import com.samic.samic.data.repositories.RepositoryUser;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @NpmPackage(value = "@fontsource/inter", version = "4.5.0")
 @Theme(value = "samic")
-@ComponentScan(basePackages = {"com.samic.samic.data.service"})
+@ComponentScan(basePackages = {"com.samic.samic.data.repositories"})
 @ComponentScan(basePackages = {"com.samic.samic.services"})
 public class Application implements AppShellConfigurator {
 

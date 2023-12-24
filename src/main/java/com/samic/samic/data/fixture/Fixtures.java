@@ -5,6 +5,7 @@ import com.samic.samic.data.foundation.DateTimeFactory;
 
 public class Fixtures{
 
+    //////////////////////////////////////////////////// Producer
     public static Producer giveProducer1(){
         return Producer.builder()
                        .shortname("Cisco")
@@ -12,6 +13,7 @@ public class Fixtures{
                        .build();
     }
 
+    //////////////////////////////////////////////////// SFP
     public static SFP giveSFP1(){
         return SFP.builder()
                        .wavelength("111nm")
@@ -67,6 +69,7 @@ public class Fixtures{
                        .build();
     }
 
+    //////////////////////////////////////////////////// CPE
 
     public static CPE giveCPE1(){
         return CPE.builder()
@@ -109,15 +112,15 @@ public class Fixtures{
                        .type(Type.IP_PHONE).build();
     }
 
+    //////////////////////////////////////////////////// User
+
     public static User giveUser1(){
         return User.builder()
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
-
                        .profile(giveProfile1())
                        .mail("AAA.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
-                       .profile(Profile.builder().phone("(762) 526-5961").build())
                        .role(Role.MANAGMENT)
                        .activated(true)
                        .build();
@@ -128,11 +131,10 @@ public class Fixtures{
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
 
-                       .profile(giveProfile1())
+                       .profile(giveProfile2())
                        .mail("BBB.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
-                       .profile(Profile.builder().phone("(762) 526-5961").build())
-                       .role(Role.MANAGMENT)
+                       .role(Role.SUPPORT)
                        .activated(true)
                        .build();
     }
@@ -142,11 +144,10 @@ public class Fixtures{
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
 
-                       .profile(giveProfile1())
+                       .profile(giveProfile3())
                        .mail("CCC.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
-                       .profile(Profile.builder().phone("(762) 526-5961").build())
-                       .role(Role.MANAGMENT)
+                       .role(Role.ORDERFULLFILLMENT)
                        .activated(true)
                        .build();
     }
@@ -155,12 +156,11 @@ public class Fixtures{
         return User.builder()
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
-
-                       .profile(giveProfile1())
+                       .profile(giveProfile4())
                        .mail("DDD.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
-                       .profile(Profile.builder().phone("(762) 526-5961").build())
-                       .role(Role.MANAGMENT)
+                       .profile(Profile.builder().phone("44444444").build())
+                       .role(Role.STORAGEADMIN)
                        .activated(true)
                        .build();
     }
@@ -169,21 +169,22 @@ public class Fixtures{
         return User.builder()
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
-
-                       .profile(giveProfile1())
+                       .profile(giveProfile5())
                        .mail("EEE.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
-                       .profile(Profile.builder().phone("(762) 526-5961").build())
-                       .role(Role.MANAGMENT)
+                       .role(Role.FIELDSERVICETECHNICIAN)
                        .activated(true)
                        .build();
     }
+
+    //////////////////////////////////////////////////// Profile
 
     private static Profile giveProfile1(){
         return Profile.builder()
                        .firstName("AAAA")
                        .lastName("Lane2")
                        .username("management2")
+                       .phone("11111111")
                        .build();
     }
 
@@ -192,6 +193,7 @@ public class Fixtures{
                        .firstName("BBB")
                        .lastName("Lane2")
                        .username("management2")
+                       .phone("22222222")
                        .build();
     }
 
@@ -200,6 +202,7 @@ public class Fixtures{
                        .firstName("CCC")
                        .lastName("Lane2")
                        .username("management2")
+                       .phone("33333333")
                        .build();
     }
 
@@ -208,6 +211,7 @@ public class Fixtures{
                        .firstName("DDD")
                        .lastName("Lane2")
                        .username("management2")
+                       .phone("44444444")
                        .build();
     }
 
@@ -216,14 +220,17 @@ public class Fixtures{
                        .firstName("EEE")
                        .lastName("Lane2")
                        .username("management2")
+                       .phone("55555555")
                        .build();
     }
+
+    //////////////////////////////////////////////////// Storage
 
     public static Storage giveStorage1(){
         return Storage.builder()
                        .name("Storage A")
                        .address(Address.builder()
-                                        .street("Backstreet")
+                                        .street("BackstreetA")
                                         .houseNo(44)
                                         .doorNo(4)
                                         .zipCode(444)
@@ -236,7 +243,7 @@ public class Fixtures{
         return Storage.builder()
                        .name("Storage B")
                        .address(Address.builder()
-                                        .street("Backstreet")
+                                        .street("BackstreetB")
                                         .houseNo(44)
                                         .doorNo(4)
                                         .zipCode(444)
@@ -249,7 +256,7 @@ public class Fixtures{
         return Storage.builder()
                        .name("Storage C")
                        .address(Address.builder()
-                                        .street("Backstreet")
+                                        .street("BackstreetC")
                                         .houseNo(44)
                                         .doorNo(4)
                                         .zipCode(444)
@@ -262,7 +269,7 @@ public class Fixtures{
         return Storage.builder()
                        .name("Storage D")
                        .address(Address.builder()
-                                        .street("Backstreet")
+                                        .street("BackstreetD")
                                         .houseNo(44)
                                         .doorNo(4)
                                         .zipCode(444)
@@ -275,7 +282,7 @@ public class Fixtures{
         return Storage.builder()
                        .name("Storage E")
                        .address(Address.builder()
-                                        .street("Backstreet")
+                                        .street("BackstreetD")
                                         .houseNo(44)
                                         .doorNo(4)
                                         .zipCode(444)
@@ -283,6 +290,8 @@ public class Fixtures{
                                         .build())
                        .build();
     }
+
+    //////////////////////////////////////////////////// Supply
 
 
     public static Supply giveSupply1(){
@@ -320,6 +329,7 @@ public class Fixtures{
                        .build();
     }
 
+    //////////////////////////////////////////////////// StorageObject
     public static StorageObject giveStorageObject1(){
         return StorageObject.builder()
                        .remark("remark1")
@@ -327,7 +337,6 @@ public class Fixtures{
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
                        .objectTypeName(giveObjectType1())
-                       .storedAtUser(giveUser1())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
@@ -340,11 +349,10 @@ public class Fixtures{
     public static StorageObject giveStorageObject2(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage1())
+                       .storage(giveStorage2())
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
-                       .objectTypeName(giveObjectType1())
-                       .storedAtUser(giveUser1())
+                       .objectTypeName(giveObjectType2())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
@@ -357,15 +365,16 @@ public class Fixtures{
     public static StorageObject giveStorageObject3(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage1())
+                       .storage(giveStorage3())
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
-                       .storedAtUser(giveUser1())
+                       .objectTypeName(giveObjectType3())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
                        .status(Status.AVAILABLE)
                        .supply(giveSupply1())
+                       .reservation(giveReservation3())
                        .build();
 
     }
@@ -373,10 +382,10 @@ public class Fixtures{
     public static StorageObject giveStorageObject4(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage1())
+                       .storage(giveStorage4())
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
-                       .storedAtUser(giveUser1())
+                       .objectTypeName(giveObjectType4())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
@@ -389,10 +398,10 @@ public class Fixtures{
     public static StorageObject giveStorageObject5(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage1())
+                       .storage(giveStorage5())
                        .cpe(giveCPE1())
                        .sfp(giveSFP1())
-                       .storedAtUser(giveUser1())
+                       .objectTypeName(giveObjectType5())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
@@ -401,6 +410,44 @@ public class Fixtures{
                        .build();
 
     }
+
+    //////////////////////////////////////////////////// Reservation
+
+    public static Reservation giveReservation1(){
+        return Reservation.builder()
+                       .reservedAt(DateTimeFactory.now_minus_one_week())
+                       .reservedDescription("need special tools to install")
+                       .build();
+    }
+    public static Reservation giveReservation2(){
+        return Reservation.builder()
+                       .reservedAt(DateTimeFactory.now_minus_one_week())
+                       .reservedDescription("need special tools to install")
+                       .build();
+    }
+    public static Reservation giveReservation3(){
+        return Reservation.builder()
+                       .reservedAt(DateTimeFactory.now_minus_one_week())
+                       .reservedDescription("need special tools to install")
+                       .build();
+    }
+
+      public static Reservation giveReservation4(){
+            return Reservation.builder()
+                           .reservedAt(DateTimeFactory.now_minus_one_week())
+                           .reservedDescription("need special tools to install")
+                           .reservedFrom(giveUser2())
+                           .build();
+      }
+
+      public static Reservation giveReservation5(){
+            return Reservation.builder()
+                           .reservedAt(DateTimeFactory.now_minus_one_week())
+                           .reservedDescription("need special tools to install")
+                           .build();
+      }
+
+    //////////////////////////////////////////////////// ObjectType
 
     public static ObjectType giveObjectType1(){
         return ObjectType.builder()

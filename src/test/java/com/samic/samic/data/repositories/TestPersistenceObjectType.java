@@ -1,4 +1,4 @@
-package com.samic.samic.data.service;
+package com.samic.samic.data.repositories;
 
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.fixture.Fixtures;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class TestPersistenceObjectType{
+public class TestPersistenceObjectType{
 
 
     @Autowired

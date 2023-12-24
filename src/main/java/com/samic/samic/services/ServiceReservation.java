@@ -1,8 +1,7 @@
-package com.samic.samic.services.serviceControl;
+package com.samic.samic.services;
 
-import com.samic.samic.data.entity.Producer;
 import com.samic.samic.data.entity.Reservation;
-import com.samic.samic.data.repositories.RepositoryProducer;
+import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -19,92 +19,108 @@ import java.util.stream.Stream;
 public class ServiceReservation{
 
     @Autowired
-    private RepositoryReservation repositoryReservation;
+    private final RepositoryReservation repositoryReservation;
 
 
-    public Reservation saveProducerByObject(Producer producer){
-        if(producer != null){
-            if(producer.getId() != null){
-                if(repositoryProducer.existsById(producer.getId())){
-                    log.debug("Producer with id: '%s', name: '%s' already exists in DB".formatted(producer.getId(), producer.getName()));
-                    throw new SamicException("Producer with id: '%s' already exists in DB".formatted(producer.getId()));
+    public Reservation saveReservationByObject(Reservation reservation){
+        if(reservation != null){
+            if(reservation.getId() != null){
+                if(repositoryReservation.existsById(reservation.getId())){
+                    log.debug("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
+                    throw new SamicException("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
                 }else{
-                    return repositoryProducer.save(producer);
+                    return repositoryReservation.save(reservation);
                 }
             }else{
-                return repositoryProducer.save(producer);
+                return repositoryReservation.save(reservation);
             }
         }else{
-            throw new SamicException("Producer is null!");
+            throw new SamicException("Reservation is null!");
         }
     }
 
-    public Producer findProducerById(Long id){
+    public Reservation findReservationById(Long id){
         if(id != null){
-            if(repositoryProducer.findById(id).isPresent()){
-                return repositoryProducer.findById(id).get();
+            if(repositoryReservation.findById(id).isPresent()){
+                return repositoryReservation.findById(id).get();
             }else{
-                throw new SamicException("Could not find Producer with id: '%s' in DB".formatted(id));
+                throw new SamicException("Could not find Reservation with id: '%s' in DB".formatted(id));
             }
         }else{
             throw new SamicException("Given id is null!");
         }
     }
 
-    public Optional<Producer> findProducerByIDOptional(Long id){
+    public Optional<Reservation> findReservationByIDOptional(Long id){
         if(id != null){
-            if(repositoryProducer.findById(id).isPresent()){
-                return repositoryProducer.findById(id);
+            if(repositoryReservation.findById(id).isPresent()){
+                return repositoryReservation.findById(id);
             }else{
-                throw new SamicException("Could not find Producer with id: '%s' in DB".formatted(id));
+                throw new SamicException("Could not find Reservation with id: '%s' in DB".formatted(id));
             }
         }else{
             throw new SamicException("Given id is null!");
         }
     }
 
-    public void deleteProducerById(Long id){
+    public void deleteReservationById(Long id){
         if(id != null){
-            repositoryProducer.deleteById(id);
+            repositoryReservation.deleteById(id);
         }else{
             throw new SamicException("Given id is null!");
         }
     }
 
-    public void deleteByObject(Producer producer){
-        if(producer != null){
-            repositoryProducer.delete(producer);
+    public void deleteByObject(Reservation reservation){
+        if(reservation != null){
+            repositoryReservation.delete(reservation);
         }else{
-            throw new SamicException("Given Producer is null!");
+            throw new SamicException("Given Reservation is null!");
         }
     }
 
     public boolean doesObjectExistById(Long id){
         if(id != null){
-            return repositoryProducer.existsById(id);
+            return repositoryReservation.existsById(id);
         }else{
             throw new SamicException("Given id is null!");
         }
     }
 
-    public Optional<Producer> findProducerByNameOptional(String name){
-        if(name != null){
-            if(repositoryProducer.findStorageByName(name).isPresent()){
-                return repositoryProducer.findStorageByName(name);
+    public List<Reservation> findReservationListByUserOptional(User user){
+        if(user != null){
+            if(!repositoryReservation.findAllByReservedFrom(user).isEmpty()){
+                return repositoryReservation.findAllByReservedFrom(user);
             }else{
-                throw new SamicException("Could not find Producer with name: '%s' in DB".formatted(name));
+                throw new SamicException("Could not find Reservation with user: '%s' in DB".formatted(user));
             }
         }else{
             throw new SamicException("Given name is null!");
         }
     }
 
-    public Stream<Producer> findAll(){
-        if(repositoryProducer.findAll().isEmpty()){
-            throw new SamicException("Producer list is empty!");
+    public Stream<Reservation> findAll(){
+        if(repositoryReservation.findAll().isEmpty()){
+            throw new SamicException("Reservation list is empty!");
         }else{
-            return repositoryProducer.findAll().stream();
+            return repositoryReservation.findAll().stream();
         }
     }
 
+    public List<Reservation> findAllasList(){
+        if(repositoryReservation.findAll().isEmpty()){
+            throw new SamicException("Reservation list is empty!");
+        }else{
+            return repositoryReservation.findAll();
+        }
+    }
+
+
+    public void deleteAll(){
+        if(!repositoryReservation.findAll().isEmpty()){
+            repositoryReservation.deleteAll();
+        }else{
+            throw new SamicException("Reservation DB is empty!");
+        }
+    }
 }

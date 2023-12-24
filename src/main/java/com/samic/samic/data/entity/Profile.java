@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
@@ -22,17 +23,20 @@ public class Profile /*extends AbstractPersistable<Long>*/{ //extend hier entfer
         relations
          */
     @Column(name = "user_name", length = ConstantsDomain.DEFAULT_LENGTH)
-//    @NotBlank
-    private  String username;
+    @NotBlank
+    private String username;
 
     @Column(name = "first_name", length = ConstantsDomain.DEFAULT_LENGTH)
-    private /*@NotBlank */String firstName;
+    @NotBlank
+    private String firstName;
 
     @Column(name = "last_name", length = ConstantsDomain.DEFAULT_LENGTH)
-    private /*@NotBlank*/ String lastName;
+    @NotBlank
+    private String lastName;
 
     @Column(name = "phone")
-    private/* @NotBlank*/ String phone;
+    @NotBlank
+    private String phone;
 
 
 }

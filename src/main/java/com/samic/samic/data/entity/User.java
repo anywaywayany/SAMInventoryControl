@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "user_storage")
-public class User extends AbstractPersistable<Long>{
+public class User extends AbstractIdentityClass<Long>{
 
 
     /*

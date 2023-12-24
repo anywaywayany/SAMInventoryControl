@@ -1,8 +1,13 @@
 package com.samic.samic.data.entity;
 
+import com.samic.samic.data.constants.ConstantsDomain;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.IdGeneratorType;
+import org.hibernate.annotations.ValueGenerationType;
+import org.hibernate.id.IdentityGenerator;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
@@ -14,7 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity(name = "storages")
-public class Storage extends AbstractPersistable<Long>{
+
+public class Storage extends AbstractIdentityClass<Long>{
+
 
     /*
     relations
@@ -31,9 +38,10 @@ public class Storage extends AbstractPersistable<Long>{
     attributes
      */
     @Embedded
-    private @Valid Address address;
+    private Address address;
 
-    @Column(name = "storage_name")
+    @Column(name = "storage_name", length = ConstantsDomain.OBJECTNAME_LENGTH)
+    @NotBlank
     private String name;
 
 //

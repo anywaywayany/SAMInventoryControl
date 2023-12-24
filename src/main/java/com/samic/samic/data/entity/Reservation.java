@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "reservations")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation extends AbstractPersistable<Long>{
+public class Reservation extends AbstractIdentityClass<Long>{
 
     /*
     relations

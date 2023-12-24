@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "object_type")
-public class ObjectType extends AbstractPersistable<Long>{
+public class ObjectType extends AbstractIdentityClass<Long>{
 
     /*
     relations

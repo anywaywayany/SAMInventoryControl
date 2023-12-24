@@ -1,7 +1,7 @@
 package com.samic.samic.security;
 
 import com.samic.samic.data.entity.User;
-import com.samic.samic.data.service.RepositoryUser;
+import com.samic.samic.data.repositories.RepositoryUser;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.samic.samic.data.service;
+package com.samic.samic.data.repositories;
 
 import com.samic.samic.data.entity.Producer;
 import com.samic.samic.data.fixture.Fixtures;

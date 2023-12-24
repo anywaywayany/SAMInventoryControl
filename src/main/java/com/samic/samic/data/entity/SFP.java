@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Data
 @Builder
@@ -15,7 +14,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sfps")
-public class SFP extends AbstractPersistable<Long>{
+public class SFP extends AbstractIdentityClass<Long>{
 
     /*
     relations

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cpes")
-public class CPE extends AbstractPersistable<Long>{
+public class CPE extends AbstractIdentityClass<Long>{
 
 //    @ManyToOne
 ////    @JoinColumn(name = "cpe")

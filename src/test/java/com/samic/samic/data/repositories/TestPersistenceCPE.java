@@ -1,4 +1,4 @@
-package com.samic.samic.data.service;
+package com.samic.samic.data.repositories;
 
 
 import com.samic.samic.data.entity.CPE;
@@ -14,7 +14,7 @@ import static org.jsoup.helper.Validate.ensureNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
-public class TestPersisteceCPE{
+public class TestPersistenceCPE{
 
     @Autowired
     private ServiceCPE serviceCP;
@@ -97,4 +97,7 @@ public class TestPersisteceCPE{
 //        //then
 //        assertThat(service.saveCPEByObject(saved3)).isSameAs(cpe3);
 //    }
+
+
+
 }

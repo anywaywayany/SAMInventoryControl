@@ -1,6 +1,6 @@
 package com.samic.samic.data.entity;
 
-import com.samic.samic.data.service.RepositoryCPE;
+import com.samic.samic.data.repositories.RepositoryCPE;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

@@ -3,10 +3,7 @@ package com.samic.samic.data.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
@@ -15,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
-public class StorageObjectHistory extends AbstractPersistable<Long>{
+public class StorageObjectHistory extends AbstractIdentityClass<Long>{
 
     /*
     relations
