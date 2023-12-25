@@ -1,6 +1,6 @@
 package com.samic.samic.data.entity;
 
-import com.samic.samic.data.persistence.RepositoryCPE;
+import com.samic.samic.data.repositories.RepositoryCPE;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,7 +21,7 @@ class CPETest{
         Producer prod = Producer.builder().shortname("Cisco").name("Cisco").build();
 
         CPE cpe = new CPE.CPEBuilder()
-                          .macAddress("FF-FF-FF")
+                          .macAddress("FF-FF-FF-FF-FF-FF")
                           .serialnumber("123456")
                           .producer(prod)
                           .type(Type.IP_PHONE).build();

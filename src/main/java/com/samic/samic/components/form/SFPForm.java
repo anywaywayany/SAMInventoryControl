@@ -10,7 +10,6 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToLongConverter;
-import com.vaadin.flow.data.validator.StringLengthValidator;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -67,7 +66,7 @@ public class SFPForm extends FormLayout {
 				new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 		binderStorageObject.bind(
 				isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);
-		binderStorageObject.forField(name).asRequired().bind(StorageObject::getName, StorageObject::setName);
+//		binderStorageObject.forField(name).asRequired().bind(StorageObject::getName, StorageObject::setName);
 		binderSFP.forField(serialnumber).asRequired().bind(SFP::getSerialnumber, SFP::setSerialnumber);
 		binderSFP.forField(wavelength).asRequired().bind(SFP::getWavelength, SFP::setWavelength);
 		binderSFP.forField(nicSpeed).asRequired().bind(SFP::getNicSpeed, SFP::setNicSpeed);

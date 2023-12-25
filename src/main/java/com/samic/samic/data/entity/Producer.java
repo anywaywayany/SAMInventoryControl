@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.List;
 
@@ -15,14 +14,20 @@ import java.util.List;
 @Data
 @Builder
 @Table(name = "producer")
-public class Producer extends AbstractPersistable<Long>{
+public class Producer extends AbstractIdentityClass<Long>{
 
+    /*
+    relations
+     */
     @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<SFP> sfp;
 
     @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CPE> cpe;
 
+    /*
+    attributes
+     */
     @Column(name="short_name")
     private String shortname;
 

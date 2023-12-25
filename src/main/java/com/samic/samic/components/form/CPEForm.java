@@ -6,7 +6,6 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToLongConverter;
@@ -60,7 +59,7 @@ private void initBinder() {
 	binderStorageObject.forField(storageObjectID).withConverter(
 			new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 	binderStorageObject.bind(isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);
-	binderStorageObject.forField(name).asRequired("Lagerobjekt kann nicht ohne namen gespeichert werden").bind(StorageObject::getName, StorageObject::setName);
+//	binderStorageObject.forField(name).asRequired("Lagerobjekt kann nicht ohne namen gespeichert werden").bind(StorageObject::getName, StorageObject::setName);
 
 	binderCPE.forField(serialnumber).asRequired("Seriennummer darf nicht leer sein").bind(CPE::getSerialnumber, CPE::setSerialnumber);
 	binderCPE.forField(macAdress).asRequired("Mac Adresse darf nicht leer sein").bind(CPE::getMacAddress, CPE::setMacAddress);

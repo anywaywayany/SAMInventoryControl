@@ -5,10 +5,8 @@ import com.samic.samic.data.entity.User;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.samic.samic.data.persistence.RepositoryUser;
-import com.samic.samic.services.ServiceUser;
+import com.samic.samic.data.repositories.RepositoryUser;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

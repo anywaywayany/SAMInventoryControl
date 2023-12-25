@@ -1,7 +1,8 @@
 package com.samic.samic.data.entity;
 
+import com.samic.samic.data.fixture.Fixtures;
 import com.samic.samic.data.foundation.DateTimeFactory;
-import com.samic.samic.data.persistence.RepositoryUser;
+import com.samic.samic.data.repositories.RepositoryUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -80,4 +81,15 @@ class UserTest{
 
         assertThat(saved).isNotNull();
     }
+
+    @Test
+    void ensure_attributes_from_user_that_are_provided_by_profile_are_not_null(){
+        //                  given
+        User user = Fixtures.giveUser1();
+        user.getProfile().setUsername("AAAAA");
+
+        assertThat(user.getProfile().getUsername()).isSameAs("AAAAA");
+
+    }
+
 }

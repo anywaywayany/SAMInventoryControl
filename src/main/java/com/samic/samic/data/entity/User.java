@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,10 +17,12 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "user_storage")
-public class User extends AbstractPersistable<Long>{
+public class User extends AbstractIdentityClass<Long>{
 
 
-
+    /*
+    relations
+     */
     @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 //        @JoinColumn(name = "fk_storageObject")
     private List<StorageObject> storageObject = new ArrayList<>();
@@ -34,13 +35,17 @@ public class User extends AbstractPersistable<Long>{
     @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Reservation> reservation = new ArrayList<>();
 
+
+    //    @JsonIgnore
+    /* @NotBlank*/
+    //    @Column(name = "password")
+    //    private String password;
+
+    /*
+    attributes
+     */
     @Embedded
     private Profile profile;
-
-//    @JsonIgnore
-   /* @NotBlank*/
-//    @Column(name = "password")
-//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")

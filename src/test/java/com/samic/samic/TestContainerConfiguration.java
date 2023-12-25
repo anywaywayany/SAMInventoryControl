@@ -13,7 +13,7 @@ import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
-class TestContainerConfiguration {
+public class TestContainerConfiguration {
 
 //    @Bean
 ////    @RestartScope
@@ -37,14 +37,6 @@ class TestContainerConfiguration {
     @RestartScope
     @ServiceConnection
     OracleContainer oracleContainer(){
-        final int exposedPort = 1521;
-        final int localPort = 15432;
-        return new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:21"))
-                       .withExposedPorts(exposedPort)
-                       .withCreateContainerCmdModifier(cmd ->{
-                           cmd.withName("samic-oracle");
-                           cmd.withHostConfig(new HostConfig()
-                                                      .withPortBindings(new PortBinding(Ports.Binding.bindPort(1521), new ExposedPort(1521))));
-                       });
+        return new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:21"));
     }
 }

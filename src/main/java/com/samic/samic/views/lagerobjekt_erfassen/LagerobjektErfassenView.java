@@ -9,7 +9,6 @@ import com.samic.samic.services.*;
 import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeLeaveEvent;
@@ -69,7 +68,7 @@ public LagerobjektErfassenView(
 	this.sfpForm = sfpForm;
 	this.supplyForm = supplyForm;
 	// ----------------------------
-	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
+//	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
 
 	initUI();
 }
@@ -174,7 +173,7 @@ private void onSave(Type selectedType, Storage value) {
 				return;
 			}
         }
-        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
+//        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
         changeForm(selectedType, value);
     }
 
