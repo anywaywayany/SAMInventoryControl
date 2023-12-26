@@ -3,6 +3,7 @@ package com.samic.samic.views;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.views.dashboard.DashboardView;
+import com.samic.samic.views.freie_lagerobjekte.FreieLagerobjekteView;
 import com.samic.samic.views.lagerobjekt_aufnehmen.LagerobjektAufnehmenView;
 import com.samic.samic.views.lagerobjekt_erfassen.LagerobjektErfassenView;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -86,6 +87,12 @@ private SideNav createNavigation() {
 				"Lagerobjekt aufnehmen",
 				LagerobjektAufnehmenView.class,
 				LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
+	if (accessChecker.hasAccess(FreieLagerobjekteView.class))
+		nav.addItem(
+				new SideNavItem(
+				"Freie Lagerobjekte",
+				FreieLagerobjekteView.class,
+				LineAwesomeIcon.SEARCH_SOLID.create()));
 	return nav;
 }
 

@@ -142,6 +142,26 @@ insert into storages(id, storage_name, street, house_no, door_no, zip_code, city
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (7, 'Storage 7', 'Street 7', 7, 1, 7777, 'City 7');
 
 
+insert into producer (id, producer_name, short_name) values (1, 'Oloo', 'Tazz');
+insert into producer (id, producer_name, short_name) values (2, 'Demimbu', 'Dynabox');
 
---Frontend temporary dummy data
 
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (1, 1, 'B1-6D-88-2D-3B-70', 'WAE9805F71TO', 'SUPPLY');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (2, 2, '29-20-38-CA-20-BA', 'NDZ2087U82ZB', 'SUPPLY');
+
+insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type) values (1, 1, '01HJGKK6JKHSR3XKEE09X450S8', 232, 2, '1330 nm', 'SFP');
+insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type) values (2, 2, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '1300 nm', 'SFP');
+
+insert into supply (id, description, amount) values (1, 'auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc', 156);
+insert into supply (id, description, amount) values (2, 'augue a suscipit nulla elit ac nulla sed vel enim', 65);
+
+insert into object_type (id, name) values (1, 'IMFC433');
+insert into object_type (id, name) values (2, 'EQVN997');
+
+
+insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description) values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0, 12335134, 'purus phasellus in felis donec');
+insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description) values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521, 'pellentesque quisque porta volutpat erat');
+
+
+---insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (1, 1, 0, 'eget orci vehicula condimentum curabitur in libero', 3, null, 'CUSTOMER', 1, null, null, '1');
+--insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (2, 2, 0, 'pede malesuada in imperdiet et', 6, null, 'AVAILABLE', 2, null, '1', null);

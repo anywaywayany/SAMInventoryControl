@@ -68,7 +68,8 @@ public LagerobjektErfassenView(
 	this.sfpForm = sfpForm;
 	this.supplyForm = supplyForm;
 	// ----------------------------
-//	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
+	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder()
+			.objectTypeName(ObjectType.builder().name("Testname").build()).build());
 
 	initUI();
 }
