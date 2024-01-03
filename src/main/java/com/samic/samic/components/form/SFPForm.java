@@ -62,7 +62,7 @@ public class SFPForm extends FormLayout {
 	}
 
 	private void initBinder() {
-		binderStorageObject.forField(storageObjectID).withConverter(
+		binderStorageObject.forField(storageObjectID).withNullRepresentation("").withConverter(
 				new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 		binderStorageObject.bind(
 				isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);

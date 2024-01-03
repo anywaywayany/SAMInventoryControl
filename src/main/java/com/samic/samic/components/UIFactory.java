@@ -3,18 +3,24 @@ package com.samic.samic.components;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.function.SerializableSupplier;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 public class UIFactory {
 
+
+///////////---------------------Layout/Containers≈---------------------///////////
 public static VerticalLayout rootComponentContainer(String heading, Component... containers) {
 	VerticalLayout container = new VerticalLayout();
 
@@ -46,21 +52,17 @@ public static HorizontalLayout childContainer(
 	return childContainer;
 }
 
-public static Button btnPrimary(String text) {
+///////////---------------------BUTTONS≈---------------------///////////
+public static Button btnPrimary(
+	String text, ComponentEventListener<ClickEvent<Button>> listener) {
 	Button btnPrimary = new Button(text);
+	btnPrimary.addClickListener(listener);
 	btnPrimary.getStyle().setBackground("#108AB2").setColor("#FFFFFF");
 	return btnPrimary;
 }
 
-public static Button btnPrimary(
-	String text, ComponentEventListener<ClickEvent<Button>> listener) {
-	Button btnPrimary = UIFactory.btnPrimary(text);
-	btnPrimary.addClickListener(listener);
-	return btnPrimary;
-}
-
 public static Button btnPrimary(String text, HashMap<String, String> cssKeyValue) {
-	Button btnPrimary = UIFactory.btnPrimary(text);
+	Button btnPrimary = new Button(text);
 	cssKeyValue.forEach(
 		(cssKey, cssValue) -> {
 		btnPrimary.getStyle().set(cssKey, cssValue);
@@ -90,6 +92,15 @@ public static Button btnPrimaryError(
 	return btnPrimary;
 }
 
+public static Button btnIconWithTooltip(Component icon, String text,
+		ComponentEventListener<ClickEvent<Button>> event) {
+
+	Button btnIconWithTooltip = new Button(icon, event);
+	btnIconWithTooltip.setTooltipText(text);
+
+	return btnIconWithTooltip;
+}
+
 public static Notification NotificationSuccess(String text){
 	Notification notification = new Notification(text);
 	notification.setDuration(5000);
@@ -106,4 +117,17 @@ public static Notification NotificationSuccess(String text){
 		return notification;
 	}
 
+
+///////////---------------------GridUtils≈---------------------///////////
+	public static VerticalLayout LazyComponent(SerializableSupplier<? extends Component> component) {
+		VerticalLayout container = UIFactory.rootComponentContainer("");
+
+		container.addAttachListener(e -> {
+			if (container.getElement().getChildCount() == 1) {
+				container.add(component.get());
+			}
+		});
+
+		return container;
+	}
 }

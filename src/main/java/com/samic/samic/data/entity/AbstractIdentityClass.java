@@ -61,7 +61,7 @@ public class AbstractIdentityClass<PK extends Serializable> implements Persistab
             return false;
         }
 
-        AbstractPersistable<?> that = (AbstractPersistable<?>) obj;
+        AbstractIdentityClass that = (AbstractIdentityClass) obj;
 
         return null == this.getId() ? false : this.getId().equals(that.getId());
     }

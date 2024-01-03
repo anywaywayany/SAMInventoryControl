@@ -6,6 +6,7 @@ import com.samic.samic.views.dashboard.DashboardView;
 import com.samic.samic.views.freie_lagerobjekte.FreieLagerobjekteView;
 import com.samic.samic.views.lagerobjekt_aufnehmen.LagerobjektAufnehmenView;
 import com.samic.samic.views.lagerobjekt_erfassen.LagerobjektErfassenView;
+import com.samic.samic.views.meine_hardware.MeineHardwareView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -93,6 +94,13 @@ private SideNav createNavigation() {
 				"Freie Lagerobjekte",
 				FreieLagerobjekteView.class,
 				LineAwesomeIcon.SEARCH_SOLID.create()));
+	if (accessChecker.hasAccess(MeineHardwareView.class))
+		nav.addItem(
+				new SideNavItem(
+				"Meine Hardware",
+				MeineHardwareView.class,
+				LineAwesomeIcon.STRIPE.create()));
+
 	return nav;
 }
 

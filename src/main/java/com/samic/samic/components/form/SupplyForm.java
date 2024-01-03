@@ -32,7 +32,7 @@ private void initUI() {
 }
 
 private void initBinder() {
-	binderStorageObject.forField(storageObjectID).withConverter(
+	binderStorageObject.forField(storageObjectID).withNullRepresentation("").withConverter(
 			new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 //	binderStorageObject.bind(name, StorageObject::getName, StorageObject::setName);
 
@@ -55,7 +55,7 @@ public StorageObject saveStorageObject() {
 	return binderStorageObject.getBean();
 }
 
-public Supply saveSFP() {
+public Supply saveSupply() {
 	return binderSupply.getBean();
 }
 	public Boolean isValid() {
