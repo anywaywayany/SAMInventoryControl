@@ -30,6 +30,7 @@ public class CPEForm extends FormLayout {
 	private final Binder<StorageObject> binderStorageObject = new Binder<>(StorageObject.class, true);
 	private final Binder<CPE> binderCPE = new Binder<>(CPE.class);
 	private final Binder<Producer> binderProducer = new Binder<>(Producer.class);
+	private StorageObject storageObject;
 	private HorizontalLayout projectEquipmentContainer =
 			UIFactory.childContainer(
 					FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
@@ -56,7 +57,7 @@ public class CPEForm extends FormLayout {
 	}
 
 	private void initBinder() {
-		binderStorageObject.forField(storageObjectID).withConverter(
+		binderStorageObject.forField(storageObjectID).withNullRepresentation("").withConverter(
 				new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);
 		binderStorageObject.bind(isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);
 //	binderStorageObject.forField(name).asRequired("Lagerobjekt kann nicht ohne namen gespeichert werden").bind(StorageObject::getName, StorageObject::setName);
@@ -65,6 +66,7 @@ public class CPEForm extends FormLayout {
 		binderCPE.forField(macAdress).asRequired("Mac Adresse darf nicht leer sein").bind(CPE::getMacAddress, CPE::setMacAddress);
 
 		binderProducer.bind(producerName, Producer::getName, Producer::setName);
+
 	}
 
 

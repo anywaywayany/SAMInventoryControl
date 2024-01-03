@@ -16,6 +16,8 @@ import com.vaadin.flow.router.BeforeLeaveObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.hibernate.id.IdentityGenerator;
+import org.springframework.util.IdGenerator;
 
 import java.util.List;
 
@@ -69,7 +71,8 @@ public LagerobjektErfassenView(
 	this.supplyForm = supplyForm;
 	// ----------------------------
 	this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder()
-			.objectTypeName(ObjectType.builder().name("Testname").build()).build());
+		.objectTypeName(ObjectType.builder().name("Testname").build()).build());
+
 
 	initUI();
 }

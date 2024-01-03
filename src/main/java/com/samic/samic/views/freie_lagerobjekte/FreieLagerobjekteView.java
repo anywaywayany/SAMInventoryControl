@@ -70,7 +70,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
                         UIFactory.btnPrimaryError("Abbrechen", onClick -> onCancel())))
         );
         searchField.setWidth("20%");
-        searchField.setPlaceholder("Search...");
+        searchField.setPlaceholder("Suchen...");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);
 
@@ -94,6 +94,8 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
         filterStorage.setItemLabelGenerator(Storage::getName);
         filterStorage.setItems(storageService.findAll().toList());
+        filterStorage.setAllowCustomValue(false);
+        filterStorage.setPlaceholder("Lager auswählen");
 
         GridListDataView<StorageObject> storageObjectList;
 
@@ -127,7 +129,12 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
 
         add(
-                UIFactory.rootComponentContainer("", searchField, filterStorage),
+                UIFactory.rootComponentContainer("",
+                        UIFactory.childContainer(
+                                JustifyContentMode.START,
+                                searchField,
+                                filterStorage
+                        )),
                 UIFactory.rootComponentContainer("",
                         UIFactory.childContainer(
                                 JustifyContentMode.START,
