@@ -20,19 +20,11 @@ public class DataProviderAdmin {
   private HashMap<String, String> appConfig = new HashMap<>();
   private List<NotificationLimit> notificationLimits;
   private List<Storage> storages;
+
   public DataProviderAdmin() {
 
   }
 
-  public List<User> getUsers(int amount) {
-    users = new ArrayList<>(amount);
-
-    for (int i = 0; i < amount; i++) {
-      User user = Fixtures.giveUser1();
-      users.add(user);
-    }
-    return users;
-  }
 
   public void saveReservationDuration(Integer value) {
     if (appConfig.containsKey("reservationMaxDuration")) {
@@ -115,6 +107,23 @@ public class DataProviderAdmin {
   public void removeStorage(Storage storage) {
     if (storages != null) {
       storages.remove(storage);
+    }
+  }
+
+  public List<User> getUsers(int amount) {
+    users = new ArrayList<>(amount);
+    for (int i = 0; i < amount; i++) {
+      User user = Fixtures.giveUser1();
+      users.add(user);
+    }
+    return users;
+  }
+
+  public void saveUser(User user) {
+    if (users != null) {
+      int index = users.indexOf(user);
+      users.remove(index);
+      users.add(index, user);
     }
   }
 }
