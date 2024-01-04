@@ -4,19 +4,13 @@ import com.samic.samic.components.UIFactory;
 import com.samic.samic.data.entity.Profile;
 import com.samic.samic.data.entity.Role;
 import com.samic.samic.data.entity.User;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.login.LoginI18n.Form;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.EmailValidator;
-import com.vaadin.flow.data.validator.StringLengthValidator;
 import jakarta.annotation.PostConstruct;
-import java.util.Arrays;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -43,16 +37,16 @@ public class UserForm extends VerticalLayout {
     binderUser.forField(username).bind("profile.username");
     binderUser.forField(role).asRequired().bind(User::getRole, User::setRole);
 
-    surename.addValueChangeListener(e -> username.setValue(e.getValue().substring(0, 3) + username.getValue()));
-    lastname.addValueChangeListener(e -> username.setValue(username.getValue() + e.getValue().substring(0, 3)));
     role.setItems(Role.values());
     role.setItemLabelGenerator(Role::getLongVersion);
     role.setAllowCustomValue(false);
     role.setWidth("300px");
     role.setRequired(true);
     add(
-        UIFactory.childContainer(JustifyContentMode.START,
-            role,mail, password, passwordConfirm, surename, lastname, username)
+        UIFactory.childContainer(JustifyContentMode.BETWEEN,
+            role),
+        UIFactory.childContainer(JustifyContentMode.START,mail, password, passwordConfirm),
+        UIFactory.childContainer(JustifyContentMode.START,surename, lastname, username)
     );
   }
 

@@ -1,7 +1,6 @@
 package com.samic.samic.components.form;
 
 import com.samic.samic.data.entity.Storage;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;

@@ -1,16 +1,13 @@
 package com.samic.samic.views.administration;
 
 import com.samic.samic.data.entity.Storage;
-import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.Type;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.fixture.Fixtures;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -111,7 +108,7 @@ public class DataProviderAdmin {
   }
 
   public List<User> getUsers(int amount) {
-    users = new ArrayList<>(amount);
+    users = new ArrayList<>(amount+2);
     for (int i = 0; i < amount; i++) {
       User user = Fixtures.giveUser1();
       users.add(user);
@@ -122,8 +119,26 @@ public class DataProviderAdmin {
   public void saveUser(User user) {
     if (users != null) {
       int index = users.indexOf(user);
-      users.remove(index);
-      users.add(index, user);
+      if (index > -1) {
+        users.remove(user);
+        users.add(index, user);
+      }
+      user.setCreatedAt(LocalDateTime.now());
+      user.setActivated(false);
+      user.setLastLogin(LocalDateTime.now().minusYears(300));
+      users.add(user);
+    }
+  }
+
+  public void addUser(User user) {
+    if (users != null) {
+      users.add(user);
+    }
+  }
+
+  public void removeUser(User user) {
+    if (users != null) {
+      users.remove(user);
     }
   }
 }

@@ -1,14 +1,11 @@
 package com.samic.samic.views.administration;
 
-import com.samic.samic.data.entity.Role;
 import com.samic.samic.views.MainLayout;
 import com.samic.samic.views.meine_hardware.DataProvider;
-import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 
 
 @PageTitle("Administration")
