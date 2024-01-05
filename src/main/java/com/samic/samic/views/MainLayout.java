@@ -2,6 +2,7 @@ package com.samic.samic.views;
 
 import com.samic.samic.data.entity.User;
 import com.samic.samic.security.AuthenticatedUser;
+import com.samic.samic.views.abfragen.AbfragenView;
 import com.samic.samic.views.administration.AdministrationView;
 import com.samic.samic.views.dashboard.DashboardView;
 import com.samic.samic.views.freie_lagerobjekte.FreieLagerobjekteView;
@@ -102,6 +103,14 @@ private SideNav createNavigation() {
 				MeineHardwareView.class,
 				LineAwesomeIcon.STRIPE.create()));
 
+	if (accessChecker.hasAccess(AbfragenView.class))
+		nav.addItem(
+				new SideNavItem(
+						"Abfragen",
+						AbfragenView.class,
+						LineAwesomeIcon.QUESTION_CIRCLE_SOLID.create()
+				)
+		);
 	if (accessChecker.hasAccess(AdministrationView.class))
 		nav.addItem(
 				new SideNavItem(
