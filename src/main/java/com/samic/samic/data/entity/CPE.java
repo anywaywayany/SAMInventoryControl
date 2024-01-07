@@ -18,9 +18,6 @@ import java.util.List;
 @Table(name = "cpes")
 public class CPE extends AbstractIdentityClass<Long>{
 
-//    @ManyToOne
-////    @JoinColumn(name = "cpe")
-//    private StorageObject storageObject;
 
     /*
     relations

@@ -44,9 +44,9 @@ public class Address{
     private String city;
 
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinColumn(foreignKey = @ForeignKey(name = "fk_address_to_storage"))
-//    private Storage storage;
+    //    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    //    @JoinColumn(foreignKey = @ForeignKey(name = "fk_address_to_storage"))
+    //    private Storage storage;
 
     //
     //    public Integer getHouseNo(){

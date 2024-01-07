@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface RepositoryStorage extends JpaRepository<Storage, Long>{
 
-//     Storage findStorageByName(String name);
+     //     Storage findStorageByName(String name);
 
      Optional<Storage> findStorageByName(String name);
 }

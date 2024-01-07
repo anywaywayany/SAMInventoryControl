@@ -1,6 +1,7 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.ObjectType;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.repositories.RepositoryObjectType;
 import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,24 @@ public class ServiceObjectType{
     public ObjectType saveObjectTypeByObject(ObjectType objectType){
         if(objectType != null){
             if(objectType.getId() != null){
-                if(repositoryObjectType.existsById(objectType.getId())){
-                    log.debug("ObjectType with id: '%s', name: '%s' already exists in DB".formatted(objectType.getId(), objectType.getName()));
-                    throw new SamicException("ObjectType with id: '%s' already exists in DB".formatted(objectType.getId()));
+                if(doesObjectExistById(objectType.getId())){
+                    ObjectType objectById = findObjectTypeByID(objectType.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(objectType.getId())){
+                            objectById = objectType;
+                            return repositoryObjectType.save(objectById);
+                        }else{
+                            throw new SamicException("ObjectType with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), objectType.getId()));
+                        }
+                    }else{
+                        throw new SamicException("ObjectType with id: '%s' does not exist in DB".formatted(objectType.getId()));
+                    }
                 }else{
-                    return repositoryObjectType.save(objectType);
+                    throw new SamicException("ObjectType with id: '%s' does not exist in DB but does have a id: ".formatted(objectType.getId()));
                 }
             }else{
-                return repositoryObjectType.save(objectType);
+                ObjectType saved = repositoryObjectType.save(objectType);
+                return saved;
             }
         }else{
             throw new SamicException("ObjectType is null!");

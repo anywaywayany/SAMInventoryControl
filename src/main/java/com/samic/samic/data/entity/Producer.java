@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "producer")
+@Table(name = "producers")
 public class Producer extends AbstractIdentityClass<Long>{
 
     /*

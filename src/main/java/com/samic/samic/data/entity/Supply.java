@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "supply")
+@Table(name = "supplies")
 public class Supply extends AbstractIdentityClass<Long>{
 
     /*

@@ -2,6 +2,7 @@ package com.samic.samic.data.entity;
 
 
 import com.samic.samic.data.constants.ConstantsDomain;
+import com.samic.samic.exceptions.SamicException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -20,8 +21,8 @@ public class StorageObject extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToOne(mappedBy = "storageObject", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "object_type", foreignKey = @ForeignKey(name = "fk_objectType_2_storageObject"))
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "fk_object_type", foreignKey = @ForeignKey(name = "fk_objectType_2_storageObject"))
     @NotNull
     private ObjectType objectTypeName;
 
@@ -34,11 +35,11 @@ public class StorageObject extends AbstractIdentityClass<Long>{
     private CPE cpe;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} ) //Viele StorageObj. die auf einen SFP zeigen.
-    @JoinColumn(name = "SFP", foreignKey = @ForeignKey(name = "fk_sfp_2_storageObject"))
+    @JoinColumn(name = "fk_SFP", foreignKey = @ForeignKey(name = "fk_sfp_2_storageObject"))
     private SFP sfp;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
-    @JoinColumn(name = "supply", foreignKey = @ForeignKey(name = "fk_supply_2_storageObject"))
+    @JoinColumn(name = "fk_supply", foreignKey = @ForeignKey(name = "fk_supply_2_storageObject"))
     private Supply supply;
 
     @OneToMany(mappedBy = "storageObject", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -76,6 +77,59 @@ public class StorageObject extends AbstractIdentityClass<Long>{
     @Column(name = "project_device")
     private Boolean projectDevice;
 
+    public void setReservation(Reservation reservation){
+        if(reservation != null){
+            if(this.getReservation() == null){
+                this.reservation = reservation;
+            }else{
+                throw new SamicException("Reservation has already been set!");
+            }
+        }else{
+            throw new SamicException("Given Reservation is null!");
+        }
+    }
+
+    public void setStorage(Storage storage){
+        if(storage != null){
+            this.storage = storage;
+        }
+    }
+
+    public void setCpe(CPE cpe){
+        if(cpe != null){
+            if(this.getSfp() == null){
+                this.cpe = cpe;
+            }else{
+                throw new SamicException("sfp has already set!");
+            }
+        }else{
+            throw new SamicException("Given CPE is null!");
+        }
+    }
+
+    public void setSfp(SFP sfp){
+        if(sfp != null){
+            if(this.getCpe() == null){
+                this.sfp = sfp;
+            }else{
+                throw new SamicException("cpe has already set!");
+            }
+        }else {
+            throw new SamicException("Given SFP is null!");
+        }
+    }
+
+    public void setSupply(Supply supply){
+        if(supply != null){
+            if(this.supply == null){
+                this.supply = supply;
+            }else{
+                throw new SamicException("Supply has already set!");
+            }
+        }else {
+            throw new SamicException("Given Supply is null!");
+        }
+    }
 
 }
 

@@ -19,4 +19,8 @@ public abstract class DateTimeFactory{
     public static LocalDateTime now_minus_one_week(){
         return LocalDateTime.now().minusWeeks(1);
     }
+
+    public static LocalDateTime plus_one_week(){
+        return LocalDateTime.now().plusWeeks(1);
+    }
 }

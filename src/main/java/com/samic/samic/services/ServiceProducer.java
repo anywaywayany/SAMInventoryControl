@@ -1,6 +1,7 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Producer;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.repositories.RepositoryProducer;
 import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,24 @@ public class ServiceProducer{
     public Producer saveProducerByObject(Producer producer){
         if(producer != null){
             if(producer.getId() != null){
-                if(repositoryProducer.existsById(producer.getId())){
-                    log.debug("Producer with id: '%s', name: '%s' already exists in DB".formatted(producer.getId(), producer.getName()));
-                    throw new SamicException("Producer with id: '%s' already exists in DB".formatted(producer.getId()));
+                if(doesObjectExistById(producer.getId())){
+                    Producer objectById = findProducerById(producer.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(producer.getId())){
+                            objectById = producer;
+                            return repositoryProducer.save(objectById);
+                        }else{
+                            throw new SamicException("Producer with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), producer.getId()));
+                        }
+                    }else{
+                        throw new SamicException("Producer with id: '%s' does not exist in DB".formatted(producer.getId()));
+                    }
                 }else{
-                    return repositoryProducer.save(producer);
+                    throw new SamicException("Producer with id: '%s' does not exist in DB but does have a id: ".formatted(producer.getId()));
                 }
             }else{
-                return repositoryProducer.save(producer);
+                Producer saved = repositoryProducer.save(producer);
+                return saved;
             }
         }else{
             throw new SamicException("Producer is null!");
@@ -86,8 +97,8 @@ public class ServiceProducer{
 
     public Optional<Producer> findProducerByNameOptional(String name){
         if(name != null){
-            if(repositoryProducer.findStorageByName(name).isPresent()){
-                return repositoryProducer.findStorageByName(name);
+            if(repositoryProducer.findProducerBy(name).isPresent()){
+                return repositoryProducer.findProducerBy(name);
             }else{
                 throw new SamicException("Could not find Producer with name: '%s' in DB".formatted(name));
             }

@@ -13,6 +13,34 @@ public class Fixtures{
                        .build();
     }
 
+    public static Producer giveProducer2(){
+        return Producer.builder()
+                       .shortname("Juniper")
+                       .name("langerJuniperName")
+                       .build();
+    }
+
+    public static Producer giveProducer3(){
+        return Producer.builder()
+                       .shortname("Huawei")
+                       .name("langerHuaweiName")
+                       .build();
+    }
+
+    public static Producer giveProducer4(){
+        return Producer.builder()
+                       .shortname("Dell")
+                       .name("langerDellName")
+                       .build();
+    }
+
+    public static Producer giveProducer5(){
+        return Producer.builder()
+                       .shortname("HP")
+                       .name("langerHPName")
+                       .build();
+    }
+
     //////////////////////////////////////////////////// SFP
     public static SFP giveSFP1(){
         return SFP.builder()
@@ -21,7 +49,6 @@ public class Fixtures{
                        .serialnumber("921jlh31")
                        .type(Type.IP_PHONE)
                        .sfpType(SFPType.MM)
-                       .producer(giveProducer1())
                        .build();
     }
 
@@ -32,7 +59,6 @@ public class Fixtures{
                        .serialnumber("921jlh31")
                        .type(Type.IP_PHONE)
                        .sfpType(SFPType.MM)
-                       .producer(giveProducer1())
                        .build();
     }
 
@@ -43,7 +69,6 @@ public class Fixtures{
                        .serialnumber("921jlh31")
                        .type(Type.IP_PHONE)
                        .sfpType(SFPType.MM)
-                       .producer(giveProducer1())
                        .build();
     }
 
@@ -54,7 +79,6 @@ public class Fixtures{
                        .serialnumber("921jlh31")
                        .type(Type.IP_PHONE)
                        .sfpType(SFPType.MM)
-                       .producer(giveProducer1())
                        .build();
     }
 
@@ -65,7 +89,6 @@ public class Fixtures{
                        .serialnumber("921jlh31")
                        .type(Type.IP_PHONE)
                        .sfpType(SFPType.MM)
-                       .producer(giveProducer1())
                        .build();
     }
 
@@ -84,7 +107,7 @@ public class Fixtures{
                        .macAddress("00-00-00-00-00-00")
                        .serialnumber("33333")
                        .producer(giveProducer1())
-                       .type(Type.IP_PHONE).build();
+                       .type(Type.SUPPLY).build();
     }
 
 
@@ -93,7 +116,7 @@ public class Fixtures{
                        .macAddress("aa-bb-cc-dd-ff-11")
                        .serialnumber("654321")
                        .producer(giveProducer1())
-                       .type(Type.IP_PHONE).build();
+                       .type(Type.SWITCH).build();
     }
 
     public static CPE giveCPE4(){
@@ -115,12 +138,12 @@ public class Fixtures{
     //////////////////////////////////////////////////// User
 
     public static User giveUser1(){
+
         return User.builder()
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
                        .profile(giveProfile1())
                        .mail("AAA.toccafondi@viipo.ae")
-                       .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
                        .role(Role.MANAGMENT)
                        .activated(true)
                        .build();
@@ -130,7 +153,6 @@ public class Fixtures{
         return User.builder()
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
-
                        .profile(giveProfile2())
                        .mail("BBB.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
@@ -143,7 +165,6 @@ public class Fixtures{
         return User.builder()
                        .createdAt(DateTimeFactory.now_minus_one_year())
                        .lastLogin(DateTimeFactory.now_minus_one_week())
-
                        .profile(giveProfile3())
                        .mail("CCC.toccafondi@viipo.ae")
                        .hashedPassword("$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe")
@@ -333,15 +354,11 @@ public class Fixtures{
     public static StorageObject giveStorageObject1(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage1())
-                       .cpe(giveCPE1())
-                       .sfp(giveSFP1())
                        .objectTypeName(giveObjectType1())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
                        .status(Status.AVAILABLE)
-                       .supply(giveSupply1())
                        .build();
 
     }
@@ -349,15 +366,11 @@ public class Fixtures{
     public static StorageObject giveStorageObject2(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage2())
-                       .cpe(giveCPE1())
-                       .sfp(giveSFP1())
                        .objectTypeName(giveObjectType2())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
                        .status(Status.AVAILABLE)
-                       .supply(giveSupply1())
                        .build();
 
     }
@@ -365,16 +378,11 @@ public class Fixtures{
     public static StorageObject giveStorageObject3(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage3())
-                       .cpe(giveCPE1())
-                       .sfp(giveSFP1())
                        .objectTypeName(giveObjectType3())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
                        .status(Status.AVAILABLE)
-                       .supply(giveSupply1())
-                       .reservation(giveReservation3())
                        .build();
 
     }
@@ -382,15 +390,11 @@ public class Fixtures{
     public static StorageObject giveStorageObject4(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage4())
-                       .cpe(giveCPE1())
-                       .sfp(giveSFP1())
                        .objectTypeName(giveObjectType4())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
                        .status(Status.AVAILABLE)
-                       .supply(giveSupply1())
                        .build();
 
     }
@@ -398,15 +402,11 @@ public class Fixtures{
     public static StorageObject giveStorageObject5(){
         return StorageObject.builder()
                        .remark("remark1")
-                       .storage(giveStorage5())
-                       .cpe(giveCPE1())
-                       .sfp(giveSFP1())
                        .objectTypeName(giveObjectType5())
                        .storedAtCustomer(Customer.builder()
                                                  .connectionNo(1234).build())
                        .projectDevice(false)
                        .status(Status.AVAILABLE)
-                       .supply(giveSupply1())
                        .build();
 
     }
@@ -415,37 +415,34 @@ public class Fixtures{
 
     public static Reservation giveReservation1(){
         return Reservation.builder()
-                       .reservedAt(DateTimeFactory.now_minus_one_week())
                        .reservedDescription("need special tools to install")
                        .build();
     }
     public static Reservation giveReservation2(){
         return Reservation.builder()
-                       .reservedAt(DateTimeFactory.now_minus_one_week())
                        .reservedDescription("need special tools to install")
                        .build();
     }
     public static Reservation giveReservation3(){
         return Reservation.builder()
-                       .reservedAt(DateTimeFactory.now_minus_one_week())
+                       .reservedAt(DateTimeFactory.plus_one_week())
                        .reservedDescription("need special tools to install")
                        .build();
     }
 
-      public static Reservation giveReservation4(){
-            return Reservation.builder()
-                           .reservedAt(DateTimeFactory.now_minus_one_week())
-                           .reservedDescription("need special tools to install")
-                           .reservedFrom(giveUser2())
-                           .build();
-      }
+    public static Reservation giveReservation4(){
+        return Reservation.builder()
+                       .reservedAt(DateTimeFactory.plus_one_week())
+                       .reservedDescription("need special tools to install")
+                       .build();
+    }
 
-      public static Reservation giveReservation5(){
-            return Reservation.builder()
-                           .reservedAt(DateTimeFactory.now_minus_one_week())
-                           .reservedDescription("need special tools to install")
-                           .build();
-      }
+    public static Reservation giveReservation5(){
+        return Reservation.builder()
+                       .reservedAt(DateTimeFactory.plus_one_week())
+                       .reservedDescription("need special tools to install")
+                       .build();
+    }
 
     //////////////////////////////////////////////////// ObjectType
 

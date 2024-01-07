@@ -156,20 +156,20 @@ Reservation "1" --* "1" StorageObject
 Customer <-left Reservation : "embedded"
 
 
-User "0..n" *-- "1" Reservation
-User "0..n" -- "0..1" StorageObject
+User "1" *-- "0..n" Reservation
+User "0..1" -- "0..n" StorageObject
 
 StorageObjectHistory "1" -up- "1..n" StorageObject
 
 
-SFP "1" -up- "1..n" Producer
-Producer "1..n " -down-  "1" CPE
+SFP "1..n" -up- "1" Producer
+Producer "1" -down-  "1..n" CPE
 
 SFP -[hidden]- CPE
 
-SFP  "1..n" -right- "0..1"StorageObject
-CPE "1..n" -right- "0..1" StorageObject
-Supply "0..n" --up "0..1" StorageObject
+SFP  "0..1" -right- "1..n"StorageObject
+CPE "0..1" -right- "1..n" StorageObject
+Supply "0..1" --up "0..n" StorageObject
 CPE -[hidden] Supply
 
 SFP .down. SFPType

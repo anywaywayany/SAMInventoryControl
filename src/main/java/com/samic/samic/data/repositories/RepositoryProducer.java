@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface RepositoryProducer extends JpaRepository<Producer, Long>{
     Optional<Producer> findStorageByName(String name);
+
+    Optional<Producer> findProducerBy(String name);
 }

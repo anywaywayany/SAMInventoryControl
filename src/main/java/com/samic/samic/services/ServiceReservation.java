@@ -1,6 +1,7 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Reservation;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.exceptions.SamicException;
@@ -25,14 +26,24 @@ public class ServiceReservation{
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
             if(reservation.getId() != null){
-                if(repositoryReservation.existsById(reservation.getId())){
-                    log.debug("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
-                    throw new SamicException("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
+                if(doesObjectExistById(reservation.getId())){
+                    Reservation objectById = findReservationById(reservation.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(reservation.getId())){
+                            objectById = reservation;
+                            return repositoryReservation.save(objectById);
+                        }else{
+                            throw new SamicException("Reservation with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), reservation.getId()));
+                        }
+                    }else{
+                        throw new SamicException("Reservation with id: '%s' does not exist in DB".formatted(reservation.getId()));
+                    }
                 }else{
-                    return repositoryReservation.save(reservation);
+                    throw new SamicException("Reservation with id: '%s' does not exist in DB but does have a id: ".formatted(reservation.getId()));
                 }
             }else{
-                return repositoryReservation.save(reservation);
+                Reservation saved = repositoryReservation.save(reservation);
+                return saved;
             }
         }else{
             throw new SamicException("Reservation is null!");

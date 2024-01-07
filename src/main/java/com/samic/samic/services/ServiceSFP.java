@@ -2,6 +2,7 @@ package com.samic.samic.services;
 
 import com.samic.samic.data.entity.SFP;
 import com.samic.samic.data.entity.Storage;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.repositories.RepositorySFP;
 import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,24 @@ public class ServiceSFP{
     public SFP saveSFPByObject(SFP sfp){
         if(sfp != null){
             if(sfp.getId() != null){
-                if(repositorySFP.existsById(sfp.getId())){
-                    log.debug("SFP with id: '%s', serialnumber: '%s' already exists in DB".formatted(sfp.getId(), sfp.getSerialnumber()));
-                    throw new SamicException("SFP with id: '%s' already exists in DB".formatted(sfp.getId()));
+                if(doesObjectExistById(sfp.getId())){
+                    SFP objectById = findSFPById(sfp.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(sfp.getId())){
+                            objectById = sfp;
+                            return repositorySFP.save(objectById);
+                        }else{
+                            throw new SamicException("SFP with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), sfp.getId()));
+                        }
+                    }else{
+                        throw new SamicException("SFP with id: '%s' does not exist in DB".formatted(sfp.getId()));
+                    }
                 }else{
-                    return repositorySFP.save(sfp);
+                    throw new SamicException("SFP with id: '%s' does not exist in DB but does have a id: ".formatted(sfp.getId()));
                 }
             }else{
-                return repositorySFP.save(sfp);
+                SFP saved = repositorySFP.save(sfp);
+                return saved;
             }
         }else{
             throw new SamicException("SFP is null!");
