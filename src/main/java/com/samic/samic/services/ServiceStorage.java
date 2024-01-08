@@ -138,10 +138,6 @@ public class ServiceStorage{
     }
 
     public Stream<Storage> findAll(){
-        if(repositoryStorage.findAll().isEmpty()){
-            throw new SamicException("Storage list is empty!");
-        }else{
             return repositoryStorage.findAll().stream();
-        }
     }
 }

@@ -23,7 +23,6 @@ public class StorageObject extends AbstractIdentityClass<Long>{
      */
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "fk_object_type", foreignKey = @ForeignKey(name = "fk_objectType_2_storageObject"))
-    @NotNull
     private ObjectType objectTypeName;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //Shared Primary Key
@@ -56,7 +55,7 @@ public class StorageObject extends AbstractIdentityClass<Long>{
 
     //Einseitige Beziehung
     @ManyToOne(targetEntity = Storage.class,fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_storageObject", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
+    @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
     private Storage storage;
 
     /*
@@ -99,11 +98,7 @@ public class StorageObject extends AbstractIdentityClass<Long>{
         if(cpe != null){
             if(this.getSfp() == null){
                 this.cpe = cpe;
-            }else{
-                throw new SamicException("sfp has already set!");
             }
-        }else{
-            throw new SamicException("Given CPE is null!");
         }
     }
 
@@ -111,11 +106,7 @@ public class StorageObject extends AbstractIdentityClass<Long>{
         if(sfp != null){
             if(this.getCpe() == null){
                 this.sfp = sfp;
-            }else{
-                throw new SamicException("cpe has already set!");
             }
-        }else {
-            throw new SamicException("Given SFP is null!");
         }
     }
 
@@ -123,11 +114,7 @@ public class StorageObject extends AbstractIdentityClass<Long>{
         if(supply != null){
             if(this.supply == null){
                 this.supply = supply;
-            }else{
-                throw new SamicException("Supply has already set!");
             }
-        }else {
-            throw new SamicException("Given Supply is null!");
         }
     }
 

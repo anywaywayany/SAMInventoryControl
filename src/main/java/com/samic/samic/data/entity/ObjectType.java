@@ -21,10 +21,10 @@ public class ObjectType extends AbstractIdentityClass<Long>{
     @OneToOne(mappedBy = "objectTypeName", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private StorageObject storageObject;
 
+
     /*
     attributes
      */
     @Column(name="objectType_name", length = ConstantsDomain.DEFAULT_LENGTH)
-    @NotBlank
     private String name;
 }

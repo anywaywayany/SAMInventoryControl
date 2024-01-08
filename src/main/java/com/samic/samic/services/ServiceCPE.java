@@ -121,9 +121,15 @@ public class ServiceCPE{
         return repositoryCPE.findCPESByProducerId(id, request).stream();
     }
 
-
     public Page<CPE> findAll(Pageable pageable){
         return repositoryCPE.findAll(pageable);
-
+    }
+    public Stream<CPE > findAllCPEByProducerName(String name){
+        if(name != null){
+            Stream<CPE> cpeByProducerName = repositoryCPE.findAll().stream();
+            return cpeByProducerName.filter(cpe -> cpe.getProducer().getName().equals(name));
+        }else{
+            throw new SamicException("Given name is null!");
+        }
     }
 }

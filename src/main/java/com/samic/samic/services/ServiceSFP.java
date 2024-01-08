@@ -1,5 +1,6 @@
 package com.samic.samic.services;
 
+import com.samic.samic.data.entity.CPE;
 import com.samic.samic.data.entity.SFP;
 import com.samic.samic.data.entity.Storage;
 import com.samic.samic.data.entity.StorageObject;
@@ -8,6 +9,7 @@ import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -98,7 +100,7 @@ public class ServiceSFP{
         }
     }
 
-    public Optional<SFP> findSFPByNameOptional(String serialnumber){
+    public Optional<SFP> findSFPBySerialNumberOptional(String serialnumber){
         if(serialnumber != null){
             if(repositorySFP.findSFPBySerialnumber(serialnumber).isPresent()){
                 return repositorySFP.findSFPBySerialnumber(serialnumber);
@@ -116,7 +118,31 @@ public class ServiceSFP{
         }else{
             return repositorySFP.findAll().stream();
         }
+    }
 
+    public Stream<SFP> findAllSfpByProducerId(Long id, PageRequest request){
+        if(id != null){
+            return repositorySFP.findAllByProducerId(id, request).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<SFP> findAllSfpByProducerIdStream(Long id){
+        if(id != null){
+            return repositorySFP.findAllByProducerId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<SFP> findAllSfpByProducerName(String name){
+        if(name != null){
+            Stream<SFP> sfpByProducerName = repositorySFP.findAll().stream();
+            return sfpByProducerName.filter(sfp -> sfp.getProducer().getName().equals(name));
+        }else{
+            throw new SamicException("Given name is null!");
+        }
     }
 
 }

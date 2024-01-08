@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface RepositoryObjectType extends JpaRepository<ObjectType, Long> {
-    Optional<ObjectType> findStorageByName(String name);
+    Optional<ObjectType> findByName(String name);
 }

@@ -4,9 +4,12 @@ import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.repositories.RepositoryObjectType;
 import com.samic.samic.exceptions.SamicException;
+import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -99,8 +102,8 @@ public class ServiceObjectType{
 
     public Optional<ObjectType> findObjectTypeByNameOptional(String name){
         if(name != null){
-            if(repositoryObjectType.findStorageByName(name).isPresent()){
-                return repositoryObjectType.findStorageByName(name);
+            if(repositoryObjectType.findByName(name).isPresent()){
+                return repositoryObjectType.findByName(name);
             }else{
                 throw new SamicException("Could not find ObjectType with name: '%s' in DB".formatted(name));
             }
@@ -110,11 +113,10 @@ public class ServiceObjectType{
     }
 
     public Stream<ObjectType> findAll(){
-        if(repositoryObjectType.findAll().isEmpty()){
-            throw new SamicException("ObjectType list is empty!");
-        }else{
-            return repositoryObjectType.findAll().stream();
-        }
+        return repositoryObjectType.findAll().stream();
+    }
 
+    public Page<ObjectType> findAll(Pageable pageable){
+        return repositoryObjectType.findAll(pageable);
     }
 }

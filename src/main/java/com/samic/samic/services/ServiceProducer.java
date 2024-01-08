@@ -97,8 +97,8 @@ public class ServiceProducer{
 
     public Optional<Producer> findProducerByNameOptional(String name){
         if(name != null){
-            if(repositoryProducer.findProducerBy(name).isPresent()){
-                return repositoryProducer.findProducerBy(name);
+            if(repositoryProducer.findStorageByName(name).isPresent()){
+                return repositoryProducer.findStorageByName(name);
             }else{
                 throw new SamicException("Could not find Producer with name: '%s' in DB".formatted(name));
             }
@@ -108,11 +108,7 @@ public class ServiceProducer{
     }
 
     public Stream<Producer> findAll(){
-        if(repositoryProducer.findAll().isEmpty()){
-            throw new SamicException("Producer list is empty!");
-        }else{
             return repositoryProducer.findAll().stream();
-        }
     }
 
 }

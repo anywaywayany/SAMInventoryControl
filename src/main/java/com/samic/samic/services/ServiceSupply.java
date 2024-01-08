@@ -107,7 +107,7 @@ public class ServiceSupply{
         }
     }
 
-    public Optional<Supply> findSupplyByNameOptional(Integer amount){
+    public Optional<Supply> findSupplyByAmountOptional(Integer amount){
         if(amount != null){
             if(repositorySupply.findSupplyByAmount(amount).isPresent()){
                 return repositorySupply.findSupplyByAmount(amount);
@@ -120,11 +120,9 @@ public class ServiceSupply{
     }
 
     public Stream<Supply> findAll(){
-        if(repositorySupply.findAll().isEmpty()){
-            throw new SamicException("Supply list is empty!");
-        }else{
             return repositorySupply.findAll().stream();
-        }
     }
+
+
 
 }

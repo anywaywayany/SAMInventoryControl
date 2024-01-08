@@ -1,7 +1,6 @@
 package com.samic.samic.services;
 
-import com.samic.samic.data.entity.ObjectType;
-import com.samic.samic.data.entity.StorageObject;
+import com.samic.samic.data.entity.*;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
 import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
@@ -279,4 +278,26 @@ public class ServiceStorageObject{
         }
     }
 
+    public Stream<StorageObject> findFreeStorageObjects(){
+        Stream<StorageObject> freeStorageObjects = repositoryStorageObject.findAll().stream();
+        return freeStorageObjects.filter(storageObject -> storageObject.getReservation() == null)
+                .filter(storageObject -> storageObject.getStoredAtUser() == null)
+                       .filter(storageObject -> storageObject.getStoredAtCustomer() == null);
+
+    }
+
+    public Stream<StorageObject> findReservedStorageObjectsAsStream(){
+        Stream<StorageObject> reservedStorageObjects = repositoryStorageObject.findAll().stream();
+        return reservedStorageObjects.filter(storageObject -> storageObject.getReservation() != null)
+                .filter(storageObject -> storageObject.getStoredAtUser() == null);
+    }
+
+    public Stream<StorageObject> findStorageObjectByGivenUser(User user){
+        Stream<StorageObject> storageObjectOnUser = repositoryStorageObject.findAll().stream();
+       return storageObjectOnUser.filter(storageObject -> storageObject.getStoredAtUser().equals(user));
+    }
+
+    public Optional<StorageObject> findStorageObjectByCustomer(Customer customer){
+        return repositoryStorageObject.findStorageObjectByStoredAtCustomer(customer);
+    }
 }

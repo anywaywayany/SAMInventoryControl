@@ -177,11 +177,7 @@ public class ServiceStorageObjectHistory{
 
 
     public Stream<StorageObjectHistory> findAll(){
-        if(repositoryStorageObjectHistory.findAll().isEmpty()){
-            throw new SamicException("StorageObjectHistory list is empty!");
-        }else{
             return repositoryStorageObjectHistory.findAll().stream();
-        }
     }
 }
 

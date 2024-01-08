@@ -160,16 +160,6 @@ public class ServiceUser{
         }
     }
 
-    //    public boolean lagerObjectAufnehmen(Long id){
-    //        if(id != null){
-    //            if(serviceStorageObject.findStorageObjectByIDOptional(id).isPresent()){
-    //                serviceStorageObject.findStorageObjectById(id);
-    //                AuthenticatedUser.userName = repositoryUser.findById(id).get().getProfile().getUsername();
-    //                AuthenticatedUser.userId = repositoryUser.findById(id).get().getId();
-    //                User user = findUserByID(id);
-    //                ;
-    //            }
-    //        }
-    //
-    //    }
+
+
 }

@@ -117,14 +117,15 @@
 
 -- insert into user_storage(id, hashed_password, user_name, role) values (1, '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management', 'Management' );
 --
-insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(1,date '2019-05-26',date '2023-05-26','Eula_management','Lane','management','management.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 444526-5961','MANAGMENT');
+insert into users(id, created_At, last_login, first_name, last_name, user_name, email, hashed_password, phone, role)
+values (1, date '2019-05-26', date '2023-05-26', 'Eula_management', 'Lane', 'management',
+        'management.toccafondi@viipo.ae', '$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.',
+        '(762) 444526-5961', 'MANAGMENT');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(2,date '2019-05-26',date '2023-05-26','Eula_storageadmin','Lane','storageadmin','storageadmin.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','STORAGEADMIN');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(4,date '2019-05-26',date '2023-05-26','Eula_fieldservicetechnician','Lane','fieldservicetechnician','fieldservicetechnician.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','FIELDSERVICETECHNICIAN');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(5,date '2019-05-26',date '2023-05-26','Eula_orderfullfillment','Lane','orderfullfillment','orderfullfillment.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','ORDERFULLFILLMENT');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(6,date '2019-05-26',date '2023-05-26','Eula_projectmanager','Lane','projectmanager','projectmanager.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','ROJECTMANAGER');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(7,date '2019-05-26',date '2023-05-26','Eula_support','Lane','support','support.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','SUPPORT');
-
-
 
 
 -- insert into user_storage(id, role, activated, email, hashed_password, user_name, first_name, last_name,phone) values (3, 'Fieldservicetechnician', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' );
@@ -133,35 +134,58 @@ insert into user_storage(id, created_At,last_login,first_name,last_name,user_nam
 -- insert into user_storage(id, role, created_At, last_login, activated, email, hashed_password, user_name, first_name, last_name,phone) values (5, 'Support', '2019-05-26', '2023-05-26', true, 'agnes.toccafondi@viipo.ae', '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management','Eula','Lane','(762) 526-5961' )
 --
 
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (1, 'Storage 1', 'Street 1', 1, 1, 1111, 'City 1');
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (2, 'Storage 2', 'Street 2', 2, 1, 2222, 'City 2');
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (3, 'Storage 3', 'Street 3', 3, 1, 3333, 'City 3');
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (4, 'Storage 4', 'Street 4', 4, 1, 4444, 'City 4');
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (5, 'Storage 5', 'Street 5', 5, 1, 5555, 'City 5');
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (6, 'Storage 6', 'Street 6', 6, 1, 6666, 'City 6');
-insert into storages(id, storage_name, street, house_no, door_no, zip_code, city) values (7, 'Storage 7', 'Street 7', 7, 1, 7777, 'City 7');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (1, 'Storage 1', 'Street 1', 1, 1, 1111, 'City 1');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (2, 'Storage 2', 'Street 2', 2, 1, 2222, 'City 2');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (3, 'Storage 3', 'Street 3', 3, 1, 3333, 'City 3');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (4, 'Storage 4', 'Street 4', 4, 1, 4444, 'City 4');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (5, 'Storage 5', 'Street 5', 5, 1, 5555, 'City 5');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (6, 'Storage 6', 'Street 6', 6, 1, 6666, 'City 6');
+insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
+values (7, 'Storage 7', 'Street 7', 7, 1, 7777, 'City 7');
 
 
-insert into producer (id, producer_name, short_name) values (1, 'Oloo', 'Tazz');
-insert into producer (id, producer_name, short_name) values (2, 'Demimbu', 'Dynabox');
+insert into producers (id, producer_name, short_name)
+values (1, 'Oloo', 'Tazz');
+insert into producers (id, producer_name, short_name)
+values (2, 'Demimbu', 'Dynabox');
 
 
-insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (1, 1, 'B1-6D-88-2D-3B-70', 'WAE9805F71TO', 'SUPPLY');
-insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (2, 2, '29-20-38-CA-20-BA', 'NDZ2087U82ZB', 'SUPPLY');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (1, 1, 'B1-6D-88-2D-3B-70', 'WAE9805F71TO', 'SUPPLY');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (2, 2, '29-20-38-CA-20-BA', 'NDZ2087U82ZB', 'SUPPLY');
 
-insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type) values (1, 1, '01HJGKK6JKHSR3XKEE09X450S8', 232, 2, '1330 nm', 'SFP');
-insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type) values (2, 2, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '1300 nm', 'SFP');
+insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
+values (1, 1, '01HJGKK6JKHSR3XKEE09X450S8', 232, 2, '1330 nm', 'SFP');
+insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
+values (2, 2, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '1300 nm', 'SFP');
 
-insert into supply (id, description, amount) values (1, 'auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc', 156);
-insert into supply (id, description, amount) values (2, 'augue a suscipit nulla elit ac nulla sed vel enim', 65);
-
-insert into object_type (id, name) values (1, 'IMFC433');
-insert into object_type (id, name) values (2, 'EQVN997');
-
-
-insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description) values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0, 12335134, 'purus phasellus in felis donec');
-insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description) values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521, 'pellentesque quisque porta volutpat erat');
+insert into supplies (id, description, amount)
+values (1, 'auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc', 156);
+insert into supplies (id, description, amount)
+values (2, 'augue a suscipit nulla elit ac nulla sed vel enim', 65);
 
 
----insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (1, 1, 0, 'eget orci vehicula condimentum curabitur in libero', 3, null, 'CUSTOMER', 1, null, null, '1');
---insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (2, 2, 0, 'pede malesuada in imperdiet et', 6, null, 'AVAILABLE', 2, null, '1', null);
+
+insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
+values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0, 12335134,
+        'purus phasellus in felis donec');
+-- insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
+-- values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521,
+--         'pellentesque quisque porta volutpat erat');
+
+-- insert into object_types(id, objectType_name)
+-- values (1, 'IMFC433');
+-- insert into object_types(id, objectType_name)
+-- values (2, 'EQVN997');
+
+-- insert into storage_objects (id, fk_reservation, fk_CPE, fk_supply,
+--                              fk_storaed_at_user, fk_storage, remark, status, project_device)
+-- values (1, 1, 1 ,1 , 3, 1, 'pellentesque quis', 'AVAILABLE', true);
+-- --insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (2, 2, 0, 'pede malesuada in imperdiet et', 6, null, 'AVAILABLE', 2, null, '1', null);

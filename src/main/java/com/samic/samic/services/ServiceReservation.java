@@ -1,7 +1,6 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Reservation;
-import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.exceptions.SamicException;
@@ -25,30 +24,34 @@ public class ServiceReservation{
 
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
-            if(reservation.getId() != null){
-                if(doesObjectExistById(reservation.getId())){
-                    Reservation objectById = findReservationById(reservation.getId());
-                    if(objectById != null){
-                        if(objectById.getId().equals(reservation.getId())){
-                            objectById = reservation;
-                            return repositoryReservation.save(objectById);
-                        }else{
-                            throw new SamicException("Reservation with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), reservation.getId()));
-                        }
-                    }else{
-                        throw new SamicException("Reservation with id: '%s' does not exist in DB".formatted(reservation.getId()));
+            if(reservation.getId() == null){
+                if(reservation.getReservedFrom() != null){
+                    //                    reservation.setReservedAt(DateTimeFactory.now());
+                    if(reservation.getReservedAt() != null){
+                        reservation.setReservedAt(reservation.getReservedAt());
                     }
+                    if(reservation.getCustomer() != null){
+                        reservation.setCustomer(reservation.getCustomer());
+                    }
+                    if(reservation.getReservedDescription() != null){
+                        reservation.setReservedDescription(reservation.getReservedDescription());
+                    }
+                    if(reservation.getStorageObject() != null){
+                        reservation.setStorageObject(reservation.getStorageObject());
+                    }
+                    return repositoryReservation.save(reservation);
+
                 }else{
-                    throw new SamicException("Reservation with id: '%s' does not exist in DB but does have a id: ".formatted(reservation.getId()));
+                    throw new SamicException("Reservation with id: '%s' does not have a user".formatted(reservation.getId()));
                 }
             }else{
-                Reservation saved = repositoryReservation.save(reservation);
-                return saved;
+                throw new SamicException("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
             }
         }else{
             throw new SamicException("Reservation is null!");
         }
     }
+
 
     public Reservation findReservationById(Long id){
         if(id != null){
@@ -100,7 +103,7 @@ public class ServiceReservation{
 
     public List<Reservation> findReservationListByUserOptional(User user){
         if(user != null){
-            if(!repositoryReservation.findAllByReservedFrom(user).isEmpty()){
+            if(repositoryReservation.count()>0L){
                 return repositoryReservation.findAllByReservedFrom(user);
             }else{
                 throw new SamicException("Could not find Reservation with user: '%s' in DB".formatted(user));
@@ -111,27 +114,37 @@ public class ServiceReservation{
     }
 
     public Stream<Reservation> findAll(){
-        if(repositoryReservation.findAll().isEmpty()){
-            throw new SamicException("Reservation list is empty!");
-        }else{
-            return repositoryReservation.findAll().stream();
-        }
+        return repositoryReservation.findAll().stream();
     }
 
     public List<Reservation> findAllasList(){
-        if(repositoryReservation.findAll().isEmpty()){
-            throw new SamicException("Reservation list is empty!");
-        }else{
-            return repositoryReservation.findAll();
-        }
+        return repositoryReservation.findAll();
     }
 
 
     public void deleteAll(){
-        if(!repositoryReservation.findAll().isEmpty()){
-            repositoryReservation.deleteAll();
+        repositoryReservation.deleteAll();
+    }
+
+    public List<Reservation> findAllReservationByUserId(Long id){
+        if(id != null){
+            return repositoryReservation.findAllByReservedFromId(id);
         }else{
-            throw new SamicException("Reservation DB is empty!");
+            throw new SamicException("Given id is null!");
         }
+    }
+
+    public Stream<Reservation> findAllReservationByUserIdStream(Long id){
+        if(id != null){
+            return repositoryReservation.findAllByReservedFrom_Id(id).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<Reservation> findAllReservationByGivenUser(User user){
+        Stream<Reservation> reservationOnUser = repositoryReservation.findAllByReservedFrom(user).stream();
+
+        return reservationOnUser.filter(reservation -> reservation.getReservedFrom().equals(user));
     }
 }

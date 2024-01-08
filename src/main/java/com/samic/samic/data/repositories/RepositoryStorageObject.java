@@ -1,5 +1,6 @@
 package com.samic.samic.data.repositories;
 
+import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.StorageObject;
@@ -43,4 +44,6 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
     Page<StorageObject> findStorageObjectByCpeId(Long id, PageRequest request);
 
     Stream<StorageObject> findStorageObjectByCpeId(Long id);
+
+    Optional<StorageObject> findStorageObjectByStoredAtCustomer(Customer customer);
 }

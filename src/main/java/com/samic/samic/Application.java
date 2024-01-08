@@ -1,5 +1,6 @@
 package com.samic.samic;
 
+import com.samic.samic.config.ORCLConfig;
 import com.samic.samic.data.repositories.RepositoryUser;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDataba
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import javax.sql.DataSource;
 
@@ -25,6 +27,7 @@ import javax.sql.DataSource;
 @Theme(value = "samic")
 @ComponentScan(basePackages = {"com.samic.samic.data.repositories"})
 @ComponentScan(basePackages = {"com.samic.samic.services"})
+@Import(ORCLConfig.class)
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {
