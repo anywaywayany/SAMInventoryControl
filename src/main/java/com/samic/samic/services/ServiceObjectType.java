@@ -1,11 +1,15 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.ObjectType;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.repositories.RepositoryObjectType;
 import com.samic.samic.exceptions.SamicException;
+import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,14 +26,24 @@ public class ServiceObjectType{
     public ObjectType saveObjectTypeByObject(ObjectType objectType){
         if(objectType != null){
             if(objectType.getId() != null){
-                if(repositoryObjectType.existsById(objectType.getId())){
-                    log.debug("ObjectType with id: '%s', name: '%s' already exists in DB".formatted(objectType.getId(), objectType.getName()));
-                    throw new SamicException("ObjectType with id: '%s' already exists in DB".formatted(objectType.getId()));
+                if(doesObjectExistById(objectType.getId())){
+                    ObjectType objectById = findObjectTypeByID(objectType.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(objectType.getId())){
+                            objectById = objectType;
+                            return repositoryObjectType.save(objectById);
+                        }else{
+                            throw new SamicException("ObjectType with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), objectType.getId()));
+                        }
+                    }else{
+                        throw new SamicException("ObjectType with id: '%s' does not exist in DB".formatted(objectType.getId()));
+                    }
                 }else{
-                    return repositoryObjectType.save(objectType);
+                    throw new SamicException("ObjectType with id: '%s' does not exist in DB but does have a id: ".formatted(objectType.getId()));
                 }
             }else{
-                return repositoryObjectType.save(objectType);
+                ObjectType saved = repositoryObjectType.save(objectType);
+                return saved;
             }
         }else{
             throw new SamicException("ObjectType is null!");
@@ -88,8 +102,8 @@ public class ServiceObjectType{
 
     public Optional<ObjectType> findObjectTypeByNameOptional(String name){
         if(name != null){
-            if(repositoryObjectType.findStorageByName(name).isPresent()){
-                return repositoryObjectType.findStorageByName(name);
+            if(repositoryObjectType.findByName(name).isPresent()){
+                return repositoryObjectType.findByName(name);
             }else{
                 throw new SamicException("Could not find ObjectType with name: '%s' in DB".formatted(name));
             }
@@ -99,11 +113,10 @@ public class ServiceObjectType{
     }
 
     public Stream<ObjectType> findAll(){
-        if(repositoryObjectType.findAll().isEmpty()){
-            throw new SamicException("ObjectType list is empty!");
-        }else{
-            return repositoryObjectType.findAll().stream();
-        }
+        return repositoryObjectType.findAll().stream();
+    }
 
+    public Page<ObjectType> findAll(Pageable pageable){
+        return repositoryObjectType.findAll(pageable);
     }
 }

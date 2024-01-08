@@ -12,19 +12,19 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "object_type")
+@Table(name = "object_types")
 public class ObjectType extends AbstractIdentityClass<Long>{
 
     /*
     relations
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(mappedBy = "objectTypeName", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private StorageObject storageObject;
+
 
     /*
     attributes
      */
-    @Column(length = ConstantsDomain.DEFAULT_LENGTH)
-    @NotBlank
+    @Column(name="objectType_name", length = ConstantsDomain.DEFAULT_LENGTH)
     private String name;
 }

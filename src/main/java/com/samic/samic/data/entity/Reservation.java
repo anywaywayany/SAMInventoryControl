@@ -1,6 +1,7 @@
 package com.samic.samic.data.entity;
 
 import com.samic.samic.data.constants.ConstantsDomain;
+import com.samic.samic.exceptions.SamicException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
@@ -39,14 +40,12 @@ public class Reservation extends AbstractIdentityClass<Long>{
     */
     @Embedded
     @Column(name = "reserved_For")
-
     private Customer customer;
     @PastOrPresent
     private LocalDateTime reservedAt;
 
     @Column(name = "reserved_description", length = ConstantsDomain.DEFAULT_LENGTH)
     private String reservedDescription;
-
 
 
     @Column(name = "completed")
@@ -56,4 +55,39 @@ public class Reservation extends AbstractIdentityClass<Long>{
     private LocalDateTime lastModified;
 
 
+
+    public void setReservedFrom(User reservedFrom){
+        if(reservedFrom != null){
+            if(this.getReservedFrom() == null){
+                this.reservedFrom = reservedFrom;
+            }else{
+                throw new SamicException("Reservation has already a User!");
+            }
+        }else{
+            throw new SamicException("Given User is null!");
+        }
+    }
+
+    public void setStorageObject(StorageObject storageObject){
+        if(storageObject != null){
+            if(this.getStorageObject() == null){
+                this.storageObject = storageObject;
+            }else{
+                throw new SamicException("Reservation has already set!");
+            }
+        }else{
+            throw new SamicException("Given StorageObject is null!");
+        }
+    }
+
+
+    public void setReservedAt(LocalDateTime reservedAt){
+        if(reservedAt != null){
+            if(this.getReservedAt() != null){
+                this.reservedAt = reservedAt;
+            }else{
+                throw new SamicException("Reservation Date has been already set!");
+            }
+        }
+    }
 }

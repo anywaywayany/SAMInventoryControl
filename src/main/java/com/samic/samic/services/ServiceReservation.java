@@ -24,20 +24,34 @@ public class ServiceReservation{
 
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
-            if(reservation.getId() != null){
-                if(repositoryReservation.existsById(reservation.getId())){
-                    log.debug("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
-                    throw new SamicException("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
-                }else{
+            if(reservation.getId() == null){
+                if(reservation.getReservedFrom() != null){
+                    //                    reservation.setReservedAt(DateTimeFactory.now());
+                    if(reservation.getReservedAt() != null){
+                        reservation.setReservedAt(reservation.getReservedAt());
+                    }
+                    if(reservation.getCustomer() != null){
+                        reservation.setCustomer(reservation.getCustomer());
+                    }
+                    if(reservation.getReservedDescription() != null){
+                        reservation.setReservedDescription(reservation.getReservedDescription());
+                    }
+                    if(reservation.getStorageObject() != null){
+                        reservation.setStorageObject(reservation.getStorageObject());
+                    }
                     return repositoryReservation.save(reservation);
+
+                }else{
+                    throw new SamicException("Reservation with id: '%s' does not have a user".formatted(reservation.getId()));
                 }
             }else{
-                return repositoryReservation.save(reservation);
+                throw new SamicException("Reservation with id: '%s' already exists in DB".formatted(reservation.getId()));
             }
         }else{
             throw new SamicException("Reservation is null!");
         }
     }
+
 
     public Reservation findReservationById(Long id){
         if(id != null){
@@ -89,7 +103,7 @@ public class ServiceReservation{
 
     public List<Reservation> findReservationListByUserOptional(User user){
         if(user != null){
-            if(!repositoryReservation.findAllByReservedFrom(user).isEmpty()){
+            if(repositoryReservation.count()>0L){
                 return repositoryReservation.findAllByReservedFrom(user);
             }else{
                 throw new SamicException("Could not find Reservation with user: '%s' in DB".formatted(user));
@@ -100,27 +114,37 @@ public class ServiceReservation{
     }
 
     public Stream<Reservation> findAll(){
-        if(repositoryReservation.findAll().isEmpty()){
-            throw new SamicException("Reservation list is empty!");
-        }else{
-            return repositoryReservation.findAll().stream();
-        }
+        return repositoryReservation.findAll().stream();
     }
 
     public List<Reservation> findAllasList(){
-        if(repositoryReservation.findAll().isEmpty()){
-            throw new SamicException("Reservation list is empty!");
-        }else{
-            return repositoryReservation.findAll();
-        }
+        return repositoryReservation.findAll();
     }
 
 
     public void deleteAll(){
-        if(!repositoryReservation.findAll().isEmpty()){
-            repositoryReservation.deleteAll();
+        repositoryReservation.deleteAll();
+    }
+
+    public List<Reservation> findAllReservationByUserId(Long id){
+        if(id != null){
+            return repositoryReservation.findAllByReservedFromId(id);
         }else{
-            throw new SamicException("Reservation DB is empty!");
+            throw new SamicException("Given id is null!");
         }
+    }
+
+    public Stream<Reservation> findAllReservationByUserIdStream(Long id){
+        if(id != null){
+            return repositoryReservation.findAllByReservedFrom_Id(id).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<Reservation> findAllReservationByGivenUser(User user){
+        Stream<Reservation> reservationOnUser = repositoryReservation.findAllByReservedFrom(user).stream();
+
+        return reservationOnUser.filter(reservation -> reservation.getReservedFrom().equals(user));
     }
 }

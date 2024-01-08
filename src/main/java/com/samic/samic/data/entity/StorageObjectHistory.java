@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
+@Table(name = "storage_object_histories")
 public class StorageObjectHistory extends AbstractIdentityClass<Long>{
 
     /*

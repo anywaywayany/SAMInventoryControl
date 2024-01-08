@@ -27,14 +27,24 @@ public class ServiceStorageObjectHistory{
     public StorageObjectHistory saveStorageObjectHistoryByObject(StorageObjectHistory storageObjectHistory){
         if(storageObjectHistory != null){
             if(storageObjectHistory.getId() != null){
-                if(repositoryStorageObjectHistory.existsById(storageObjectHistory.getId())){
-                    log.debug("StorageObjectHistory with id: '%s', storageObjectHistory: '%s' already exists in DB".formatted(storageObjectHistory.getId(), storageObjectHistory.getStorageObject()));
-                    throw new SamicException("StorageObjectHistory with id: '%s' already exists in DB".formatted(storageObjectHistory.getId()));
+                if(doesObjectExistById(storageObjectHistory.getId())){
+                    StorageObjectHistory objectById = findStorageObjectHistoryByID(storageObjectHistory.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(storageObjectHistory.getId())){
+                            objectById = storageObjectHistory;
+                            return repositoryStorageObjectHistory.save(objectById);
+                        }else{
+                            throw new SamicException("StorageObjectHistory with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), storageObjectHistory.getId()));
+                        }
+                    }else{
+                        throw new SamicException("StorageObjectHistory with id: '%s' does not exist in DB".formatted(storageObjectHistory.getId()));
+                    }
                 }else{
-                    return repositoryStorageObjectHistory.save(storageObjectHistory);
+                    throw new SamicException("StorageObjectHistory with id: '%s' does not exist in DB but does have a id: ".formatted(storageObjectHistory.getId()));
                 }
             }else{
-                return repositoryStorageObjectHistory.save(storageObjectHistory);
+                StorageObjectHistory saved = repositoryStorageObjectHistory.save(storageObjectHistory);
+                return saved;
             }
         }else{
             throw new SamicException("StorageObjectHistory is null!");
@@ -167,11 +177,7 @@ public class ServiceStorageObjectHistory{
 
 
     public Stream<StorageObjectHistory> findAll(){
-        if(repositoryStorageObjectHistory.findAll().isEmpty()){
-            throw new SamicException("StorageObjectHistory list is empty!");
-        }else{
             return repositoryStorageObjectHistory.findAll().stream();
-        }
     }
 }
 

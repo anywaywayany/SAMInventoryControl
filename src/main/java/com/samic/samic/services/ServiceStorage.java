@@ -1,6 +1,7 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Storage;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.foundation.Guard;
 import com.samic.samic.data.repositories.RepositoryStorage;
 import com.samic.samic.exceptions.SamicException;
@@ -28,47 +29,29 @@ public class ServiceStorage{
     public Storage saveStorageByObject(Storage storage){
         if(storage != null){
             if(storage.getId() != null){
-                if(repositoryStorage.existsById(storage.getId())){
-                    log.debug("Storage with id: '%s', name: '%s' already exists in DB".formatted(storage.getId(), storage.getName()));
-                    throw new SamicException("Storage with id: '%s' already exists in DB".formatted(storage.getId()));
+                if(doesObjectExistById(storage.getId())){
+                    Storage objectById = findStorageByID(storage.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(storage.getId())){
+                            objectById = storage;
+                            return repositoryStorage.save(objectById);
+                        }else{
+                            throw new SamicException("Storage with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), storage.getId()));
+                        }
+                    }else{
+                        throw new SamicException("Storage with id: '%s' does not exist in DB".formatted(storage.getId()));
+                    }
                 }else{
-                    return repositoryStorage.save(storage);
+                    throw new SamicException("Storage with id: '%s' does not exist in DB but does have a id: ".formatted(storage.getId()));
                 }
             }else{
-                return repositoryStorage.save(storage);
+                Storage saved = repositoryStorage.save(storage);
+                return saved;
             }
         }else{
             throw new SamicException("Storage is null!");
         }
 
-
-
-        /*else{
-//            return repositoryStorage.save(storage);
-            List<Storage> storagesList = repositoryStorage.findAll();
-            boolean updated = false;
-            Iterator<Storage> iter = storagesList.iterator();
-            while(iter.hasNext()){
-                Storage stg = iter.next();
-                if(stg.getName().equals(storage.getName())
-                        && stg.getAddress().getCity().equals(storage.getAddress().getCity())
-                        && stg.getAddress().getStreet().equals(storage.getAddress().getStreet())
-                        && stg.getAddress().getZipCode().equals(storage.getAddress().getZipCode())){
-                    Long temId = stg.getId();
-
-                    log.debug("Storage update");
-                    storagesList.add(Math.toIntExact(temId), storage);
-                    updated = true;
-                    repositoryStorage.saveAll(storagesList);
-                    log.debug("Storage updated");
-                    if(updated){
-                        return storage;
-
-                    }
-                }
-            }
-          }
-        return repositoryStorage.save(storage);*/
     }
 
 
@@ -133,13 +116,13 @@ public class ServiceStorage{
         }
     }
 
-//    public Storage findStorageByName(String name){
-//        if(!Guard.isNullBlankOrEmpty(name)){
-//            return repositoryStorage.findStorageByName(name);
-//        }else{
-//            throw new SamicException("Given name is null!");
-//        }
-//    }
+    //    public Storage findStorageByName(String name){
+    //        if(!Guard.isNullBlankOrEmpty(name)){
+    //            return repositoryStorage.findStorageByName(name);
+    //        }else{
+    //            throw new SamicException("Given name is null!");
+    //        }
+    //    }
 
     //t
     public Optional<Storage> findStorageByNameOptional(String name){
@@ -155,10 +138,6 @@ public class ServiceStorage{
     }
 
     public Stream<Storage> findAll(){
-        if(repositoryStorage.findAll().isEmpty()){
-            throw new SamicException("Storage list is empty!");
-        }else{
             return repositoryStorage.findAll().stream();
-        }
     }
 }

@@ -6,6 +6,9 @@ import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,22 +24,26 @@ public class ServiceCPE{
 
 
     public CPE saveCPEByObject(CPE cpe){
-//        if(serviceValidation.checkObject(cpe)){
-//            return repositoryCPE.save(cpe);
-//        }else{
-//            throw new ValidationException("CPE checking in service fail!");
-//        }
-
         if(cpe != null){
             if(cpe.getId() != null){
-                if(repositoryCPE.existsById(cpe.getId())){
-                    log.debug("CPE with MAC: '%s', name: '%s' already exists in DB".formatted(cpe.getId(), cpe.getMacAddress()));
-                    throw new SamicException("CPE with id: '%s' already exists in DB".formatted(cpe.getId()));
+                if(doesObjectExistById(cpe.getId())){
+                    CPE objectById = findCPEByID(cpe.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(cpe.getId())){
+                            objectById = cpe;
+                            return repositoryCPE.save(objectById);
+                        }else{
+                            throw new SamicException("CPE with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), cpe.getId()));
+                        }
+                    }else{
+                        throw new SamicException("CPE with id: '%s' does not exist in DB".formatted(cpe.getId()));
+                    }
                 }else{
-                    return repositoryCPE.save(cpe);
+                    throw new SamicException("CPE with id: '%s' does not exist in DB but does have a id: ".formatted(cpe.getId()));
                 }
             }else{
-                return repositoryCPE.save(cpe);
+                CPE saved = repositoryCPE.save(cpe);
+                return saved;
             }
         }else{
             throw new SamicException("CPE is null!");
@@ -107,10 +114,22 @@ public class ServiceCPE{
     }
 
     public Stream<CPE> findAll(){
-        if(repositoryCPE.findAll().isEmpty()){
-            throw new SamicException("CPE list is empty!");
+        return repositoryCPE.findAll().stream();
+    }
+
+    public Stream<CPE> findAllCPEByProducerIDPageRequest(Long id, PageRequest request){
+        return repositoryCPE.findCPESByProducerId(id, request).stream();
+    }
+
+    public Page<CPE> findAll(Pageable pageable){
+        return repositoryCPE.findAll(pageable);
+    }
+    public Stream<CPE > findAllCPEByProducerName(String name){
+        if(name != null){
+            Stream<CPE> cpeByProducerName = repositoryCPE.findAll().stream();
+            return cpeByProducerName.filter(cpe -> cpe.getProducer().getName().equals(name));
         }else{
-            return repositoryCPE.findAll().stream();
+            throw new SamicException("Given name is null!");
         }
     }
 }

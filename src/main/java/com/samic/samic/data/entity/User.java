@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_storage")
+@Table(name = "users")
 public class User extends AbstractIdentityClass<Long>{
 
 
@@ -24,7 +24,7 @@ public class User extends AbstractIdentityClass<Long>{
     relations
      */
     @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//        @JoinColumn(name = "fk_storageObject")
+    //        @JoinColumn(name = "fk_storageObject")
     private List<StorageObject> storageObject = new ArrayList<>();
 
     //    @OneToOne(targetEntity = StorageObject.class,fetch = FetchType.LAZY)
@@ -70,8 +70,8 @@ public class User extends AbstractIdentityClass<Long>{
     @Column(name = "hashed_password")
     private String hashedPassword;
 
-//    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//    private ApplicationUser applicationUser;
+    //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    //    private ApplicationUser applicationUser;
 
 
     //    @OneToOne

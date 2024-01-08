@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity(name = "storages")
-
 public class Storage extends AbstractIdentityClass<Long>{
 
 
@@ -27,7 +26,6 @@ public class Storage extends AbstractIdentityClass<Long>{
     relations
     */
     @OneToMany(mappedBy ="storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinColumn(name = "storage_objects")
     private List<StorageObject> storageObject = new ArrayList<>();
 
     @Column(name = "storage_Objekt_history")
@@ -44,17 +42,17 @@ public class Storage extends AbstractIdentityClass<Long>{
     @NotBlank
     private String name;
 
-//
-//    public Storage addAddress(Address storageAddress){
-//        return this;
-//    }
-//
-//    public Storage clearAddres(){
-//        address = null;
-//        return this;
-//    }
-//
-//    public void setAddress(Address address){
-//        this.address = address;
-//    }
+    //
+    //    public Storage addAddress(Address storageAddress){
+    //        return this;
+    //    }
+    //
+    //    public Storage clearAddres(){
+    //        address = null;
+    //        return this;
+    //    }
+    //
+    //    public void setAddress(Address address){
+    //        this.address = address;
+    //    }
 }

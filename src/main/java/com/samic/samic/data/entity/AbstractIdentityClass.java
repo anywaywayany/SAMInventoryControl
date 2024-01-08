@@ -1,12 +1,16 @@
 package com.samic.samic.data.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 @MappedSuperclass
 public class AbstractIdentityClass<PK extends Serializable> implements Persistable<PK>{
 
@@ -40,6 +44,13 @@ public class AbstractIdentityClass<PK extends Serializable> implements Persistab
     public boolean isNew() {
         return null == getId();
     }
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedAt;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
 
     @Override
     public String toString() {

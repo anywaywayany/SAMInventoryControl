@@ -1,15 +1,13 @@
 package com.samic.samic.services;
 
-import com.samic.samic.data.entity.ObjectType;
-import com.samic.samic.data.entity.Reservation;
-import com.samic.samic.data.entity.Storage;
-import com.samic.samic.data.entity.StorageObject;
+import com.samic.samic.data.entity.*;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
 import com.samic.samic.exceptions.SamicException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,19 +31,36 @@ public class ServiceStorageObject{
     public StorageObject saveStorageObject(StorageObject storageObject){
         if(storageObject != null){
             if(storageObject.getId() != null){
-                if(repositoryStorageObject.existsById(storageObject.getId())){
-                    log.debug("StorageObject with id: '%s', name: '%s' already exists in DB".formatted(storageObject.getId(), storageObject.getObjectTypeName().getName()));
-                    throw new SamicException("StorageObject with id: '%s' already exists in DB".formatted(storageObject.getId()));
+                if(doesObjectExistById(storageObject.getId())){
+                    StorageObject objectById = findStorageObjectById(storageObject.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(storageObject.getId())){
+                            objectById = storageObject;
+                            return repositoryStorageObject.save(objectById);
+                        }else{
+                            throw new SamicException("StorageObject with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), storageObject.getId()));
+                        }
+                    }else{
+                        throw new SamicException("StorageObject with id: '%s' does not exist in DB".formatted(storageObject.getId()));
+                    }
                 }else{
-                    return repositoryStorageObject.save(storageObject);
+                    throw new SamicException("StorageObject with id: '%s' does not exist in DB but does have a id: ".formatted(storageObject.getId()));
                 }
             }else{
-                return repositoryStorageObject.save(storageObject);
+                StorageObject saved = repositoryStorageObject.save(storageObject);
+                return saved;
             }
         }else{
             throw new SamicException("StorageObject is null!");
         }
     }
+
+    //    public void lagerObjectErfassen(StorageObject storageObject){
+    //        if(storageObject != null){
+    //            //prüfen ob storageObject schon existiert
+    //        }
+    //
+    //    }
 
     public StorageObject findStorageObjectById(Long id){
         if(id != null){
@@ -126,8 +141,8 @@ public class ServiceStorageObject{
     public List<StorageObject> findNotReservedStorageObjects(){
         List<StorageObject> freeStorageObjects = new ArrayList<>();
         if(!repositoryStorageObject.findAll().isEmpty()){
-            List<StorageObject> storageObjectList = repositoryStorageObject.findAll();
-            Iterator<StorageObject> iter = storageObjectList.iterator();
+            List<StorageObject>     storageObjectList = repositoryStorageObject.findAll();
+            Iterator<StorageObject> iter              = storageObjectList.iterator();
             while(iter.hasNext()){
                 StorageObject TempstorageObject = iter.next();
                 if(TempstorageObject.getReservation() == null){
@@ -140,14 +155,14 @@ public class ServiceStorageObject{
         if(freeStorageObjects.isEmpty()){
             throw new SamicException("There are no Free StorageObjects in DB!");
         }
-            return freeStorageObjects;
+        return freeStorageObjects;
     }
 
     public List<StorageObject> findReservedStorageObjects(){
-        List<StorageObject> reservedStorageObjects = new ArrayList<>();
-        if(!repositoryStorageObject.findAll().isEmpty()){
-            List<StorageObject> storageObjectList = repositoryStorageObject.findAll();
-            Iterator<StorageObject> iter = storageObjectList.iterator();
+        List<StorageObject> reservedStorageObjects = repositoryStorageObject.findAll();
+        //        List<StorageObject>     storageObjectList = repositoryStorageObject.findAll();
+        if(!reservedStorageObjects.isEmpty()){
+            Iterator<StorageObject> iter = reservedStorageObjects.iterator();
             while(iter.hasNext()){
                 StorageObject TempstorageObject = iter.next();
                 if(TempstorageObject.getReservation() != null){
@@ -160,15 +175,129 @@ public class ServiceStorageObject{
         if(reservedStorageObjects.isEmpty()){
             throw new SamicException("There are no Free StorageObjects in DB!");
         }
-            return reservedStorageObjects;
+        return reservedStorageObjects;
     }
 
 
     public void deleteAll(){
-            if(!repositoryStorageObject.findAll().isEmpty()){
-                  repositoryStorageObject.deleteAll();
-            }else{
-                  throw new SamicException("StorageObject DB is empty!");
-            }
+        if(repositoryStorageObject.count()>0){
+            repositoryStorageObject.deleteAll();
+        }else{
+            throw new SamicException("StorageObject DB is empty!");
+        }
+    }
+
+
+    public Stream<StorageObject> findAllStorageObjectByUserId(Long id, PageRequest request){
+        if(id != null){
+            return repositoryStorageObject.findAllByStoredAtUserId(id, request).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findAllStorageObjectByUserIdStream(Long id){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsByStoredAtUserId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+
+    public StorageObject findStorageObjectByReservationID(Long id){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectByReservationId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    ////////////////////
+    public Stream<StorageObject> findAllStoageObjectBySFPID(Long id, PageRequest request){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsBySfpId(id, request).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findAllStoageObjectBySFPIDStream(Long id){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsBySfpId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findAllStorageObjectByCPEID(Long id, PageRequest request){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectByCpeId(id, request).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findAllStorageObjectByCPEIDStream(Long id){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectByCpeId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findStorageObjectsByStorageId(Long id, PageRequest request){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsByStorageId(id, request).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findStorageObjectsByStorageIdStream(Long id){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsByStorageId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findStorageObjectsBySupplyId(Long id, PageRequest request){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsBySupplyId(id, request).stream();
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findStorageObjectsBySupplyIdStream(Long id){
+        if(id != null){
+            return repositoryStorageObject.findStorageObjectsBySupplyId(id);
+        }else{
+            throw new SamicException("Given id is null!");
+        }
+    }
+
+    public Stream<StorageObject> findFreeStorageObjects(){
+        Stream<StorageObject> freeStorageObjects = repositoryStorageObject.findAll().stream();
+        return freeStorageObjects.filter(storageObject -> storageObject.getReservation() == null)
+                .filter(storageObject -> storageObject.getStoredAtUser() == null)
+                       .filter(storageObject -> storageObject.getStoredAtCustomer() == null);
+
+    }
+
+    public Stream<StorageObject> findReservedStorageObjectsAsStream(){
+        Stream<StorageObject> reservedStorageObjects = repositoryStorageObject.findAll().stream();
+        return reservedStorageObjects.filter(storageObject -> storageObject.getReservation() != null)
+                .filter(storageObject -> storageObject.getStoredAtUser() == null);
+    }
+
+    public Stream<StorageObject> findStorageObjectByGivenUser(User user){
+        Stream<StorageObject> storageObjectOnUser = repositoryStorageObject.findAll().stream();
+       return storageObjectOnUser.filter(storageObject -> storageObject.getStoredAtUser().equals(user));
+    }
+
+    public Optional<StorageObject> findStorageObjectByCustomer(Customer customer){
+        return repositoryStorageObject.findStorageObjectByStoredAtCustomer(customer);
     }
 }

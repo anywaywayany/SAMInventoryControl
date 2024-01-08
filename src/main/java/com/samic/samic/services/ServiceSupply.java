@@ -1,6 +1,7 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Storage;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.Supply;
 import com.samic.samic.data.repositories.RepositorySupply;
 import com.samic.samic.exceptions.SamicException;
@@ -25,14 +26,24 @@ public class ServiceSupply{
     public Supply saveSupplyByObject(Supply supply){
         if(supply != null){
             if(supply.getId() != null){
-                if(repositorySupply.existsById(supply.getId())){
-                    log.debug("Supply with id: '%s' already exists in DB".formatted(supply.getId()));
-                    throw new SamicException("Supply with id: '%s' already exists in DB".formatted(supply.getId()));
+                if(doesObjectExistById(supply.getId())){
+                    Supply objectById = findSupplyByID(supply.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(supply.getId())){
+                            objectById = supply;
+                            return repositorySupply.save(objectById);
+                        }else{
+                            throw new SamicException("Supply with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), supply.getId()));
+                        }
+                    }else{
+                        throw new SamicException("Supply with id: '%s' does not exist in DB".formatted(supply.getId()));
+                    }
                 }else{
-                    return repositorySupply.save(supply);
+                    throw new SamicException("Supply with id: '%s' does not exist in DB but does have a id: ".formatted(supply.getId()));
                 }
             }else{
-                return repositorySupply.save(supply);
+                Supply saved = repositorySupply.save(supply);
+                return saved;
             }
         }else{
             throw new SamicException("Supply is null!");
@@ -96,7 +107,7 @@ public class ServiceSupply{
         }
     }
 
-    public Optional<Supply> findSupplyByNameOptional(Integer amount){
+    public Optional<Supply> findSupplyByAmountOptional(Integer amount){
         if(amount != null){
             if(repositorySupply.findSupplyByAmount(amount).isPresent()){
                 return repositorySupply.findSupplyByAmount(amount);
@@ -109,11 +120,9 @@ public class ServiceSupply{
     }
 
     public Stream<Supply> findAll(){
-        if(repositorySupply.findAll().isEmpty()){
-            throw new SamicException("Supply list is empty!");
-        }else{
             return repositorySupply.findAll().stream();
-        }
     }
+
+
 
 }

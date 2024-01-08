@@ -2,9 +2,11 @@ package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Role;
 import com.samic.samic.data.entity.Storage;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryUser;
 import com.samic.samic.exceptions.SamicException;
+import com.samic.samic.security.AuthenticatedUser;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,8 +24,11 @@ public class ServiceUser{
 
     @Autowired
     RepositoryUser repositoryUser;
-
-
+    @Autowired
+    ServiceStorageObject serviceStorageObject;
+    //    @Autowired
+    //    AuthenticatedUser authenticatedUser;
+    //
     public User findUser(String username){
         if(username != null){
             return repositoryUser.findByProfile_Username(username);
@@ -35,17 +40,27 @@ public class ServiceUser{
     public User saveUser(User user){
         if(user != null){
             if(user.getId() != null){
-                if(repositoryUser.existsById(user.getId())){
-                    log.debug("User with id: '%s', Username: '%s' already exists in DB".formatted(user.getId(), user.getProfile().getUsername()));
-                    throw new SamicException("User with id: '%s' already exists in DB".formatted(user.getId()));
+                if(doesObjectExistById(user.getId())){
+                    User objectById = findUserByID(user.getId());
+                    if(objectById != null){
+                        if(objectById.getId().equals(user.getId())){
+                            objectById = user;
+                            return repositoryUser.save(objectById);
+                        }else{
+                            throw new SamicException("User with id1: '%s' and id2: '%s' does not match. Some error occoured while fetch!!".formatted(objectById.getId(), user.getId()));
+                        }
+                    }else{
+                        throw new SamicException("User with id: '%s' does not exist in DB".formatted(user.getId()));
+                    }
                 }else{
-                    return repositoryUser.save(user);
+                    throw new SamicException("User with id: '%s' does not exist in DB but does have a id: ".formatted(user.getId()));
                 }
             }else{
-                return repositoryUser.save(user);
+                User saved = repositoryUser.save(user);
+                return saved;
             }
         }else{
-            throw new SamicException("Storage is null!");
+            throw new SamicException("User is null!");
         }
     }
 
@@ -138,10 +153,13 @@ public class ServiceUser{
     }
 
     public void deleteAll(){
-            if(!repositoryUser.findAll().isEmpty()){
-                  repositoryUser.deleteAll();
-            }else{
-                  throw new SamicException("User DB is empty!");
-            }
+        if(!repositoryUser.findAll().isEmpty()){
+            repositoryUser.deleteAll();
+        }else{
+            throw new SamicException("User DB is empty!");
+        }
     }
+
+
+
 }
