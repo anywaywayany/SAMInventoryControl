@@ -11,120 +11,119 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.function.SerializableSupplier;
-
 import java.util.HashMap;
 
 public class UIFactory {
 
 
-///////////---------------------Layout/Containers≈---------------------///////////
-public static VerticalLayout rootComponentContainer(String heading, Component... containers) {
-	VerticalLayout container = new VerticalLayout();
+  ///////////---------------------Layout/Containers≈---------------------///////////
+  public static VerticalLayout rootComponentContainer(String heading, Component... containers) {
+    VerticalLayout container = new VerticalLayout();
 
-	// add class-name for css
-	container.addClassName("container");
+    // add class-name for css
+    container.addClassName("container");
 
-	// add heading
-	container.add(new H4(heading));
+    // add heading
+    container.add(new H4(heading));
 
-	// add layouts/containers that contain multiple components
-	container.add(containers);
-	return container;
-}
+    // add layouts/containers that contain multiple components
+    container.add(containers);
+    return container;
+  }
 
-public static HorizontalLayout childContainer(
-	FlexComponent.JustifyContentMode justifyContentMode, Component... components) {
-	// Create container
-	HorizontalLayout childContainer = new HorizontalLayout();
+  public static HorizontalLayout childContainer(
+      FlexComponent.JustifyContentMode justifyContentMode, Component... components) {
+    // Create container
+    HorizontalLayout childContainer = new HorizontalLayout();
 
-	// Style
-	childContainer.setJustifyContentMode(justifyContentMode);
-	// make it wrap content
-	childContainer.getStyle().set("flex-wrap", "wrap");
-	childContainer.setWidthFull();
+    // Style
+    childContainer.setJustifyContentMode(justifyContentMode);
+    // make it wrap content
+    childContainer.getStyle().set("flex-wrap", "wrap");
+    childContainer.setWidthFull();
 
-	// Add optional components passed to method
-	childContainer.add(components);
+    // Add optional components passed to method
+    childContainer.add(components);
 
-	return childContainer;
-}
+    return childContainer;
+  }
 
-///////////---------------------BUTTONS≈---------------------///////////
-public static Button btnPrimary(
-	String text, ComponentEventListener<ClickEvent<Button>> listener) {
-	Button btnPrimary = new Button(text);
-	btnPrimary.addClickListener(listener);
-	btnPrimary.getStyle().setBackground("#108AB2").setColor("#FFFFFF");
-	return btnPrimary;
-}
+  ///////////---------------------BUTTONS≈---------------------///////////
+  public static Button btnPrimary(
+      String text, ComponentEventListener<ClickEvent<Button>> listener) {
+    Button btnPrimary = new Button(text);
+    btnPrimary.addClickListener(listener);
+    btnPrimary.getStyle().setBackground("#108AB2").setColor("#FFFFFF");
+    return btnPrimary;
+  }
 
-public static Button btnPrimary(String text, HashMap<String, String> cssKeyValue) {
-	Button btnPrimary = new Button(text);
-	cssKeyValue.forEach(
-		(cssKey, cssValue) -> {
-		btnPrimary.getStyle().set(cssKey, cssValue);
-		});
-	return btnPrimary;
-}
+  public static Button btnPrimary(String text, HashMap<String, String> cssKeyValue) {
+    Button btnPrimary = new Button(text);
+    cssKeyValue.forEach(
+        (cssKey, cssValue) -> {
+          btnPrimary.getStyle().set(cssKey, cssValue);
+        });
+    return btnPrimary;
+  }
 
-public static Button btnPrimary(
-	String text,
-	ComponentEventListener<ClickEvent<Button>> listener,
-	HashMap<String, String> cssKeyValuePairs) {
-	Button btnPrimary = UIFactory.btnPrimary(text, cssKeyValuePairs);
-	btnPrimary.addClickListener(listener);
-	return btnPrimary;
-}
+  public static Button btnPrimary(
+      String text,
+      ComponentEventListener<ClickEvent<Button>> listener,
+      HashMap<String, String> cssKeyValuePairs) {
+    Button btnPrimary = UIFactory.btnPrimary(text, cssKeyValuePairs);
+    btnPrimary.addClickListener(listener);
+    return btnPrimary;
+  }
 
-public static Button btnPrimaryError(String text) {
-	Button btnPrimary = new Button(text);
-	btnPrimary.getStyle().setBackground("#FF3101").setColor("#FFFFFF");
-	return btnPrimary;
-}
+  public static Button btnPrimaryError(String text) {
+    Button btnPrimary = new Button(text);
+    btnPrimary.getStyle().setBackground("#FF3101").setColor("#FFFFFF");
+    return btnPrimary;
+  }
 
-public static Button btnPrimaryError(
-	String text, ComponentEventListener<ClickEvent<Button>> listener) {
-	Button btnPrimary = UIFactory.btnPrimaryError(text);
-	btnPrimary.addClickListener(listener);
-	return btnPrimary;
-}
+  public static Button btnPrimaryError(
+      String text, ComponentEventListener<ClickEvent<Button>> listener) {
+    Button btnPrimary = UIFactory.btnPrimaryError(text);
+    btnPrimary.addClickListener(listener);
+    return btnPrimary;
+  }
 
-public static Button btnIconWithTooltip(Component icon, String text,
-		ComponentEventListener<ClickEvent<Button>> event) {
+  public static Button btnIconWithTooltip(Component icon, String text,
+      ComponentEventListener<ClickEvent<Button>> event) {
 
-	Button btnIconWithTooltip = new Button(icon, event);
-	btnIconWithTooltip.setTooltipText(text);
+    Button btnIconWithTooltip = new Button(icon, event);
+    btnIconWithTooltip.setTooltipText(text);
 
-	return btnIconWithTooltip;
-}
+    return btnIconWithTooltip;
+  }
 
-public static Notification NotificationSuccess(String text){
-	Notification notification = new Notification(text);
-	notification.setDuration(5000);
-	notification.setPosition(Notification.Position.BOTTOM_CENTER);
-	notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-	return notification;
-}
+  public static Notification NotificationSuccess(String text) {
+    Notification notification = new Notification(text);
+    notification.setDuration(5000);
+    notification.setPosition(Notification.Position.BOTTOM_CENTER);
+    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+    return notification;
+  }
 
-	public static Notification NotificationError(String text) {
-	Notification notification = new Notification(text);
-		notification.setDuration(5000);
-		notification.setPosition(Notification.Position.BOTTOM_CENTER);
-		notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-		return notification;
-	}
+  public static Notification NotificationError(String text) {
+    Notification notification = new Notification(text);
+    notification.setDuration(5000);
+    notification.setPosition(Notification.Position.BOTTOM_CENTER);
+    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+    return notification;
+  }
 
 
-///////////---------------------GridUtils≈---------------------///////////
-	public static VerticalLayout LazyComponent(SerializableSupplier<? extends Component> component) {
-		VerticalLayout container = UIFactory.rootComponentContainer("");
+  ///////////---------------------GridUtils≈---------------------///////////
+  public static VerticalLayout LazyComponent(SerializableSupplier<? extends Component> component) {
+    VerticalLayout container = UIFactory.rootComponentContainer("");
 
-		container.addAttachListener(e -> {
-			if (container.getElement().getChildCount() == 1) {
-				container.add(component.get());
-			}
-		});
+    container.addAttachListener(e -> {
+      if (container.getElement().getChildCount() == 1) {
+        container.add(component.get());
+      }
+    });
 
-		return container;
-	}
+    return container;
+  }
 }
