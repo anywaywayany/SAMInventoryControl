@@ -1,21 +1,25 @@
 package com.samic.samic.data.foundation;
 
 import com.samic.samic.exceptions.SamicException;
+import java.util.function.Predicate;
 
-public abstract class Guard{
+public abstract class Guard {
 
-    public static <Q> Q ensureNotNull(Q argument){
-        return ensureNotNull(argument, "argument");
+  public static final Predicate<? super Object> isNull = (arg) -> arg == null;
+  public static final Predicate<? super Object> isNotNull = isNull.negate();
+
+  public static <Q> Q ensureNotNull(Q argument) {
+    return ensureNotNull(argument, "argument");
+  }
+
+  public static <Q> Q ensureNotNull(Q argument, String name) {
+    if (argument == null) {
+      throw new SamicException("'%s' must not be null!".formatted(name));
     }
+    return argument;
+  }
 
-    public static <Q> Q ensureNotNull(Q argument, String name){
-        if(argument == null){
-            throw new SamicException("'%s' must not be null!".formatted(name));
-        }
-        return argument;
-    }
-
-    public static boolean isNullBlankOrEmpty(String argument){
-        return argument.isBlank() || argument.isEmpty() || argument == null;
-    }
+  public static boolean isNullBlankOrEmpty(String argument) {
+    return argument.isBlank() || argument.isEmpty() || argument == null;
+  }
 }

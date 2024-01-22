@@ -59,7 +59,7 @@ public class MeineHardwareView extends TabSheet {
     private void initUI() {
         add("Meine Hardware", UIFactory.LazyComponent(
             () -> {
-                storageObjectGrid.populate(dataProvider.getStorageObjects(10));
+                //storageObjectGrid.populate(dataProvider.getStorageObjects(10));
                 storageObjectGrid.addComponentColumn(item -> {
                     return new Span(
                         UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(), "Ins Lager verschieben", e -> moveToStorage(item)),

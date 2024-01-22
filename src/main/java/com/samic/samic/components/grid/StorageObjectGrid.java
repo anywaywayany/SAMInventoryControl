@@ -4,9 +4,6 @@ import com.samic.samic.data.entity.StorageObject;
 import com.vaadin.flow.component.grid.Grid;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.function.Predicate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +16,7 @@ public class StorageObjectGrid extends Grid<StorageObject> {
     getStyle().setBorder("0px");
     setWidthFull();
 
-
-    addColumn(item -> item.getObjectTypeName().getName()).setHeader("Lagerobjekttyp");
+    addColumn(item -> item.getObjectTypeName().getName()).setHeader("Gerätetyp");
     addColumn(StorageObject::getRemark).setHeader("Anmerkung");
     addColumn(item ->
         item.getSfp() == null ?
@@ -37,7 +33,7 @@ public class StorageObjectGrid extends Grid<StorageObject> {
             item.getCpe() == null ? " " : item.getCpe().getMacAddress()
             : item.getSfp().getSerialnumber())
         .setHeader("SNR/MAC");
-    addColumn(item -> item.getSupply() != null ?item.getSupply().getAmount() : "").setHeader("Anzahl");
+    //addColumn(item -> item.getSupply() != null ? item.getSupply().getAmount() : "").setHeader("Anzahl");
 
   }
 
