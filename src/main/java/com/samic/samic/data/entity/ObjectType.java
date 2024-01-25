@@ -34,7 +34,8 @@ public class ObjectType extends AbstractIdentityClass<Long>{
       @Override
       public String toString(){
           StringBuilder builder = new StringBuilder();
-          builder.append("ObjectType:\n").append('\'').append("name=").append(name);
+
+          builder.append(name);
           return builder.toString();
       }
 }

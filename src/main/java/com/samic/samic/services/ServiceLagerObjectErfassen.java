@@ -31,13 +31,16 @@ public class ServiceLagerObjectErfassen{
     private final ServiceStorageObject serviceStorageObject;
 
 
-    public void LagerOBjectErfassenSFP(
+
+    public StorageObject LagerOBjectErfassenSFP(
             StorageObject storageObject,
             Storage storage,
             Producer producer,
             SFP sfp){
 
-        saveSFP_Erfassen(storageObject, storage, producer, sfp);
+
+
+       return saveSFP_Erfassen(storageObject, storage, producer, sfp);
     }
 
     public void LagerOBjectErfassenCPE(
@@ -62,7 +65,8 @@ public class ServiceLagerObjectErfassen{
 
 
 
-    public void saveSFP_Erfassen(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){
+
+    public StorageObject saveSFP_Erfassen(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){
         isNotNull(storageObject, "storageObject in StorageObejectErfassen() | Backend ");
         isNotNull(storage, "storage in StorageObejectErfassen() | Backend ");
         isNotNull(producer, "producer in StorageObejectErfassen() | Backend ");
@@ -74,6 +78,7 @@ public class ServiceLagerObjectErfassen{
 
         // if SFP not null ->
 
+        return storageObject1;
     }
 
     private void saveCPE_Erfassen(StorageObject storageObject, Storage storage, Producer producer, CPE cpe){

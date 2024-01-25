@@ -28,13 +28,12 @@ public class CPEForm extends FormLayout {
   private TextField macAdress = new TextField("MAC Adresse");
   private TextField serialnumber = new TextField("Seriennummer");
   private HorizontalLayout projectEquipmentContainer =
-      UIFactory.childContainer(
-          FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
+          UIFactory.childContainer(
+                  FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
 
   @PostConstruct
   private void initUI() {
     macAdress.setRequired(true);
-
     add(deviceType, macAdress, serialnumber, isProjectEquipment);
 
     isProjectEquipment.addValueChangeListener(

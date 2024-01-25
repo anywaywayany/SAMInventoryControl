@@ -2,7 +2,6 @@ package com.samic.samic.data.repositories;
 
 import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
-import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.StorageObject;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -22,28 +20,28 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
 
     Optional<StorageObject> findStorageObjectByObjectTypeName(ObjectType objectType);
 
-    Page<StorageObject> findAllByStoredAtUserId(Long id, Pageable pageable);
+    Page<StorageObject> findAllByStoredAtUser_Id(Long id, Pageable pageable);
 
-    Stream<StorageObject> findStorageObjectsByStoredAtUserId(Long id);
+    Stream<StorageObject> findStorageObjectsByStoredAtUser_Id(Long id);
 
-    StorageObject findStorageObjectByReservationId(Long id);
-    Page<StorageObject> findStorageObjectsBySfpId (Long id, PageRequest request);
-    Stream<StorageObject> findStorageObjectsBySfpId (Long id);
+    StorageObject findStorageObjectByReservation_Id(Long id);
+    Page<StorageObject> findStorageObjectsBySfp_Id(Long id, PageRequest request);
+    Stream<StorageObject> findStorageObjectsBySfp_Id(Long id);
 
 
     //    Stream<StorageObject> findStorageObjectByReserved(Reservation.);
 
-    Page<StorageObject> findStorageObjectsByStorageId(Long id, PageRequest request);
+    Page<StorageObject> findStorageObjectsByStorage_Id(Long id, PageRequest request);
 
-    Stream<StorageObject> findStorageObjectsByStorageId(Long id);
+    Stream<StorageObject> findStorageObjectsByStorage_Id(Long id);
 
-    Page<StorageObject> findStorageObjectsBySupplyId(Long id, PageRequest request);
+    Page<StorageObject> findStorageObjectsBySupply_Id(Long id, PageRequest request);
 
-    Stream<StorageObject> findStorageObjectsBySupplyId(Long id);
+    Stream<StorageObject> findStorageObjectsBySupply_Id(Long id);
 
-    Page<StorageObject> findStorageObjectByCpeId(Long id, PageRequest request);
+    Page<StorageObject> findStorageObjectByCpe_Id(Long id, PageRequest request);
 
-    Stream<StorageObject> findStorageObjectByCpeId(Long id);
+    Stream<StorageObject> findStorageObjectByCpe_Id(Long id);
 
     Optional<StorageObject> findStorageObjectByStoredAtCustomer(Customer customer);
 }

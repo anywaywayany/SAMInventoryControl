@@ -6,7 +6,7 @@ import com.samic.samic.views.abfragen.AbfragenView;
 import com.samic.samic.views.administration.AdministrationView;
 import com.samic.samic.views.dashboard.DashboardView;
 import com.samic.samic.views.freie_lagerobjekte.FreieLagerobjekteView;
-import com.samic.samic.views.lagerobjekt_aufnehmen.LagerobjektAufnehmenView;
+import com.samic.samic.views.lagerobjekt_erfassen.lagerobjekt_aufnehmen.LagerobjektAufnehmenView;
 import com.samic.samic.views.lagerobjekt_erfassen.LagerobjektErfassenView;
 import com.samic.samic.views.meine_hardware.MeineHardwareView;
 import com.vaadin.flow.component.applayout.AppLayout;

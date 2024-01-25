@@ -27,10 +27,15 @@ import jakarta.annotation.security.PermitAll;
 import java.util.List;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @PageTitle("Meine Hardware")
 @Route(value = "meineHardware", layout = MainLayout.class)
 @PermitAll
 public class MeineHardwareView extends TabSheet {
+
 
   private final ReservationGrid reservationGrid;
   private final ServiceStorageObject storageObjectService;

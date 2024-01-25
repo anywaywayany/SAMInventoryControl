@@ -5,13 +5,9 @@ import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
-import com.samic.samic.exceptions.SamicException;
 import com.samic.samic.exceptions.StorageObjectException;
-import jakarta.persistence.EntityGraph;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 //import jakarta.persistence.TypedQuery;
-import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -245,7 +240,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStorageObjectByUserId(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findAllByStoredAtUserId(id, request).stream();
+            return repositoryStorageObject.findAllByStoredAtUser_Id(id, request).stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -253,7 +248,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStorageObjectByUserIdStream(Long id){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsByStoredAtUserId(id);
+            return repositoryStorageObject.findStorageObjectsByStoredAtUser_Id(id);
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -262,7 +257,7 @@ public class ServiceStorageObject{
 
     public StorageObject findStorageObjectByReservationID(Long id){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectByReservationId(id);
+            return repositoryStorageObject.findStorageObjectByReservation_Id(id);
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -271,7 +266,7 @@ public class ServiceStorageObject{
     ////////////////////
     public Stream<StorageObject> findAllStoageObjectBySFPID(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsBySfpId(id, request).stream();
+            return repositoryStorageObject.findStorageObjectsBySfp_Id(id, request).stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -279,7 +274,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStoageObjectBySFPIDStream(Long id){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsBySfpId(id);
+            return repositoryStorageObject.findStorageObjectsBySfp_Id(id);
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -287,7 +282,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStorageObjectByCPEID(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectByCpeId(id, request).stream();
+            return repositoryStorageObject.findStorageObjectByCpe_Id(id, request).stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -295,7 +290,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStorageObjectByCPEIDStream(Long id){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectByCpeId(id);
+            return repositoryStorageObject.findStorageObjectByCpe_Id(id);
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -303,7 +298,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectsByStorageId(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsByStorageId(id, request).stream();
+            return repositoryStorageObject.findStorageObjectsByStorage_Id(id, request).stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -311,7 +306,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectsByStorageIdStream(Long id){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsByStorageId(id);
+            return repositoryStorageObject.findStorageObjectsByStorage_Id(id);
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -319,7 +314,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectsBySupplyId(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsBySupplyId(id, request).stream();
+            return repositoryStorageObject.findStorageObjectsBySupply_Id(id, request).stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -327,7 +322,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectsBySupplyIdStream(Long id){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsBySupplyId(id);
+            return repositoryStorageObject.findStorageObjectsBySupply_Id(id);
         }else{
             throw new StorageObjectException("Given id is null!");
         }

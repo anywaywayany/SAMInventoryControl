@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 @PermitAll
 public class LagerobjektErfassenView extends VerticalLayout implements BeforeLeaveObserver {
 
+
   private final ServiceStorageObject storageObjectService;
   private final ServiceProducer producerService;
   private final ServiceStorage storageService;
@@ -98,14 +99,14 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       i.setAllowCustomValue(false);
     });
     this.storageContainer =
-        UIFactory.rootComponentContainer(
-            "",
-            UIFactory.childContainer(JustifyContentMode.START, storageComboBox));
+            UIFactory.rootComponentContainer(
+                    "",
+                    UIFactory.childContainer(JustifyContentMode.START, storageComboBox));
     add(storageContainer);
 
     VerticalLayout formRootContainer =
-        UIFactory.rootComponentContainer(
-            "", UIFactory.childContainer(JustifyContentMode.START, typeComboBox, producerSelect));
+            UIFactory.rootComponentContainer(
+                    "", UIFactory.childContainer(JustifyContentMode.START, typeComboBox, producerSelect));
 
     formRootContainer.add(
         formChildContainer,
@@ -116,6 +117,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
                 buttonClickEvent -> onSave(typeComboBox.getValue(), storageComboBox.getValue(),
                     producerSelect.getValue())),
             UIFactory.btnPrimaryError("Abbrechen", buttonClickEvent -> onCancel())));
+
 
     add(formRootContainer);
   }
@@ -155,7 +157,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     StorageObject saved;
     StorageObject persisted;
     if (selectedType.equals(Type.ROUTER) || selectedType.equals(Type.SWITCH) || selectedType.equals(
-        Type.IP_PHONE)) {
+            Type.IP_PHONE)) {
       if (cpeForm.isValid()) {
 
         saved = cpeForm.saveStorageObject();
