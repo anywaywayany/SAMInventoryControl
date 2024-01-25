@@ -26,7 +26,7 @@ public class CPE extends AbstractIdentityClass<Long>{
     @OneToMany(mappedBy = "cpe", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<StorageObject> storageObject = new ArrayList<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_cpe"))
     private Producer producer;
 
@@ -43,4 +43,10 @@ public class CPE extends AbstractIdentityClass<Long>{
     @Column(name = "type")
     private Type type;
 
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append( "CPE:\n").append('\'').append("producer=").append(producer).append('\'').append("serialnumber='").append(serialnumber).append('\'').append("macAddress='").append(macAddress).append('\'').append("type=").append(type);
+        return builder.toString();
+    }
 }

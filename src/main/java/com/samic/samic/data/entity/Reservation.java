@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,19 +20,20 @@ import java.util.List;
 @Table(name = "reservations")
 @NoArgsConstructor
 @AllArgsConstructor
+@Transactional
 public class Reservation extends AbstractIdentityClass<Long>{
 
     /*
     relations
      */
-    @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY) //Shared Primary Key
+    @OneToOne(mappedBy = "reservation", fetch = FetchType.EAGER) //Shared Primary Key
     private StorageObject storageObject;
 
-    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     private List<StorageObjectHistory> storageObjectHistory = new ArrayList<>();
 
     @JoinColumn(name = "fk_user", foreignKey = @ForeignKey(name = "fk_user_2_reservation"))
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private User reservedFrom;
 
     /*
@@ -40,7 +41,7 @@ public class Reservation extends AbstractIdentityClass<Long>{
     */
     @Embedded
     @Column(name = "reserved_For")
-    private Customer customer;
+    private Customer      customer;
     @PastOrPresent
     private LocalDateTime reservedAt;
 
@@ -53,7 +54,6 @@ public class Reservation extends AbstractIdentityClass<Long>{
 
     @Column(name = "last_modified")
     private LocalDateTime lastModified;
-
 
 
     public void setReservedFrom(User reservedFrom){
@@ -89,5 +89,31 @@ public class Reservation extends AbstractIdentityClass<Long>{
                 throw new SamicException("Reservation Date has been already set!");
             }
         }
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Reservation:\n")
+                .append("storageObject=")
+                .append(storageObject)
+                .append('\'')
+                .append("reservedFrom=")
+                .append(reservedFrom)
+                .append('\'')
+                .append("customer=")
+                .append(customer)
+                .append('\'')
+                .append("reservedAt=")
+                .append(reservedAt)
+                .append('\'')
+                .append("reservedDescription='")
+                .append(reservedDescription)
+                .append('\'')
+                .append("completed=")
+                .append(completed)
+                .append('\'')
+                .append("lastModified=").append(lastModified);
+        return builder.toString();
     }
 }

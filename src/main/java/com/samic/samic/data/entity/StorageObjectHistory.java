@@ -18,7 +18,7 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_storageObject_history", foreignKey = @ForeignKey(name = "fk_storageObject_2_storageObjectHistory"))
     private StorageObject storageObject;
 
@@ -26,12 +26,12 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     @PastOrPresent
     private LocalDateTime untilDateTime;
 
-    @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name= "fk_storage_2_storageObjectHistory"))
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name = "fk_storage_2_storageObjectHistory"))
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Storage storage;
 
     @JoinColumn(name = "fk_reservation", foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Reservation reservation;
 
     /*
@@ -44,4 +44,12 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     @Column(name = "inser_date_time")
     @PastOrPresent
     private LocalDateTime insertDateTime;
+
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("StorageObjectHistory:\n").append("storageObject=").append(storageObject).append('\'').append("untilDateTime=").append(untilDateTime).append('\'').append("storage=")
+                .append(storage).append('\'').append("reservation=").append(reservation).append('\'').append("status=").append(status).append('\'').append("insertDateTime=").append(insertDateTime);
+        return builder.toString();
+    }
 }

@@ -5,6 +5,7 @@ import com.samic.samic.data.repositories.RepositoryUser;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
+import jakarta.persistence.EntityListeners;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDatabaseInitializer;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperti
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.sql.DataSource;
 
@@ -28,6 +30,7 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = {"com.samic.samic.data.repositories"})
 @ComponentScan(basePackages = {"com.samic.samic.services"})
 @Import(ORCLConfig.class)
+@EntityListeners(AuditingEntityListener.class)
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {

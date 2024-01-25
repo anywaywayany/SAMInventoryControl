@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -31,37 +32,39 @@ public class SFPForm extends FormLayout {
   private final TextField trackingNumber = new TextField("Sendungsnummer");
   private final Binder<StorageObject> binderStorageObject = new Binder<>(StorageObject.class, true);
   private final Binder<SFP> binderSFP = new Binder<>(SFP.class);
+  private final Select<ObjectType> objectTypeSelect = new Select<>("Gerätetyp", null);
   private final Binder<Producer> binderProducer = new Binder<>(Producer.class);
   //private TextField storageObjectID = new TextField("Lager ID");
   private Select<ObjectType> deviceType = new Select<>("Gerätetyp", null);
   //private TextField producerName = new TextField("Hersteller");
   private TextField serialnumber = new TextField("Seriennummer");
   private HorizontalLayout projectEquipmentContainer =
-      UIFactory.childContainer(
-          FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
+          UIFactory.childContainer(
+                  FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
+
 
   @PostConstruct
   private void initUI() {
     //storageObjectID.setReadOnly(true);
     type.setReadOnly(true);
     add(
-        /*storageObjectID,*/
-        deviceType,
-        /*producerName,*/
-        serialnumber,
-        wavelength,
-        nicSpeed,
-        type,
-        isProjectEquipment);
+            /*storageObjectID,*/
+            deviceType,
+            /*producerName,*/
+            serialnumber,
+            wavelength,
+            nicSpeed,
+            type,
+            isProjectEquipment);
 
     isProjectEquipment.addValueChangeListener(
-        event -> {
-          if (event.getValue().equals(true)) {
-            add(projectEquipmentContainer);
-          } else {
-            remove(projectEquipmentContainer);
-          }
-        });
+            event -> {
+              if (event.getValue().equals(true)) {
+                add(projectEquipmentContainer);
+              } else {
+                remove(projectEquipmentContainer);
+              }
+            });
 
     initBinder();
   }
@@ -70,16 +73,20 @@ public class SFPForm extends FormLayout {
     /*binderStorageObject.forField(storageObjectID).withNullRepresentation("").withConverter(
         new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);*/
     binderStorageObject.bind(
-        isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);
-//		binderStorageObject.forField(name).asRequired().bind(StorageObject::getName, StorageObject::setName);
+            isProjectEquipment, StorageObject::getProjectDevice, StorageObject::setProjectDevice);
+    //		binderStorageObject.forField(name).asRequired().bind(StorageObject::getName, StorageObject::setName);
     binderSFP.forField(serialnumber).asRequired().bind(SFP::getSerialnumber, SFP::setSerialnumber);
     binderSFP.forField(wavelength).asRequired().bind(SFP::getWavelength, SFP::setWavelength);
     binderSFP.forField(nicSpeed).asRequired().bind(SFP::getNicSpeed, SFP::setNicSpeed);
 
   }
 
-  public void setSFPBeans(Producer producer, SFP sfp, StorageObject storageObject, Type type,
-      Storage storage) {
+  public void setSFPBeans(List<ObjectType> objectTypeList, Producer producer, SFP sfp,
+                          StorageObject storageObject, Type type,
+                          Storage storage) {
+    objectTypeSelect.setItemLabelGenerator(ObjectType::getName);
+    objectTypeSelect.setItems(objectTypeList);
+
     storageObject.setStorage(storage);
     sfp.setType(type);
     sfp.setProducer(producer);

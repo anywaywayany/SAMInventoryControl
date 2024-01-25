@@ -4,6 +4,7 @@ import com.samic.samic.components.UIFactory;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.foundation.Guard;
 import com.samic.samic.exceptions.SamicException;
+import com.samic.samic.exceptions.StorageObjectException;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.services.ServiceProducer;
 import com.samic.samic.services.ServiceReservation;
@@ -147,8 +148,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
   void initReservationData() {
     try {
-      reservationGrid.setItems(storageObjectService.findAll().toList());
-    } catch (SamicException e) {
+      reservationGrid.setItems(storageObjectService.findFreeStorageObjects().toList());
+    } catch (StorageObjectException e) {
       UIFactory.NotificationError(e.getMessage()).open();
     }
   }

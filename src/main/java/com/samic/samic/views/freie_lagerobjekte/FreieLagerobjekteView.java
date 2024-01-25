@@ -54,9 +54,9 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
 
   public FreieLagerobjekteView(ServiceStorageObject storageObjectService,
-      ServiceObjectType objectTypeService,
-      ServiceStorage storageService, AuthenticatedUser authenticatedUser, ServiceUser userService,
-      ReservationForm reservationForm) {
+                               ServiceObjectType objectTypeService,
+                               ServiceStorage storageService, AuthenticatedUser authenticatedUser, ServiceUser userService,
+                               ReservationForm reservationForm) {
     this.storageObjectService = storageObjectService;
     this.objectTypeService = objectTypeService;
     this.authenticatedUser = authenticatedUser;
@@ -68,11 +68,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
   private void initUI() {
     reservationDialog.add(
-        UIFactory.rootComponentContainer("Gerät reservieren", reservationForm,
-            UIFactory.childContainer(JustifyContentMode.START,
-                UIFactory.btnPrimary("Reservieren", onClick -> reserve()),
-                UIFactory.btnPrimaryError("Abbrechen", onClick -> onCancel())))
-    );
+            UIFactory.rootComponentContainer("Gerät reservieren", reservationForm,
+                                             UIFactory.childContainer(JustifyContentMode.START,
+                                                                      UIFactory.btnPrimary("Reservieren", onClick -> reserve()),
+                                                                      UIFactory.btnPrimaryError("Abbrechen", onClick -> onCancel())))
+                         );
     searchField.setWidth("20%");
     searchField.setPlaceholder("Suchen...");
     searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
@@ -85,16 +85,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
         .setFlexGrow(2);
     grid.addComponentColumn(item -> {
       return new Span(
-          new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
-          new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)));
+              new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
+              new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)));
     }).setHeader("Aktionen").setAutoWidth(true).setFrozenToEnd(true);
     grid.setItemDetailsRenderer(createStorageObjectDetailsRenderer());
     grid.getStyle().setBorder("0px");
-
-    StorageObject storageObject = StorageObject.builder()
-        .objectTypeName(ObjectType.builder().name("Testname").build())
-        .remark("TestRemark")
-        .build();
 
     filterStorage.setItemLabelGenerator(Storage::getName);
     filterStorage.setItems(storageService.findAll().toList());
@@ -103,7 +98,6 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
     filterObjectType.setItemLabelGenerator(ObjectType::getName);
     filterObjectType.setItems(objectTypeService.findAll().toList());
-    filterObjectType.setAllowCustomValue(false);
     filterObjectType.setPlaceholder("Gerätetyp auswählen");
     filterObjectType.setWidth("250px");
 
@@ -123,28 +117,27 @@ public class FreieLagerobjekteView extends VerticalLayout {
     storageObjectList.addFilter(storageobject -> {
       String searchTerm = searchField.getValue().trim();
       boolean matchesName = matchesTerm(storageobject.getObjectTypeName().getName(), searchTerm);
-      //boolean matchesStorage;
 
       if (searchTerm.isEmpty()) {
         return true;
       }
 
-      return matchesName; //|| matchesStorage; // || matchesProfession;
+      return matchesName;// || matchesProfession;
     });
 
     add(
-        UIFactory.rootComponentContainer("",
-            UIFactory.childContainer(
-                JustifyContentMode.START,
-                searchField,
-                filterStorage,
-                filterObjectType
-            )),
-        UIFactory.rootComponentContainer("",
-            UIFactory.childContainer(
-                JustifyContentMode.START,
-                grid)),
-        reservationDialog);
+            UIFactory.rootComponentContainer("",
+                                             UIFactory.childContainer(
+                                                     JustifyContentMode.START,
+                                                     searchField,
+                                                     filterStorage,
+                                                     filterObjectType
+                                                                     )),
+            UIFactory.rootComponentContainer("",
+                                             UIFactory.childContainer(
+                                                     JustifyContentMode.START,
+                                                     grid)),
+            reservationDialog);
   }
 
   private void onCancel() {
@@ -174,7 +167,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
   private ComponentRenderer<StorageObjectDetailsForm, StorageObject> createStorageObjectDetailsRenderer() {
     return new ComponentRenderer<>(StorageObjectDetailsForm::new,
-        StorageObjectDetailsForm::setStorageObject);
+                                   StorageObjectDetailsForm::setStorageObject);
   }
 
 

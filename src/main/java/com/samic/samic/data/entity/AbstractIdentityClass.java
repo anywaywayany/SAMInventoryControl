@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.lang.Nullable;
 
@@ -12,16 +11,16 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public class AbstractIdentityClass<PK extends Serializable> implements Persistable<PK>{
+public class AbstractIdentityClass<Long extends Serializable> implements Persistable<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "idgenerator")
     @SequenceGenerator(name = "idgenerator", initialValue = 1000)
-    private @Nullable PK id;
+    private @Nullable Long id;
 
     @Nullable
     @Override
-    public PK getId() {
+    public Long getId() {
         return id;
     }
 
@@ -30,7 +29,7 @@ public class AbstractIdentityClass<PK extends Serializable> implements Persistab
      *
      * @param id the id to set
      */
-    protected void setId(@Nullable PK id) {
+    protected void setId(@Nullable Long id) {
         this.id = id;
     }
 

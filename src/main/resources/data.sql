@@ -117,9 +117,11 @@
 
 -- insert into user_storage(id, hashed_password, user_name, role) values (1, '$2a$10$xdbKoM48VySZqVSU/cSlVeJn0Z04XCZ7KZBjUBC00eKo5uLswyOpe','management', 'Management' );
 --
-insert into users(id, created_At, last_login, first_name, last_name, user_name, email, hashed_password, phone, role)
+insert into users(id, created_At, last_login, first_name, last_name, user_name, email,
+                  hashed_password, phone, role)
 values (1, date '2019-05-26', date '2023-05-26', 'Eula_management', 'Lane', 'management',
-        'management.toccafondi@viipo.ae', '$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.',
+        'management.toccafondi@viipo.ae',
+        '$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.',
         '(762) 444526-5961', 'MANAGMENT');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(2,date '2019-05-26',date '2023-05-26','Eula_storageadmin','Lane','storageadmin','storageadmin.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','STORAGEADMIN');
 -- insert into user_storage(id, created_At,last_login,first_name,last_name,user_name,email,hashed_password,phone,role) values(4,date '2019-05-26',date '2023-05-26','Eula_fieldservicetechnician','Lane','fieldservicetechnician','fieldservicetechnician.toccafondi@viipo.ae','$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.','(762) 526-5961','FIELDSERVICETECHNICIAN');
@@ -135,11 +137,11 @@ values (1, date '2019-05-26', date '2023-05-26', 'Eula_management', 'Lane', 'man
 --
 
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (1, 'Storage 1', 'Street 1', 1, 1, 1111, 'City 1');
+values (1, 'Hauptlager', 'Spengergasse', 10, 20, 1050, 'Wien');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (2, 'Storage 2', 'Street 2', 2, 1, 2222, 'City 2');
+values (2, 'Nebenlager', 'Lagerstraße', 1, 30, 1100, 'Wien');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (3, 'Storage 3', 'Street 3', 3, 1, 3333, 'City 3');
+values (3, 'Nebenlager2', 'Matzleinsdorferplatz', 100, 1, 1050, 'Wien');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
 values (4, 'Storage 4', 'Street 4', 4, 1, 4444, 'City 4');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
@@ -151,30 +153,111 @@ values (7, 'Storage 7', 'Street 7', 7, 1, 7777, 'City 7');
 
 
 insert into producers (id, producer_name, short_name)
-values (1, 'Oloo', 'Tazz');
+values (1, 'Cisco', 'Cisco');
 insert into producers (id, producer_name, short_name)
-values (2, 'Demimbu', 'Dynabox');
+values (2, 'HP', 'HP');
+insert into producers (id, producer_name, short_name)
+values (3, 'Snom', 'Snom');
 
 
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (1, 1, 'B1-6D-88-2D-3B-70', 'WAE9805F71TO', 'SUPPLY');
+values (1, 1, 'B1-6D-88-2D-3B-70', 'WAE9805FA1TO', 'ROUTER');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (2, 2, '29-20-38-CA-20-BA', 'NDZ2087U82ZB', 'SUPPLY');
+values (2, 1, '29-20-38-CA-10-BA', 'NDZ2081U82ZB', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (3, 1, '29-20-38-CA-30-B0', 'NDZ2083U82ZB', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (4, 1, '29-20-38-CA-40-BB', 'NDZ2087U82AB', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (5, 1, '29-20-38-CA-00-BA', 'NDZ2087US2ZB', 'ROUTER');
+
+
+insert into CPES (id, fk_producer, macaddress, serialnumber, type)
+values (10, 1, '29-20-38-BD-00-BA', 'ASZ2087U82ZB', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (6, 2, '29-20-38-DB-00-BA', 'AJZ2087U82ZB', 'SWITCH');
+
+insert into CPES (id, fk_producer, macaddress, serialnumber, type)
+values (7, 3, '29-20-38-BD-00-BA', 'ASZ2137U82ZB', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type)
+values (8, 3, '29-20-38-DB-00-BA', 'AJZ2023U82ZB', 'IP_PHONE');
+insert into CPES (id, fk_producer, macaddress, serialnumber, type)
+values (9, 3, '29-20-38-BD-00-BA', 'ASZ2087U000B', 'IP_PHONE');
+
 
 insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
-values (1, 1, '01HJGKK6JKHSR3XKEE09X450S8', 232, 2, '1330 nm', 'SFP');
+values (1, 1, '01HJGKK6JKHSR3XKEE09X450S8', 232, 2, '1310 nm', 'SFP');
 insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
-values (2, 2, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '1300 nm', 'SFP');
+values (2, 1, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '550 nm', 'SFP');
 
 insert into supplies (id, description, amount)
 values (1, 'auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc', 156);
 insert into supplies (id, description, amount)
 values (2, 'augue a suscipit nulla elit ac nulla sed vel enim', 65);
 
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (1, 'C927');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (2, 'C111-4p');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (3, 'ASR920-12SZ-IM');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (4, 'C897VAB');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (5, 'C1117-4p');
+
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (6, 'WS-C2960S-48LPS-L');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (7, 'Aruba 2530');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (8, 'M300');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (9, 'D865');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (10, 'D862');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (11, 'GLC-LH-SM');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
+values (12, 'LC-SX-MM');
 
 
-insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
-values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0, 12335134,
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (1, 1, 1, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (2, 1, 2, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (3, 1, 3, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (4, 1, 4, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (5, 1, 5, 1);
+
+
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (6, 1, 6, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (7, 1, 7, 1);
+
+
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (8, 1, 8, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (9, 1, 9, 1);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (10, 1, 10, 1);
+
+
+insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (11, 1, 11, 1);
+insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (12, 1, 12, 1);
+
+
+insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no,
+                          reserved_description)
+values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0,
+        12335134,
         'purus phasellus in felis donec');
 -- insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
 -- values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521,

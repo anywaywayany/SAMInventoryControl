@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Log4j2
 class TestServiceReservation{
 
-    @Before
+    @BeforeEach
     void setUp(){
         serviceReservation.deleteAll();
         serviceUser.deleteAll();

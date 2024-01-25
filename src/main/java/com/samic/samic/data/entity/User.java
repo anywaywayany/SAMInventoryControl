@@ -23,7 +23,7 @@ public class User extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     //        @JoinColumn(name = "fk_storageObject")
     private List<StorageObject> storageObject = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class User extends AbstractIdentityClass<Long>{
     //    private StorageObject storageObject;
 
 
-    @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Reservation> reservation = new ArrayList<>();
 
 
@@ -77,5 +77,12 @@ public class User extends AbstractIdentityClass<Long>{
     //    @OneToOne
     //    @JoinColumn(foreignKey = @ForeignKey(name = "FK_User_2_Profile"))
 
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("User:\n").append("profile=").append(profile).append('\'').append("role=").append(role).append('\'').append(
+                "createdAt=").append(createdAt).append('\'').append("lastLogin=").append(lastLogin).append('\'').append("activated=").append(activated).append('\'').append("mail='").append(mail).append('\'').append("hashedPassword='").append(hashedPassword).append('\'');
+        return builder.toString();
+    }
 
 }

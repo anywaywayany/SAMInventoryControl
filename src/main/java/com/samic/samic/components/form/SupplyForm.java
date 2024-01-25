@@ -38,17 +38,17 @@ public class SupplyForm extends FormLayout {
   private void initBinder() {
 	/*binderStorageObject.forField(storageObjectID).withNullRepresentation("").withConverter(
 			new StringToLongConverter("Id is not Long")).bind(StorageObject::getId, null);*/
-//	binderStorageObject.bind(name, StorageObject::getName, StorageObject::setName);
+    //	binderStorageObject.bind(name, StorageObject::getName, StorageObject::setName);
 
     binderSupply.forField(description).asRequired("Beschreibung darf nicht leer sein")
-        .bind(Supply::getDescription, Supply::setDescription);
+                .bind(Supply::getDescription, Supply::setDescription);
     binderSupply.forField(amount).asRequired("Anzahl darf nicht leer sein")
-        .withValidator(new IntegerRangeValidator("Anzahl darf nicht 0 sein", 1, 1000))
-        .bind(Supply::getAmount, Supply::setAmount);
+                .withValidator(new IntegerRangeValidator("Anzahl darf nicht 0 sein", 1, 1000))
+                .bind(Supply::getAmount, Supply::setAmount);
   }
 
   public void setSupplyBeans(Producer producer, Supply supply, StorageObject storageObject,
-      Type type, Storage storage) {
+                             Type type, Storage storage) {
     storageObject.setStorage(storage);
     binderStorageObject.setBean(storageObject);
     binderSupply.setBean(supply);

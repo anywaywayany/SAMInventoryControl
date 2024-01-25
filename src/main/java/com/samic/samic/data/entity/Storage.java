@@ -25,11 +25,11 @@ public class Storage extends AbstractIdentityClass<Long>{
     /*
     relations
     */
-    @OneToMany(mappedBy ="storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy ="storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     private List<StorageObject> storageObject = new ArrayList<>();
 
     @Column(name = "storage_Objekt_history")
-    @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     private List<StorageObjectHistory> storageObjectHistory;
 
     /*
@@ -55,4 +55,11 @@ public class Storage extends AbstractIdentityClass<Long>{
     //    public void setAddress(Address address){
     //        this.address = address;
     //    }
+
+      @Override
+      public String toString(){
+          StringBuilder builder = new StringBuilder();
+          builder.append("Storage:\n").append("address=").append(address).append('\'').append("name='").append(name);
+          return builder.toString();
+      }
 }

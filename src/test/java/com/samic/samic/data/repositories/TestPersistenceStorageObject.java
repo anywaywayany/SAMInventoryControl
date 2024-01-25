@@ -282,4 +282,32 @@ public class TestPersistenceStorageObject{
         //then
         assertThat(reservedAmount).isSameAs(countReserved);
     }
+
+    @Test
+    void findStorageOBjectWitDetatched(){
+            //given
+            StorageObject storageObject1 = Fixtures.giveStorageObject1();
+            StorageObject storageObject2 = Fixtures.giveStorageObject2();
+            StorageObject storageObject3 = Fixtures.giveStorageObject3();
+            StorageObject storageObject4 = Fixtures.giveStorageObject4();
+            StorageObject storageObject5 = Fixtures.giveStorageObject5();
+
+            //when
+            var saved1 = serviceStorageObject.saveStorageObject(storageObject1);
+            var saved2 = serviceStorageObject.saveStorageObject(storageObject2);
+            var saved3 = serviceStorageObject.saveStorageObject(storageObject3);
+            var saved4 = serviceStorageObject.saveStorageObject(storageObject4);
+            var saved5 = serviceStorageObject.saveStorageObject(storageObject5);
+
+            //then
+//        serviceStorageObject.findStorageObjectByID(saved1.getId());
+//        serviceStorageObject.findStorageObjectByID(saved2.getId());
+//            assertThat(serviceStorageObject.findStorageObjectByID(saved1.getId())).isSameAs(storageObject1);
+    }
+
+
+
 }
+
+
+

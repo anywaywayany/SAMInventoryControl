@@ -1,14 +1,13 @@
 package com.samic.samic.data.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
@@ -22,7 +21,7 @@ public class Supply extends AbstractIdentityClass<Long>{
     relations
      */
     @Column(name = "supply")
-    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     private List<StorageObject> storageObject = new ArrayList<>();
 
     /*
@@ -35,4 +34,11 @@ public class Supply extends AbstractIdentityClass<Long>{
     @Column(name = "amount")
     @Positive
     private int amount;
+
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Supply:\n").append("storageObject=").append(storageObject).append('\'').append("description='").append(description).append('\'').append("amount=").append(amount);
+        return builder.toString();
+    }
 }

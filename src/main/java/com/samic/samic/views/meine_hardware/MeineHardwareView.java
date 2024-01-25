@@ -10,15 +10,16 @@ import com.samic.samic.components.grid.StorageObjectGrid;
 import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.Storage;
 import com.samic.samic.data.entity.StorageObject;
+import com.samic.samic.security.AuthenticatedUser;
+import com.samic.samic.services.ServiceReservation;
 import com.samic.samic.services.ServiceStorage;
+import com.samic.samic.services.ServiceStorageObject;
 import com.samic.samic.views.MainLayout;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -26,15 +27,22 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @PageTitle("Meine Hardware")
 @Route(value = "meineHardware", layout = MainLayout.class)
 @PermitAll
 public class MeineHardwareView extends TabSheet {
 
-    private final ReservationGrid reservationGrid;
-    private final DataProvider dataProvider;
+    private final ReservationGrid      reservationGrid;
+    private final ServiceStorageObject storageObjectService;
+    private final ServiceStorage       storageService;
     private final ReservationForm reservationForm;
     private final StorageObjectGrid storageObjectGrid;
+    private final ServiceReservation reservationService;
+    private final AuthenticatedUser authenticatedUser;
 
     private final CPEForm cpeForm;
     private final SFPForm sfpForm;
@@ -42,16 +50,19 @@ public class MeineHardwareView extends TabSheet {
 
 
     public MeineHardwareView(ServiceStorage storageService, ReservationGrid reservationGrid,
-        DataProvider dataProvider, ReservationForm reservationForm,
-        StorageObjectGrid storageObjectGrid, CPEForm cpeForm, SFPForm sfpForm,
-        SupplyForm supplyForm) {
-        this.reservationGrid = reservationGrid;
-        this.dataProvider = dataProvider;
-        this.reservationForm = reservationForm;
-        this.storageObjectGrid = storageObjectGrid;
-        this.cpeForm = cpeForm;
-        this.sfpForm = sfpForm;
-        this.supplyForm = supplyForm;
+                             ServiceStorageObject dataProvider, ReservationForm reservationForm,
+                             StorageObjectGrid storageObjectGrid, ServiceReservation reservationService, AuthenticatedUser authenticatedUser, CPEForm cpeForm, SFPForm sfpForm,
+                             SupplyForm supplyForm) {
+        this.reservationGrid    = reservationGrid;
+        this.storageService       = storageService;
+        this.storageObjectService = dataProvider;
+        this.reservationForm      = reservationForm;
+        this.storageObjectGrid  = storageObjectGrid;
+        this.reservationService = reservationService;
+        this.authenticatedUser  = authenticatedUser;
+        this.cpeForm            = cpeForm;
+        this.sfpForm            = sfpForm;
+        this.supplyForm         = supplyForm;
       initUI();
     }
 
@@ -59,7 +70,7 @@ public class MeineHardwareView extends TabSheet {
     private void initUI() {
         add("Meine Hardware", UIFactory.LazyComponent(
             () -> {
-                //storageObjectGrid.populate(dataProvider.getStorageObjects(10));
+                storageObjectGrid.populate(storageObjectService.findStorageObjectByGivenUser(authenticatedUser.getUser().get()).toList());
                 storageObjectGrid.addComponentColumn(item -> {
                     return new Span(
                         UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(), "Ins Lager verschieben", e -> moveToStorage(item)),
@@ -70,7 +81,7 @@ public class MeineHardwareView extends TabSheet {
         add(
             "Meine Reservierungen", UIFactory.LazyComponent (
             () -> {
-                reservationGrid.populate(dataProvider.getReservations(10));
+                reservationGrid.populate(reservationService.findReservationListByUserOptional(authenticatedUser.getUser().get()));
                 reservationGrid.addComponentColumn( item -> {
                    return new Span(
                        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen", e -> onDelete(item)),
@@ -92,11 +103,12 @@ public class MeineHardwareView extends TabSheet {
               }),
               UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close()))));
       if (item.getCpe() != null) {
-        cpeForm.setCPEBeans(item.getCpe().getProducer(), item.getCpe(), item, item.getCpe()
-            .getType(), item.getStorage());
+          //TODO
+        cpeForm.setCPEBeans(List.of(item.getObjectTypeName()), item.getCpe().getProducer(), item.getCpe(), item, item.getCpe()
+                                                                                                                     .getType(), item.getStorage());
         hl.add(cpeForm);
       } else if ( item.getSfp() != null) {
-        sfpForm.setSFPBeans(item.getSfp().getProducer(), item.getSfp(), item, item.getSfp()
+        sfpForm.setSFPBeans(List.of(item.getObjectTypeName()), item.getSfp().getProducer(), item.getSfp(), item, item.getSfp()
             .getType(), item.getStorage());
         hl.add(sfpForm);
       } else {
@@ -115,14 +127,14 @@ public class MeineHardwareView extends TabSheet {
         storageObject.setSupply(supplyForm.saveSupply());
       }
 
-      dataProvider.save(storageObject);
+      storageObjectService.saveStorageObject(storageObject);
       UIFactory.NotificationSuccess("Lagerobjekt geändert").open();
       storageObjectGrid.getDataProvider().refreshAll();
   }
 
   private void moveToStorage(StorageObject storageObject) {
         Dialog dialog = new Dialog();
-        ComboBox<Storage> storages =  new ComboBox<>("Lager", dataProvider.getStorages(10));
+        ComboBox<Storage> storages =  new ComboBox<>("Lager", storageService.findAll().toList());
         storages.setItemLabelGenerator(Storage::getName);
         storages.setAllowCustomValue(false);
 
@@ -146,7 +158,7 @@ public class MeineHardwareView extends TabSheet {
 
   private void onSave(StorageObject storageObject, Storage storage) {
       storageObject.setStorage(storage);
-      dataProvider.save(storageObject);
+      storageObjectService.saveStorageObject(storageObject);
       storageObjectGrid.getDataProvider().refreshAll();
   }
 
@@ -165,12 +177,12 @@ public class MeineHardwareView extends TabSheet {
     }
 
     private void onSave(Reservation item) {
-        dataProvider.save(reservationForm.save());
+        reservationService.saveReservationByObject(reservationForm.save());
         reservationGrid.getDataProvider().refreshAll();
     }
 
     private void onDelete(Reservation item) {
-        dataProvider.remove(item);
+        reservationService.deleteByObject(item);
         reservationGrid.getDataProvider().refreshAll();
         UIFactory.NotificationSuccess("Deleted");
     }
