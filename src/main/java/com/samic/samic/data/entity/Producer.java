@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,11 +20,11 @@ public class Producer extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<SFP> sfp;
+    @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private List<SFP> sfp = new ArrayList<>();
 
-    @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<CPE> cpe;
+    @OneToMany(mappedBy = "producer", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private List<CPE> cpe = new ArrayList<>();
 
     /*
     attributes

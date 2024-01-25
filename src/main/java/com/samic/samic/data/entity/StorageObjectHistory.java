@@ -18,7 +18,7 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = { CascadeType.MERGE})
     @JoinColumn(name = "fk_storageObject_history", foreignKey = @ForeignKey(name = "fk_storageObject_2_storageObjectHistory"))
     private StorageObject storageObject;
 
@@ -27,11 +27,11 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     private LocalDateTime untilDateTime;
 
     @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name= "fk_storage_2_storageObjectHistory"))
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     private Storage storage;
 
     @JoinColumn(name = "fk_reservation", foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     private Reservation reservation;
 
     /*

@@ -11,18 +11,21 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Service
-@RequiredArgsConstructor
 @Log4j2
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class ServiceSFP{
 
     @Autowired
     private RepositorySFP repositorySFP;
 
+    @Transactional
     public SFP saveSFPByObject(SFP sfp){
         if(sfp != null){
             if(sfp.getId() != null){

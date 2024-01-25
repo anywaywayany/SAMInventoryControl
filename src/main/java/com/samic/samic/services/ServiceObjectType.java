@@ -11,18 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
 @Log4j2
+@Transactional
 @RequiredArgsConstructor
 public class ServiceObjectType{
 
     @Autowired
     private RepositoryObjectType repositoryObjectType;
 
+    @Transactional
     public ObjectType saveObjectTypeByObject(ObjectType objectType){
         if(objectType != null){
             if(objectType.getId() != null){

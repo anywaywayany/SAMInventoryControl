@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 @Table(name = "reservations")
 @NoArgsConstructor
 @AllArgsConstructor
+@Transactional
 public class Reservation extends AbstractIdentityClass<Long>{
 
     /*
@@ -28,11 +30,11 @@ public class Reservation extends AbstractIdentityClass<Long>{
     @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY) //Shared Primary Key
     private StorageObject storageObject;
 
-    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     private List<StorageObjectHistory> storageObjectHistory = new ArrayList<>();
 
     @JoinColumn(name = "fk_user", foreignKey = @ForeignKey(name = "fk_user_2_reservation"))
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private User reservedFrom;
 
     /*

@@ -22,7 +22,7 @@ public class Supply extends AbstractIdentityClass<Long>{
     relations
      */
     @Column(name = "supply")
-    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST})
     private List<StorageObject> storageObject = new ArrayList<>();
 
     /*

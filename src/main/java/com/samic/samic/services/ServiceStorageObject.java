@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,18 +18,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Service
-@RequiredArgsConstructor
 @Log4j2
+@Service
+@Transactional
+@RequiredArgsConstructor
+@ComponentScan(basePackages = "com.samic.samic.data.services")
 public class ServiceStorageObject{
 
     @Autowired
-    private RepositoryStorageObject repositoryStorageObject;
+    private final RepositoryStorageObject repositoryStorageObject;
 
-    public ServiceStorageObject(@Qualifier("storageObject") RepositoryStorageObject repositoryStorageObject){
-        this.repositoryStorageObject = repositoryStorageObject;
-    }
+//    public ServiceStorageObject(@Qualifier("storageObject") RepositoryStorageObject repositoryStorageObject){
+//        this.repositoryStorageObject = repositoryStorageObject;
+//    }
 
+    @Transactional
     public StorageObject saveStorageObject(StorageObject storageObject){
         if(storageObject != null){
             if(storageObject.getId() != null){
@@ -54,13 +59,6 @@ public class ServiceStorageObject{
             throw new SamicException("StorageObject is null!");
         }
     }
-
-    //    public void lagerObjectErfassen(StorageObject storageObject){
-    //        if(storageObject != null){
-    //            //prüfen ob storageObject schon existiert
-    //        }
-    //
-    //    }
 
     public StorageObject findStorageObjectById(Long id){
         if(id != null){

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -17,12 +18,13 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional
 public class ServiceCPE{
 
     @Autowired
     private final RepositoryCPE repositoryCPE;
 
-
+    @Transactional
     public CPE saveCPEByObject(CPE cpe){
         if(cpe != null){
             if(cpe.getId() != null){

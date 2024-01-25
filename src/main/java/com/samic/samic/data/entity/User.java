@@ -23,7 +23,7 @@ public class User extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "storedAtUser", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     //        @JoinColumn(name = "fk_storageObject")
     private List<StorageObject> storageObject = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class User extends AbstractIdentityClass<Long>{
     //    private StorageObject storageObject;
 
 
-    @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "reservedFrom", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE ,CascadeType.PERSIST})
     private List<Reservation> reservation = new ArrayList<>();
 
 

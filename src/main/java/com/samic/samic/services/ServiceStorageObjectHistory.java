@@ -9,21 +9,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Service
-@RequiredArgsConstructor
 @Log4j2
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class ServiceStorageObjectHistory{
 
     @Autowired
     private final RepositoryStorageObjectHistory repositoryStorageObjectHistory;
 
 
-    //t
+    @Transactional
     public StorageObjectHistory saveStorageObjectHistoryByObject(StorageObjectHistory storageObjectHistory){
         if(storageObjectHistory != null){
             if(storageObjectHistory.getId() != null){

@@ -180,12 +180,12 @@ values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11
 -- values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521,
 --         'pellentesque quisque porta volutpat erat');
 
--- insert into object_types(id, objectType_name)
--- values (1, 'IMFC433');
--- insert into object_types(id, objectType_name)
--- values (2, 'EQVN997');
+insert into object_types(id, object_Type_name)
+values (1, 'IMFC433');
+insert into object_types(id, object_Type_name)
+values (2, 'EQVN997');
 
 -- insert into storage_objects (id, fk_reservation, fk_CPE, fk_supply,
 --                              fk_storaed_at_user, fk_storage, remark, status, project_device)
 -- values (1, 1, 1 ,1 , 3, 1, 'pellentesque quis', 'AVAILABLE', true);
--- --insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (2, 2, 0, 'pede malesuada in imperdiet et', 6, null, 'AVAILABLE', 2, null, '1', null);
+--insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (2, 2, 0, 'pede malesuada in imperdiet et', 6, null, 'AVAILABLE', 2, null, '1', null);

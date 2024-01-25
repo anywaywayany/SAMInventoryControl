@@ -8,20 +8,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Service
-@RequiredArgsConstructor
 @Log4j2
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class ServiceReservation{
 
     @Autowired
     private final RepositoryReservation repositoryReservation;
 
-
+    @Transactional
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
             if(reservation.getId() == null){

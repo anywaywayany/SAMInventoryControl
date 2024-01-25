@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,40 +22,39 @@ public class StorageObject extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "fk_object_type", foreignKey = @ForeignKey(name = "fk_objectType_2_storageObject"))
     private ObjectType objectTypeName;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //Shared Primary Key
+    @OneToOne(fetch = FetchType.LAZY) //Shared Primary Key
     @JoinColumn(name = "fk_reservation"/*, referencedColumnName = "id"*/,foreignKey = @ForeignKey(name = "fk_reservation_2_storageObject"))    //foreignKey should be named only reservation
     private Reservation reservation;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "fk_CPE", foreignKey = @ForeignKey(name = "fk_cpe_2_storageObject"))
     private CPE cpe;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} ) //Viele StorageObj. die auf einen SFP zeigen.
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST} )
     @JoinColumn(name = "fk_SFP", foreignKey = @ForeignKey(name = "fk_sfp_2_storageObject"))
     private SFP sfp;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST} )
     @JoinColumn(name = "fk_supply", foreignKey = @ForeignKey(name = "fk_supply_2_storageObject"))
     private Supply supply;
 
-    @OneToMany(mappedBy = "storageObject", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private List<StorageObjectHistory> storageObjectHistory;
-
+    @OneToMany(mappedBy = "storageObject", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    private List<StorageObjectHistory> storageObjectHistory = new ArrayList<>();
     @Embedded
     @Column(name = "stored_at_customer")
     private Customer storedAtCustomer;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_storaed_at_user", foreignKey = @ForeignKey(name = "fk_User_2_storageObject"))
     private User storedAtUser;
 
     //Einseitige Beziehung
-    @ManyToOne(targetEntity = Storage.class,fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name = "fk_storage_2_storageObject"))
     private Storage storage;
 
@@ -72,51 +72,53 @@ public class StorageObject extends AbstractIdentityClass<Long>{
     //    @Column(name = "object_name", length = ConstantsDomain.DEFAULT_LENGTH)
     //    private @NotBlank String name;
 
-
     @Column(name = "project_device")
     private Boolean projectDevice;
 
-    public void setReservation(Reservation reservation){
-        if(reservation != null){
-            if(this.getReservation() == null){
-                this.reservation = reservation;
-            }else{
-                throw new SamicException("Reservation has already been set!");
-            }
-        }else{
-            throw new SamicException("Given Reservation is null!");
-        }
-    }
+    @Column(name = "processed")
+    private boolean processed;
 
-    public void setStorage(Storage storage){
-        if(storage != null){
-            this.storage = storage;
-        }
-    }
-
-    public void setCpe(CPE cpe){
-        if(cpe != null){
-            if(this.getSfp() == null){
-                this.cpe = cpe;
-            }
-        }
-    }
-
-    public void setSfp(SFP sfp){
-        if(sfp != null){
-            if(this.getCpe() == null){
-                this.sfp = sfp;
-            }
-        }
-    }
-
-    public void setSupply(Supply supply){
-        if(supply != null){
-            if(this.supply == null){
-                this.supply = supply;
-            }
-        }
-    }
+//    public void setReservation(Reservation reservation){
+//        if(reservation != null){
+//            if(this.getReservation() == null){
+//                this.reservation = reservation;
+//            }else{
+//                throw new SamicException("Reservation has already been set!");
+//            }
+//        }else{
+//            throw new SamicException("Given Reservation is null!");
+//        }
+//    }
+//
+//    public void setStorage(Storage storage){
+//        if(storage != null){
+//            this.storage = storage;
+//        }
+//    }
+//
+//    public void setCpe(CPE cpe){
+//        if(cpe != null){
+//            if(this.getSfp() == null){
+//                this.cpe = cpe;
+//            }
+//        }
+//    }
+//
+//    public void setSfp(SFP sfp){
+//        if(sfp != null){
+//            if(this.getCpe() == null){
+//                this.sfp = sfp;
+//            }
+//        }
+//    }
+//
+//    public void setSupply(Supply supply){
+//        if(supply != null){
+//            if(this.supply == null){
+//                this.supply = supply;
+//            }
+//        }
+//    }
 
 }
 

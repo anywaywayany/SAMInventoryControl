@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @Entity
@@ -19,10 +22,12 @@ public class SFP extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
     private Producer producer;
 
+    @OneToMany(mappedBy = "sfp", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<StorageObject> storageObject = new ArrayList<>();
     /*
     attributes
      */

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Stream;
 import static java.util.spi.ToolProvider.findFirst;
 @Log4j2
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ServiceStorage{
 
@@ -25,7 +27,7 @@ public class ServiceStorage{
     private final RepositoryStorage repositoryStorage;
 
 
-    //t
+    @Transactional
     public Storage saveStorageByObject(Storage storage){
         if(storage != null){
             if(storage.getId() != null){
