@@ -125,14 +125,6 @@ public class MeineHardwareView extends TabSheet {
   }
 
   private void onSave(StorageObject storageObject) {
-    if (storageObject.getSfp() != null) {
-      storageObject.setSfp(sfpForm.saveSFP());
-    } else if (storageObject.getCpe() != null) {
-      storageObject.setCpe(cpeForm.saveCPE());
-    } else {
-      storageObject.setSupply(supplyForm.saveSupply());
-    }
-
     storageObjectService.saveStorageObject(storageObject);
     UIFactory.NotificationSuccess("Lagerobjekt geändert").open();
     storageObjectGrid.getDataProvider().refreshAll();
