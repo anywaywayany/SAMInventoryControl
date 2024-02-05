@@ -168,11 +168,8 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
         System.out.println(saved.getObjectTypeName().getId() + saved.getObjectTypeName().getName());
         System.out.println(saved.getCpe().getSerialnumber());
         System.out.println(saved.getCpe().getMacAddress());
-        lagerObjectErfassenService.LagerOBjectErfassenCPE(saved, value,
-            saved.getCpe().getProducer(), saved.getCpe());
 
-        //todo put in persisted the persisted entity and show id
-        persisted = saved;
+        persisted = lagerObjectErfassenService.LagerOBjectErfassenCPE(saved, value, producer, saved.getCpe());
         if (persisted != null) {
           UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
         }

@@ -4,16 +4,14 @@ import com.samic.samic.data.constants.ConstantsDomain;
 import com.samic.samic.exceptions.SamicException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @Entity
@@ -95,25 +93,27 @@ public class Reservation extends AbstractIdentityClass<Long>{
     public String toString(){
         StringBuilder builder = new StringBuilder();
         builder.append("Reservation:\n")
-                .append("storageObject=")
-                .append(storageObject)
-                .append('\'')
-                .append("reservedFrom=")
-                .append(reservedFrom)
-                .append('\'')
-                .append("customer=")
-                .append(customer)
-                .append('\'')
-                .append("reservedAt=")
-                .append(reservedAt)
-                .append('\'')
-                .append("reservedDescription='")
-                .append(reservedDescription)
-                .append('\'')
-                .append("completed=")
-                .append(completed)
-                .append('\'')
-                .append("lastModified=").append(lastModified);
+               //                .append("storageObject=")
+               //                .append(storageObject)
+               //                .append('\'')
+               .append("reservedFrom=")
+               .append(reservedFrom)
+               .append('\'')
+               .append("customer=")
+               .append(customer)
+               .append('\'')
+               .append("reservedAt=")
+               .append(reservedAt)
+               .append('\'')
+               .append("reservedDescription='")
+               .append(reservedDescription)
+               .append('\'')
+               .append("completed=")
+               .append(completed)
+               .append('\'')
+               .append("lastModified=").append(lastModified);
         return builder.toString();
     }
 }
+
+

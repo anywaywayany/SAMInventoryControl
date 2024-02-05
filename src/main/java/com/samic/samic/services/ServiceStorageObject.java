@@ -66,7 +66,8 @@ public class ServiceStorageObject{
                     }
                 }else{
                     log.debug("saveStorageObject() | StorageObject does not exist in DB, ID: {},\nStorageObject: {}", storageObject.getId());
-                    throw new StorageObjectException("StorageObject with id: '%s' does not exist in DB but does have a id: ".formatted(storageObject.getId()));
+                    return repositoryStorageObject.save(storageObject);
+
                 }
             }else{
                 log.debug("saveStorageObject() | StorageObject id is null, Saving StorageObject: {}", storageObject); //TODO T3600
@@ -341,7 +342,7 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectByGivenUser(User user){
         Stream<StorageObject> storageObjectOnUser = repositoryStorageObject.findAll().stream();
-        return storageObjectOnUser.filter(storageObject -> storageObject.getStoredAtUser().getId().equals(user.getId()));
+        return storageObjectOnUser.filter(stor -> stor.getStoredAtUser() != null).filter(storageObject -> storageObject.getStoredAtUser().getId().equals(user.getId()));
     }
 
     public Optional<StorageObject> findStorageObjectByCustomer(Customer customer){

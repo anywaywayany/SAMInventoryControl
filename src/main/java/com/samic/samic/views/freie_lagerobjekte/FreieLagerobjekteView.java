@@ -2,10 +2,7 @@ package com.samic.samic.views.freie_lagerobjekte;
 
 import com.samic.samic.components.UIFactory;
 import com.samic.samic.components.form.ReservationForm;
-import com.samic.samic.data.entity.ObjectType;
-import com.samic.samic.data.entity.Reservation;
-import com.samic.samic.data.entity.Storage;
-import com.samic.samic.data.entity.StorageObject;
+import com.samic.samic.data.entity.*;
 import com.samic.samic.exceptions.SamicException;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.services.ServiceObjectType;
@@ -148,8 +145,6 @@ public class FreieLagerobjekteView extends VerticalLayout {
   private void reserve() {
     Reservation reservationToSave = reservationForm.save();
 
-    reservationToSave.setReservedAt(LocalDateTime.now());
-    reservationToSave.setLastModified(LocalDateTime.now());
     reservationToSave.setReservedFrom(authenticatedUser.getUser().get());
 
     this.storageObjectToSave.setReservation(reservationToSave);
@@ -171,12 +166,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
   }
 
 
-  private void openReservationForm(StorageObject item) {
-    this.storageObjectToSave = item;
-    reservationForm.setBean(Reservation.builder().build());
+  private void openReservationForm(StorageObject storageObject) {
+    this.storageObjectToSave = storageObject;
+    reservationForm.setBean(Reservation.builder().customer(Customer.builder().connectionNo(0).build()).build());
     reservationDialog.open();
   }
-
   private void addToUser(StorageObject item) {
     item.setStoredAtUser(authenticatedUser.getUser().get());
     item.setStorage(null);

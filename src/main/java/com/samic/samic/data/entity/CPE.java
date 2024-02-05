@@ -26,7 +26,7 @@ public class CPE extends AbstractIdentityClass<Long>{
     @OneToMany(mappedBy = "cpe", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<StorageObject> storageObject = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_cpe"))
     private Producer producer;
 

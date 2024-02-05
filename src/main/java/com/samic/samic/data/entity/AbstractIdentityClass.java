@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @MappedSuperclass
 public class AbstractIdentityClass<Long extends Serializable> implements Persistable<Long>{
@@ -23,6 +24,7 @@ public class AbstractIdentityClass<Long extends Serializable> implements Persist
     public Long getId() {
         return id;
     }
+
 
     /**
      * Sets the id of the entity.
@@ -81,8 +83,9 @@ public class AbstractIdentityClass<Long extends Serializable> implements Persist
 
         int hashCode = 17;
 
-        hashCode += null == getId() ? 0 : getId().hashCode() * 31;
+//        hashCode += null == getId() ? 0 : getId().hashCode() * 31;
+        return id == null ? Objects.hash(43): Objects.hash(id);
 
-        return hashCode;
+//        return hashCode;
     }
 }

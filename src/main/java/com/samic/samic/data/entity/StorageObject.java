@@ -23,11 +23,11 @@ public class StorageObject extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_object_type", foreignKey = @ForeignKey(name = "fk_objectType_2_storageObject"))
     private ObjectType objectTypeName;
 
-    @OneToOne(fetch = FetchType.EAGER) //Shared Primary Key
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = false) //Shared Primary Key
     @JoinColumn(name = "fk_reservation"/*, referencedColumnName = "id"*/,foreignKey = @ForeignKey(name = "fk_reservation_2_storageObject"))    //foreignKey should be named only reservation
     private Reservation reservation;
 
@@ -128,9 +128,9 @@ public class StorageObject extends AbstractIdentityClass<Long>{
         builder.append("StorageObject:\n")
                 .append("objectTypeName=")
                 .append(objectTypeName)
-                .append('\'')
-                .append("reservation=")
-                .append(reservation)
+//                .append('\'')
+//                .append("reservation=")
+//                .append(reservation)
                 .append('\'')
                 .append("cpe=")
                 .append(cpe)

@@ -7,5 +7,4 @@ import lombok.Builder;
 //@AllArgsConstructor
 @Builder
 public record Customer(Integer connectionNo){
-
 }

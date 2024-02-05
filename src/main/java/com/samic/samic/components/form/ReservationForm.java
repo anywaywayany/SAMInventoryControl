@@ -31,7 +31,7 @@ public class ReservationForm extends FormLayout {
 
     private void initBinder() {
         reservationBinder.forField(description).bind(Reservation::getReservedDescription, Reservation::setReservedDescription);
-        reservationBinder.bind(reservedFor, item -> item.getCustomer().connectionNo(), (item, value) -> item.setCustomer(
+        reservationBinder.forField(reservedFor).bind(item -> item != null ? Integer.valueOf(item.getCustomer().connectionNo()) : Integer.valueOf(0) , (item, value) -> item.setCustomer(
             Customer.builder().connectionNo(value).build()));
     }
 

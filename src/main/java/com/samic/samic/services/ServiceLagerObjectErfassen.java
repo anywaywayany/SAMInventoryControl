@@ -31,39 +31,36 @@ public class ServiceLagerObjectErfassen{
     private final ServiceStorageObject serviceStorageObject;
 
 
-
-    public StorageObject LagerOBjectErfassenSFP(
-            StorageObject storageObject,
-            Storage storage,
-            Producer producer,
-            SFP sfp){
+    public StorageObject LagerOBjectErfassenSFP(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){
 
 
-
-       return saveSFP_Erfassen(storageObject, storage, producer, sfp);
+        return saveSFP_Erfassen(storageObject, storage, producer, sfp);
     }
 
-    public void LagerOBjectErfassenCPE(
-            StorageObject storageObject,
-            Storage storage,
-            Producer producer,
-            CPE cpe){
-        saveCPE_Erfassen(storageObject, storage, producer, cpe);
-    }
+    public StorageObject LagerOBjectErfassenCPE(StorageObject storageObject, Storage storage, Producer producer, CPE cpe){
 
 
+        isNotNull(storageObject, "storageObject in StorageObejectErfassen() | Backend ");
+        isNotNull(storage, "storage in StorageObejectErfassen() | Backend ");
+        isNotNull(producer, "producer in StorageObejectErfassen() | Backend ");
 
-    public void LagerOBjectErfassenSUPPLY(
-            StorageObject storageObject,
-            Storage storage,
-            Producer producer,
-            Supply supply){
+        storageObject.setStorage(storage);
+        var cpe2 = serviceCPE.saveCPEByObject(cpe);
+        cpe2.setProducer(producer);
+        storageObject.setCpe(cpe2);
+        StorageObject storageObject1 = serviceStorageObject.saveStorageObject(storageObject);
 
-        saveSupply_Erfassen(storageObject, storage, producer, supply);
+        return  storageObject1;
 
     }
 
 
+    public void LagerOBjectErfassenSUPPLY(StorageObject storageObject, Storage storage, Producer producer, Supply supply){
+
+        // Prüfen
+
+
+    }
 
 
     public StorageObject saveSFP_Erfassen(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){

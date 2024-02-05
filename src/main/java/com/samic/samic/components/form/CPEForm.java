@@ -64,9 +64,9 @@ public class CPEForm extends FormLayout {
             (so, value) -> so.getCpe().setSerialnumber(value));
 
     binderStorageObject.forField(macAdress).asRequired("MAC-Adresse angeben")
-        .withValidator(mac -> mac.length() == 17,
-            "MAC-Adresse ist ungueltig, Format: ??-??-??-??-??-??")
-        .withNullRepresentation("")
+//        .withValidator(mac -> mac.length() == 17,
+//            "MAC-Adresse ist ungueltig, Format: ??-??-??-??-??-??")
+       .withNullRepresentation("")
         .bind(so -> so.getCpe().getMacAddress(), (so, value) -> so.getCpe().setMacAddress(value));
 
     binderStorageObject.forField(isProjectEquipment)

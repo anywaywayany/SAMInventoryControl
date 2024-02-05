@@ -44,4 +44,5 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
     Stream<StorageObject> findStorageObjectByCpe_Id(Long id);
 
     Optional<StorageObject> findStorageObjectByStoredAtCustomer(Customer customer);
+
 }

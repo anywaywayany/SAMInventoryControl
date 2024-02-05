@@ -51,13 +51,13 @@ public class MeineHardwareView extends TabSheet {
 
 
   public MeineHardwareView(ServiceStorage storageService, ReservationGrid reservationGrid,
-      ServiceStorageObject dataProvider, ReservationForm reservationForm,
+      ServiceStorageObject storageObjectService, ReservationForm reservationForm,
       StorageObjectGrid storageObjectGrid, ServiceReservation reservationService,
       AuthenticatedUser authenticatedUser, CPEForm cpeForm, SFPForm sfpForm,
       SupplyForm supplyForm) {
     this.reservationGrid = reservationGrid;
     this.storageService = storageService;
-    this.storageObjectService = dataProvider;
+    this.storageObjectService = storageObjectService;
     this.reservationForm = reservationForm;
     this.storageObjectGrid = storageObjectGrid;
     this.reservationService = reservationService;
@@ -72,7 +72,7 @@ public class MeineHardwareView extends TabSheet {
   private void initUI() {
     add("Meine Hardware", UIFactory.LazyComponent(
         () -> {
-          storageObjectGrid.populate(
+          storageObjectGrid.setItems(
               storageObjectService.findStorageObjectByGivenUser(authenticatedUser.getUser().get())
                   .toList());
           storageObjectGrid.addComponentColumn(item -> {
@@ -88,8 +88,8 @@ public class MeineHardwareView extends TabSheet {
     add(
         "Meine Reservierungen", UIFactory.LazyComponent(
             () -> {
-              reservationGrid.populate(reservationService.findReservationListByUserOptional(
-                  authenticatedUser.getUser().get()));
+              reservationGrid.populate(reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
+                                                                                                             .get()).toList());
               reservationGrid.addComponentColumn(item -> {
                 return new Span(
                     UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
