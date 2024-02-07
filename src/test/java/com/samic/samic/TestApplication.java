@@ -3,6 +3,7 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
+import com.samic.samic.config.ORCLConfig;
 import jakarta.persistence.EntityListeners;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.devtools.restart.RestartScope;
@@ -26,6 +27,7 @@ import org.testcontainers.utility.DockerImageName;
 @Configuration
 @EnableTransactionManagement
 @EntityListeners(AuditingEntityListener.class)
+@Import(ORCLConfig.class)
 public class TestApplication {
 
     @Bean

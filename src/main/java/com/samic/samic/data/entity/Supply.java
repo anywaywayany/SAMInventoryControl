@@ -21,7 +21,9 @@ public class Supply extends AbstractIdentityClass<Long>{
     relations
      */
     @Column(name = "supply")
-    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "supply",
+               fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST})
     private List<StorageObject> storageObject = new ArrayList<>();
 
     /*
@@ -38,7 +40,15 @@ public class Supply extends AbstractIdentityClass<Long>{
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
-        builder.append("Supply:\n").append("storageObject=").append(storageObject).append('\'').append("description='").append(description).append('\'').append("amount=").append(amount);
+        builder.append("Supply:\n")
+//               .append("storageObject=")
+//               .append(storageObject)
+//               .append('\'')
+               .append("description='")
+               .append(description)
+               .append("\n")
+               .append("amount=")
+               .append(amount);
         return builder.toString();
     }
 }

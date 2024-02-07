@@ -5,10 +5,7 @@ import com.samic.samic.components.form.ReservationForm;
 import com.samic.samic.data.entity.*;
 import com.samic.samic.exceptions.SamicException;
 import com.samic.samic.security.AuthenticatedUser;
-import com.samic.samic.services.ServiceObjectType;
-import com.samic.samic.services.ServiceStorage;
-import com.samic.samic.services.ServiceStorageObject;
-import com.samic.samic.services.ServiceUser;
+import com.samic.samic.services.*;
 import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -46,6 +43,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
   private final AuthenticatedUser authenticatedUser;
   private final ServiceStorage storageService;
   private final ReservationForm reservationForm;
+  private final ServiceReservation reservationService;
 
   private StorageObject storageObjectToSave;
 
@@ -53,12 +51,14 @@ public class FreieLagerobjekteView extends VerticalLayout {
   public FreieLagerobjekteView(ServiceStorageObject storageObjectService,
                                ServiceObjectType objectTypeService,
                                ServiceStorage storageService, AuthenticatedUser authenticatedUser, ServiceUser userService,
-                               ReservationForm reservationForm) {
+                               ReservationForm reservationForm,
+                               ServiceReservation reservationService) {
     this.storageObjectService = storageObjectService;
     this.objectTypeService = objectTypeService;
     this.authenticatedUser = authenticatedUser;
     this.storageService = storageService;
     this.reservationForm = reservationForm;
+    this.reservationService = reservationService;
 
     initUI();
   }
@@ -101,7 +101,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
     GridListDataView<StorageObject> storageObjectList;
 
     try {
-      storageObjectList = grid.setItems(storageObjectService.findAll().toList());
+      storageObjectList = grid.setItems(storageObjectService.findFreeStorageObjects().toList());
     } catch (SamicException e) {
       storageObjectList = grid.setItems(List.of());
       UIFactory.NotificationError(e.getMessage()).open();
@@ -146,9 +146,13 @@ public class FreieLagerobjekteView extends VerticalLayout {
     Reservation reservationToSave = reservationForm.save();
 
     reservationToSave.setReservedFrom(authenticatedUser.getUser().get());
+    System.out.println("##################################Setze User auf Reservierung: " + reservationToSave.getReservedFrom().getId());
 
-    this.storageObjectToSave.setReservation(reservationToSave);
-    storageObjectService.saveStorageObject(storageObjectToSave);
+    var persistedReservation = reservationService.saveReservationByObject(reservationToSave);
+      this.storageObjectToSave.setReservation(persistedReservation);
+    System.out.println("##################################Setze User auf Reservierung: " + storageObjectToSave.getReservation().getReservedFrom().getId());
+    var persisted = storageObjectService.saveStorageObject(storageObjectToSave);
+    System.out.println("##################################Setze User auf Reservierung: " + persisted.getReservation().getReservedFrom().getId());
 
     this.storageObjectToSave = null;
     reservationDialog.close();

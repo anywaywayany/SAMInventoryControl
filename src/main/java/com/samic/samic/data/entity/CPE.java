@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Data
 @Builder
 @Entity
@@ -23,11 +24,15 @@ public class CPE extends AbstractIdentityClass<Long>{
     relations
      */
     @Column(name = "storageObject")
-    @OneToMany(mappedBy = "cpe", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "cpe",
+               fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<StorageObject> storageObject = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_cpe"))
+    @ManyToOne(fetch = FetchType.EAGER,
+               cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "fk_producer",
+                foreignKey = @ForeignKey(name = "fk_producer_2_cpe"))
     private Producer producer;
 
     /*
@@ -36,7 +41,8 @@ public class CPE extends AbstractIdentityClass<Long>{
     @Column(name = "serialnumber")
     private @NotBlank String serialnumber;
 
-    @Column(name = "macaddress", length = ConstantsDomain.MAC_LENGTH_WITH_HYPHEN)
+    @Column(name = "macaddress",
+            length = ConstantsDomain.MAC_LENGTH_WITH_HYPHEN)
     private @NotBlank String macAddress;
 
     @Enumerated(EnumType.STRING)
@@ -46,7 +52,15 @@ public class CPE extends AbstractIdentityClass<Long>{
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
-        builder.append( "CPE:\n").append('\'').append("producer=").append(producer).append('\'').append("serialnumber='").append(serialnumber).append('\'').append("macAddress='").append(macAddress).append('\'').append("type=").append(type);
+        builder.append("CPE:\n")
+               .append("serialnumber= ")
+               .append(serialnumber)
+               .append("\n")
+               .append("macAddress= ")
+               .append(macAddress)
+               .append("\n")
+               .append("type= ")
+               .append(type);
         return builder.toString();
     }
 }

@@ -1,6 +1,8 @@
 package com.samic.samic.data.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
@@ -46,10 +48,14 @@ public class AbstractIdentityClass<Long extends Serializable> implements Persist
         return null == getId();
     }
 
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime lastModifiedAt;
 
-    @CreatedDate
+
+
+
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
 
@@ -78,14 +84,22 @@ public class AbstractIdentityClass<Long extends Serializable> implements Persist
         return null == this.getId() ? false : this.getId().equals(that.getId());
     }
 
+//    @Override
+//    public int hashCode() {
+//
+//        int hashCode = 17;
+//
+////        hashCode += null == getId() ? 0 : getId().hashCode() * 31;
+//        return id == null ? Objects.hash(43): Objects.hash(id);
+//
+////        return hashCode;
+//    }
+
     @Override
     public int hashCode() {
-
-        int hashCode = 17;
-
-//        hashCode += null == getId() ? 0 : getId().hashCode() * 31;
-        return id == null ? Objects.hash(43): Objects.hash(id);
-
-//        return hashCode;
+        if (getId() != null) {
+            return getId().hashCode();
+        }
+        return super.hashCode();
     }
 }

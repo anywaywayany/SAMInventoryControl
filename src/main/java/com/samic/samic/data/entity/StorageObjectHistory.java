@@ -18,20 +18,26 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "fk_storageObject_history", foreignKey = @ForeignKey(name = "fk_storageObject_2_storageObjectHistory"))
+    @ManyToOne(fetch = FetchType.EAGER,
+               cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "fk_storageObject_history",
+                foreignKey = @ForeignKey(name = "fk_storageObject_2_storageObjectHistory"))
     private StorageObject storageObject;
 
     @Column(name = "until_Date_Time")
     @PastOrPresent
     private LocalDateTime untilDateTime;
 
-    @JoinColumn(name = "fk_storage", foreignKey = @ForeignKey(name = "fk_storage_2_storageObjectHistory"))
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "fk_storage",
+                foreignKey = @ForeignKey(name = "fk_storage_2_storageObjectHistory"))
+    @ManyToOne(fetch = FetchType.EAGER,
+               cascade = {CascadeType.MERGE})
     private Storage storage;
 
-    @JoinColumn(name = "fk_reservation", foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "fk_reservation",
+                foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
+    @ManyToOne(fetch = FetchType.EAGER,
+               cascade = {CascadeType.MERGE})
     private Reservation reservation;
 
     /*
@@ -48,8 +54,24 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
-        builder.append("StorageObjectHistory:\n").append("storageObject=").append(storageObject).append('\'').append("untilDateTime=").append(untilDateTime).append('\'').append("storage=")
-                .append(storage).append('\'').append("reservation=").append(reservation).append('\'').append("status=").append(status).append('\'').append("insertDateTime=").append(insertDateTime);
+        builder.append("StorageObjectHistory:\n")
+               .append("storageObject=")
+               .append(storageObject.getObjectTypeName())
+               .append("\n")
+               .append("untilDateTime=")
+               .append(untilDateTime)
+               .append("\n")
+               .append("storage=")
+               .append(storage.getName())
+//               .append('\'')
+//               .append("reservation=")
+//               .append(reservation)
+               .append("\n")
+               .append("status=")
+               .append(status)
+               .append("\n")
+               .append("insertDateTime=")
+               .append(insertDateTime);
         return builder.toString();
     }
 }

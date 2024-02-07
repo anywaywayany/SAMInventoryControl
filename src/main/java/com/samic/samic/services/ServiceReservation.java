@@ -4,10 +4,11 @@ import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.exceptions.ReservationException;
-import com.samic.samic.exceptions.SamicException;
+import com.samic.samic.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,29 +20,30 @@ import java.util.stream.Stream;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@ComponentScan(basePackages = {"com.samic.samic.security"})
+
 public class ServiceReservation{
 
     @Autowired
     private final RepositoryReservation repositoryReservation;
+    @Autowired
+    private final AuthenticatedUser authenticatedUser;
 
     @Transactional
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
             if(reservation.getId() == null){
+                System.out.println(reservation.getReservedFrom()+ "----------User1");
                 if(reservation.getReservedFrom() != null){
+                    System.out.println(reservation.getReservedFrom()+ "----------User2");
                     //                    reservation.setReservedAt(DateTimeFactory.now());
-                    if(reservation.getReservedAt() != null){
-                        reservation.setReservedAt(reservation.getReservedAt());
-                    }
                     if(reservation.getCustomer() != null){
+                        System.out.println(reservation.getReservedFrom()+ "----------User3");
                         reservation.setCustomer(reservation.getCustomer());
                     }
-                    if(reservation.getReservedDescription() != null){
-                        reservation.setReservedDescription(reservation.getReservedDescription());
-                    }
-                    if(reservation.getStorageObject() != null){
-                        reservation.setStorageObject(reservation.getStorageObject());
-                    }
+                    System.out.println(reservation.getReservedFrom()+ "----------User4");
+                    reservation.setReservedFrom(authenticatedUser.getUser().get());
+                    System.out.println(reservation.getReservedFrom()+ "----------User5");
                     return repositoryReservation.save(reservation);
 
                 }else{
@@ -105,18 +107,18 @@ public class ServiceReservation{
         }
     }
 
-    @Transactional
-    public List<Reservation> findReservationListByUserOptional(User user){
-        if(user != null){
-            if(repositoryReservation.count()>0L){
-                return repositoryReservation.findAllByReservedFrom(user);
-            }else{
-                throw new ReservationException("Could not find Reservation with user: '%s' in DB".formatted(user));
-            }
-        }else{
-            throw new ReservationException("Given name is null!");
-        }
-    }
+//    @Transactional
+//    public List<Reservation> findReservationListByUserOptional(User user){
+//        if(user != null){
+//            if(repositoryReservation.count()>0L){
+//                return repositoryReservation.findAllBy_reservedFrom(user);
+//            }else{
+//                throw new ReservationException("Could not find Reservation with user: '%s' in DB".formatted(user));
+//            }
+//        }else{
+//            throw new ReservationException("Given name is null!");
+//        }
+//    }
     @Transactional
     public Stream<Reservation> findAll(){
         return repositoryReservation.findAll().stream();
@@ -150,8 +152,9 @@ public class ServiceReservation{
 
     @Transactional
     public Stream<Reservation> findAllReservationByGivenUser(User user){
-        Stream<Reservation> reservationOnUser = repositoryReservation.findAllByReservedFrom(user).stream();
+        Stream<Reservation> reservationOnUser = repositoryReservation.findReservationsByReservedFrom(user);
 
-        return reservationOnUser.filter(reservation -> reservation.getReservedFrom().equals(user));
+
+        return reservationOnUser/*.peek(u -> System.out.println(u.toString()+"\n"))*/.filter(reservation -> reservation.getReservedFrom().getId().equals(user.getId()));
     }
 }

@@ -148,11 +148,12 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
   void initReservationData() {
     try {
-      reservationGrid.setItems(reservationService
-              .findAllReservationByGivenUser(authenticatedUser
-                                                     .getUser()
-                                                     .get())
-              .map(r -> storageObjectService.findStorageObjectByReservationID(r.getId())).toList());
+      System.out.println("Placeholder");
+//      reservationGrid.setItems(reservationService
+//              .findAllReservationByGivenUser(authenticatedUser
+//                                                     .getUser()
+//                                                     .get())
+//              .map(r -> storageObjectService.findStorageObjectByReservationID(r.getId())).toList());
     } catch (StorageObjectException e) {
       UIFactory.NotificationError(e.getMessage()).open();
     }

@@ -9,6 +9,7 @@ import com.samic.samic.exceptions.StorageObjectException;
 import jakarta.persistence.EntityManagerFactory;
 //import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.stream.Stream;
 
 
 @Service
+@Log4j2
 @Transactional
 @RequiredArgsConstructor
 @ComponentScan(basePackages = "com.samic.samic.data.services")
@@ -33,7 +35,7 @@ public class ServiceStorageObject{
     private final RepositoryStorageObject repositoryStorageObject;
     @Autowired
     private final EntityManagerFactory    emf;
-    private final Logger                  log = LoggerFactory.getLogger(this.getClass());
+//    private final Logger                  log = LoggerFactory.getLogger(this.getClass());
     //    public ServiceStorageObject(@Qualifier("storageObject") RepositoryStorageObject repositoryStorageObject){
     //        this.repositoryStorageObject = repositoryStorageObject;
     //    }
@@ -42,16 +44,29 @@ public class ServiceStorageObject{
     public StorageObject saveStorageObject(StorageObject storageObject){
 
         if(storageObject != null){
-            log.debug("saveStorageObject() | StorageObject is not null, {}: ", storageObject);
+//            System.out.println("------------- 1 " + storageObject.getReservation().getReservedFrom());
+            log.warn("saveStorageObject() | ######################## USER1 ########################, {}: ", storageObject.getStoredAtUser());
+
+            log.debug("saveStorageObject() | StorageObject is not null, {}: ------ , {}", storageObject, storageObject.getStoredAtUser());
             if(storageObject.getId() != null){
+//                System.out.println("------------- 2 " + storageObject.getReservation().getReservedFrom());
+                log.warn("saveStorageObject() | ######################## USER2 ########################, {}: ", storageObject.getStoredAtUser());
                 log.debug("saveStorageObject() | StorageObject id is not null, StorageObject ID: {}, \nstorageObject: {}", storageObject.getId(), storageObject);
                 if(doesObjectExistById(storageObject.getId())){
+//                    System.out.println("------------- 3 " + storageObject.getReservation().getReservedFrom());
+                    log.warn("saveStorageObject() | ######################## USER3 ########################, {}: ", storageObject.getStoredAtUser());
                     log.debug("saveStorageObject() | StorageObject exists, StorageObject ID: {},\nstorageObject: {}", storageObject.getId(), storageObject);
                     StorageObject fetchedStorageObject = findStorageObjectById(storageObject.getId());
+//                    System.out.println("------------- 4 " + fetchedStorageObject.getReservation().getReservedFrom());
+                    log.warn("saveStorageObject() | ######################## USER4 ########################, {}: ", storageObject.getStoredAtUser());
                     log.debug("saveStorageObject() | StorageObject found with ID: {},\nFetched StorageObject{},", storageObject.getId(), fetchedStorageObject);
                     if(fetchedStorageObject != null){
+//                        System.out.println("------------- 5 " + fetchedStorageObject.getReservation().getReservedFrom());
+                        log.warn("saveStorageObject() | ######################## USER5 ########################i, {}: ", storageObject.getStoredAtUser());
                         log.debug("saveStorageObject() | in if statement, fetchedStorageObject: {},\nStorageObject: {}", fetchedStorageObject.getId(), fetchedStorageObject);
                         if(fetchedStorageObject.getId().equals(storageObject.getId())){
+//                            System.out.println("------------- 6 " + fetchedStorageObject.getReservation().getReservedFrom());
+                            log.warn("saveStorageObject() | ######################## USER6 ########################, {}: ", storageObject.getStoredAtUser());
                             log.debug("saveStorageObject() | fetched StorageObject equals given StorageObject, fetchedStorageObject: {},\nStorageObject: {}", fetchedStorageObject.getId(), storageObject);
                             fetchedStorageObject = storageObject;
                             log.debug("saveStorageObejct() | given StorageObject is set to fetched StorageObject, fetchedStorageObject: {},\n storageObject: {}", fetchedStorageObject, storageObject);
