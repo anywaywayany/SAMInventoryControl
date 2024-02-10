@@ -99,14 +99,14 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       i.setAllowCustomValue(false);
     });
     this.storageContainer =
-            UIFactory.rootComponentContainer(
-                    "",
-                    UIFactory.childContainer(JustifyContentMode.START, storageComboBox));
+        UIFactory.rootComponentContainer(
+            "",
+            UIFactory.childContainer(JustifyContentMode.START, storageComboBox));
     add(storageContainer);
 
     VerticalLayout formRootContainer =
-            UIFactory.rootComponentContainer(
-                    "", UIFactory.childContainer(JustifyContentMode.START, typeComboBox, producerSelect));
+        UIFactory.rootComponentContainer(
+            "", UIFactory.childContainer(JustifyContentMode.START, typeComboBox, producerSelect));
 
     formRootContainer.add(
         formChildContainer,
@@ -117,7 +117,6 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
                 buttonClickEvent -> onSave(typeComboBox.getValue(), storageComboBox.getValue(),
                     producerSelect.getValue())),
             UIFactory.btnPrimaryError("Abbrechen", buttonClickEvent -> onCancel())));
-
 
     add(formRootContainer);
   }
@@ -133,15 +132,15 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       formChildContainer.add(cpeForm);
     } else if (value.equals(Type.SFP)) {
       this.sfpForm.setSFPBeans(serviceObjectType.findAll().toList(),
-          Producer.builder().build(),
-          SFP.builder().build(), StorageObject.builder().build(), value, storage);
+          StorageObject.builder().objectTypeName(ObjectType.builder().build())
+              .sfp(SFP.builder().type(value).build()).storage(storage).build());
       formChildContainer.remove(supplyForm);
       formChildContainer.remove(cpeForm);
       formChildContainer.add(sfpForm);
     } else if (value.equals(Type.SUPPLY)) {
-      this.supplyForm.setSupplyBeans(
-          Producer.builder().build(),
-          Supply.builder().build(), StorageObject.builder().build(), value, storage);
+      this.supplyForm.setSupplyBeans(serviceObjectType.findAll().toList(),
+          StorageObject.builder().objectTypeName(ObjectType.builder().build())
+              .supply(Supply.builder().build()).storage(storage).build());
       formChildContainer.remove(sfpForm);
       formChildContainer.remove(cpeForm);
       formChildContainer.add(supplyForm);
@@ -157,7 +156,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     StorageObject saved;
     StorageObject persisted;
     if (selectedType.equals(Type.ROUTER) || selectedType.equals(Type.SWITCH) || selectedType.equals(
-            Type.IP_PHONE)) {
+        Type.IP_PHONE)) {
       if (cpeForm.isValid()) {
 
         saved = cpeForm.saveStorageObject();
@@ -169,7 +168,8 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
         System.out.println(saved.getCpe().getSerialnumber());
         System.out.println(saved.getCpe().getMacAddress());
 
-        persisted = lagerObjectErfassenService.LagerOBjectErfassenCPE(saved, value, producer, saved.getCpe());
+        persisted = lagerObjectErfassenService.LagerOBjectErfassenCPE(saved, value, producer,
+            saved.getCpe());
         if (persisted != null) {
           UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
         }

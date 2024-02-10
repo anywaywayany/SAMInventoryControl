@@ -27,10 +27,6 @@ import jakarta.annotation.security.PermitAll;
 import java.util.List;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @PageTitle("Meine Hardware")
 @Route(value = "meineHardware", layout = MainLayout.class)
 @PermitAll
@@ -88,8 +84,9 @@ public class MeineHardwareView extends TabSheet {
     add(
         "Meine Reservierungen", UIFactory.LazyComponent(
             () -> {
-              reservationGrid.populate(reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
-                                                                                                             .get()).toList());
+              reservationGrid.populate(
+                  reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
+                      .get()).toList());
               reservationGrid.addComponentColumn(item -> {
                 return new Span(
                     UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
@@ -118,12 +115,10 @@ public class MeineHardwareView extends TabSheet {
       cpeForm.setCPEBeans(List.of(item.getObjectTypeName()), item);
       hl.add(cpeForm);
     } else if (item.getSfp() != null) {
-      sfpForm.setSFPBeans(List.of(item.getObjectTypeName()), item.getSfp().getProducer(),
-          item.getSfp(), item, item.getSfp()
-              .getType(), item.getStorage());
+      sfpForm.setSFPBeans(List.of(item.getObjectTypeName()), item);
       hl.add(sfpForm);
     } else {
-      supplyForm.setSupplyBeans(null, item.getSupply(), item, null, item.getStorage());
+      supplyForm.setSupplyBeans(List.of(item.getObjectTypeName()), item);
       hl.add(supplyForm);
     }
     dialog.open();
