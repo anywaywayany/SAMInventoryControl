@@ -139,17 +139,17 @@ values (1, date '2019-05-26', date '2023-05-26', 'Eula_management', 'Lane', 'man
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
 values (1, 'Hauptlager', 'Spengergasse', 10, 20, 1050, 'Wien');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (2, 'Nebenlager', 'Lagerstraße', 1, 30, 1100, 'Wien');
+values (2, 'Kunde', 'Lagert beim Kunden', 1, 1, 0, 'Österreich');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (3, 'Nebenlager2', 'Matzleinsdorferplatz', 100, 1, 1050, 'Wien');
+values (3, 'Lager STMK', 'Herrengasse', 100, 1, 8020, 'Graz');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (4, 'Storage 4', 'Street 4', 4, 1, 4444, 'City 4');
+values (4, 'Lager KTN', 'Lindwurmstra?e', 4, 1, 9020, 'Klagenfurt');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (5, 'Storage 5', 'Street 5', 5, 1, 5555, 'City 5');
+values (5, 'Lager VBG', 'St. Anna Straße', 11, 1, 6900, 'Bregenz');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (6, 'Storage 6', 'Street 6', 6, 1, 6666, 'City 6');
+values (6, 'Lager SBG', 'Ignaz Rieder Kai', 7, 1, 5020, 'Salzburg');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (7, 'Storage 7', 'Street 7', 7, 1, 7777, 'City 7');
+values (7, 'Lager NOE', 'Heidenheimer Straße', 24, 1, 3100, 'St. Poelten');
 
 
 insert into producers (id, producer_name, short_name)
@@ -158,6 +158,8 @@ insert into producers (id, producer_name, short_name)
 values (2, 'HP', 'HP');
 insert into producers (id, producer_name, short_name)
 values (3, 'Snom', 'Snom');
+insert into producers (id, producer_name, short_name)
+values (4, 'Aruba', 'Aruba');
 
 
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
@@ -191,14 +193,22 @@ insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength
 values (2, 1, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '550 nm', 'SFP');
 
 insert into supplies (id, description, amount)
-values (1, 'auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc', 156);
+values (1, 'Patch Kabel elektr. Cat5e 5 Meter', 10);
 insert into supplies (id, description, amount)
-values (2, 'augue a suscipit nulla elit ac nulla sed vel enim', 65);
+values (2, 'Patch Kabel opt. SM 3 Meter LC/LC', 5);
+insert into supplies (id, description, amount)
+values (3, 'TST Bonding 1,5 Meter ', 10);
+insert into supplies (id, description, amount)
+values (4, 'Patch Kabel opt. SM 2 Meter LC/E2000', 5);
+insert into supplies (id, description, amount)
+values (5, 'Patch Kabel elektr. Cat5e 2 Meter', 10);
+insert into supplies (id, description, amount)
+values (6, 'Patch Kabel opt. MM 1,5 Meter LC/LC', 5);
 
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
 values (1, 'C927');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (2, 'C111-4p');
+values (2, 'C1111-4p');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
 values (3, 'ASR920-12SZ-IM');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
@@ -209,7 +219,7 @@ values (5, 'C1117-4p');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
 values (6, 'WS-C2960S-48LPS-L');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (7, 'Aruba 2530');
+values (7, 'Aruba 2530 8-PoE+');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
 values (8, 'M300');
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
@@ -254,14 +264,15 @@ insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STOR
 values (12, 1, 12, 1);
 
 
+--delete from RESERVATIONS where ID = 1;
 insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no,
                           reserved_description)
 values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0,
         12335134,
-        'purus phasellus in felis donec');
--- insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
--- values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521,
---         'pellentesque quisque porta volutpat erat');
+        'Kunde Bike Service Speedy');
+insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
+values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521,
+        'Kunde benötigt PoE fähiges Device');
 
 -- insert into object_types(id, objectType_name)
 -- values (1, 'IMFC433');

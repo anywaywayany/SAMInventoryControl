@@ -249,52 +249,52 @@ public class Fixtures{
 
     public static Storage giveStorage1(){
         return Storage.builder()
-                       .name("Storage A")
+                       .name("Hauptlager")
                        .address(Address.builder()
-                                        .street("BackstreetA")
-                                        .houseNo(44)
+                                        .street("Spengergasse")
+                                        .houseNo(10)
                                         .doorNo(4)
-                                        .zipCode(444)
-                                        .city("SinCity")
+                                        .zipCode(1050)
+                                        .city("Wien")
                                         .build())
                        .build();
     }
 
     public static Storage giveStorage2(){
         return Storage.builder()
-                       .name("Storage B")
+                       .name("Projektlager")
                        .address(Address.builder()
-                                        .street("BackstreetB")
-                                        .houseNo(44)
-                                        .doorNo(4)
-                                        .zipCode(444)
-                                        .city("SinCity")
+                                        .street("Lagerstraße")
+                                        .houseNo(11)
+                                        .doorNo(1)
+                                        .zipCode(1100)
+                                        .city("Wien")
                                         .build())
                        .build();
     }
 
     public static Storage giveStorage3(){
         return Storage.builder()
-                       .name("Storage C")
+                       .name("Lager STMK")
                        .address(Address.builder()
-                                        .street("BackstreetC")
-                                        .houseNo(44)
-                                        .doorNo(4)
-                                        .zipCode(444)
-                                        .city("SinCity")
+                                        .street("Herrengasse")
+                                        .houseNo(100)
+                                        .doorNo(6)
+                                        .zipCode(8020)
+                                        .city("Graz")
                                         .build())
                        .build();
     }
 
     public static Storage giveStorage4(){
         return Storage.builder()
-                       .name("Storage D")
+                       .name("Lager KTN")
                        .address(Address.builder()
-                                        .street("BackstreetD")
-                                        .houseNo(44)
+                                        .street("Lindwurmstraße")
+                                        .houseNo(23)
                                         .doorNo(4)
-                                        .zipCode(444)
-                                        .city("SinCity")
+                                        .zipCode(9020)
+                                        .city("Klagenfurt")
                                         .build())
                        .build();
     }
