@@ -172,20 +172,16 @@ insert into cpes (id, fk_producer, macaddress, serialnumber, type)
 values (4, 1, '3B-7B-98-3D-B0-38', 'NDZ2087U82AB', 'ROUTER');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
 values (5, 1, 'D7-79-85-5D-27-50', 'NDZ2087US2ZB', 'ROUTER');
-
-
-insert into CPES (id, fk_producer, macaddress, serialnumber, type)
-values (10, 1, '00-09-48-0A-58-2A', 'ASZ2087U82ZB', 'SWITCH');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (6, 2, '3C-E4-69-D6-92-2F', 'AJZ2087U82ZB', 'SWITCH');
-
+values (6, 4, '3C-E4-69-D6-92-2F', 'AJZ2087U82ZB', 'SWITCH');
 insert into CPES (id, fk_producer, macaddress, serialnumber, type)
 values (7, 3, '38-E2-64-85-84-3E', 'ASZ2137U82ZB', 'IP_PHONE');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
 values (8, 3, '4B-0F-97-EE-A9-98', 'AJZ2023U82ZB', 'IP_PHONE');
 insert into CPES (id, fk_producer, macaddress, serialnumber, type)
 values (9, 3, 'FC-44-F7-6A-86-90', 'ASZ2087U000B', 'IP_PHONE');
-
+insert into CPES (id, fk_producer, macaddress, serialnumber, type)
+values (10, 1, '00-09-48-0A-58-2A', 'ASZ2087U82ZB', 'SWITCH');
 
 insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
 values (1, 1, 'ACW260719G3', 10, 2, '1310 nm', 'SFP');
@@ -235,25 +231,25 @@ values (12, 'LC-SX-MM');
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
 values (1, 1, 1, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (2, 1, 2, 1);
+values (2, 2, 2, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (3, 1, 3, 1);
+values (3, 3, 3, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (4, 1, 4, 1);
+values (4, 4, 4, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (5, 1, 5, 1);
+values (5, 5, 5, 1);
 
 
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (6, 1, 6, 1);
+values (6, 10, 6, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (7, 1, 7, 1);
+values (7, 6, 7, 1);
 
 
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (8, 1, 8, 1);
+values (8, 8, 8, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (9, 1, 9, 1);
+values (9, 9, 9, 1);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
 values (10, 1, 10, 1);
 
@@ -262,6 +258,38 @@ insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STOR
 values (11, 1, 11, 1);
 insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
 values (12, 1, 12, 1);
+
+--MM insert von freien Lagerobjekten
+-- insert Cisco Router
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 1, 20, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'04-F4-2C-E8-6B-CB','aabw34by65', 'ROUTER');
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 1, 21, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'C3-64-5F-32-D4-26','xyz634aa45', 'ROUTER');
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 1, 22, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'D3-B0-58-6C-A6-B5','grba6432sg', 'ROUTER');
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 1, 23, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'47-55-C6-9C-B6-4F','abrac56313', 'ROUTER');
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 1, 24, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'3B-7B-98-3D-B0-38','cd35yv532b', 'ROUTER');
+-- insert HP Switch
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 2, 25, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'3B-7B-98-3D-B0-38','zybw34by65', 'SWITCH');
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 2, 26, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'D7-79-85-5D-27-50','gh5634aa45', 'SWITCH');
+-- insert SNOM IP Phones
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 3, 27, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'A0-3C-24-7F-DA-9D','thea6432sg', 'IP_PHONE');
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 3, 28, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'75-BA-5F-FB-F8-4C','gls5c56313', 'IP_PHONE');
+-- insert Aruba Switch
+insert into cpes (created_at, fk_producer, id, last_modified_at, macaddress, serialnumber, type) values (TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'), 4, 29, TO_DATE('2024-02-10 16:48:02', 'YYYY-MM-DD HH24:MI:SS'),'00-09-48-0A-58-2A','9skwyv532b', 'SWITCH');
+
+-- insert Storageobjects C927/C111-4P/ASR
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 20, 1, null, null, null, 1, null, 100, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'IOS up to date', null);
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 21, 2, null, null, null, 1, null, 101, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'PoE capable', null);
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 22, 1, null, null, null, 1, null, 102, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'old IOS', null);
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 23, 3, null, null, null, 1, null, 103, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'check ports', null);
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 24, 1, null, null, null, 1, null, 104, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'dirty', null);
+-- insert Storagobject HP SWitch
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 25, 6, null, null, null, 1, null, 105, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'IOS up to date', null);
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 26, 6, null, null, null, 1, null, 106, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'PSU missing', null);
+-- insert Storageobjects IP Phones
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 27, 8, null, null, null, 1, null, 107, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'Package broken', null);
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 28, 9, null, null, null, 1, null, 108, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'check ports', null);
+-- insert Storageobject ARUBA Switch
+insert into storage_objects (connection_no, processed, project_device, created_at, fk_cpe, fk_object_type, fk_reservation, fk_sfp, fk_storaed_at_user, fk_storage, fk_supply, id,last_modified_at, remark, status) values (null, null, 0, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 29, 7, null, null, null, 1, null, 109, TO_DATE('2024-02-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'refurbished device', null);
+
 
 
 --delete from RESERVATIONS where ID = 1;
