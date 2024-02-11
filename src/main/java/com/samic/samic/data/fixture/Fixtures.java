@@ -202,10 +202,10 @@ public class Fixtures{
 
     private static Profile giveProfile1(){
         return Profile.builder()
-                       .firstName("AAAA")
-                       .lastName("Lane2")
-                       .username("management2")
-                       .phone("11111111")
+                       .firstName("Peter")
+                       .lastName("Hardworker")
+                       .username("PeHa")
+                       .phone("004367755223315")
                        .build();
     }
 

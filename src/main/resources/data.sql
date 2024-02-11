@@ -163,34 +163,34 @@ values (4, 'Aruba', 'Aruba');
 
 
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (1, 1, 'B1-6D-88-2D-3B-70', 'WAE9805FA1TO', 'ROUTER');
+values (1, 1, '04-F4-2C-E8-6B-CB', 'WAE9805FA1TO', 'ROUTER');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (2, 1, '29-20-38-CA-10-BA', 'NDZ2081U82ZB', 'ROUTER');
+values (2, 1, 'C3-64-5F-32-D4-26', 'NDZ2081U82ZB', 'ROUTER');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (3, 1, '29-20-38-CA-30-B0', 'NDZ2083U82ZB', 'ROUTER');
+values (3, 1, '1B-14-14-A7-4C-DA', 'NDZ2083U82ZB', 'ROUTER');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (4, 1, '29-20-38-CA-40-BB', 'NDZ2087U82AB', 'ROUTER');
+values (4, 1, '3B-7B-98-3D-B0-38', 'NDZ2087U82AB', 'ROUTER');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (5, 1, '29-20-38-CA-00-BA', 'NDZ2087US2ZB', 'ROUTER');
+values (5, 1, 'D7-79-85-5D-27-50', 'NDZ2087US2ZB', 'ROUTER');
 
 
 insert into CPES (id, fk_producer, macaddress, serialnumber, type)
-values (10, 1, '29-20-38-BD-00-BA', 'ASZ2087U82ZB', 'SWITCH');
+values (10, 1, '00-09-48-0A-58-2A', 'ASZ2087U82ZB', 'SWITCH');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (6, 2, '29-20-38-DB-00-BA', 'AJZ2087U82ZB', 'SWITCH');
+values (6, 2, '3C-E4-69-D6-92-2F', 'AJZ2087U82ZB', 'SWITCH');
 
 insert into CPES (id, fk_producer, macaddress, serialnumber, type)
-values (7, 3, '29-20-38-BD-00-BA', 'ASZ2137U82ZB', 'IP_PHONE');
+values (7, 3, '38-E2-64-85-84-3E', 'ASZ2137U82ZB', 'IP_PHONE');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type)
-values (8, 3, '29-20-38-DB-00-BA', 'AJZ2023U82ZB', 'IP_PHONE');
+values (8, 3, '4B-0F-97-EE-A9-98', 'AJZ2023U82ZB', 'IP_PHONE');
 insert into CPES (id, fk_producer, macaddress, serialnumber, type)
-values (9, 3, '29-20-38-BD-00-BA', 'ASZ2087U000B', 'IP_PHONE');
+values (9, 3, 'FC-44-F7-6A-86-90', 'ASZ2087U000B', 'IP_PHONE');
 
 
 insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
-values (1, 1, '01HJGKK6JKHSR3XKEE09X450S8', 232, 2, '1310 nm', 'SFP');
+values (1, 1, 'ACW260719G3', 10, 2, '1310 nm', 'SFP');
 insert into sfps (id, fk_producer, serialnumber, nic_speed, type_sfp, wavelength, type)
-values (2, 1, '01HJGKK6JP2MDWVKJK0T4T80EZ', 629, 2, '550 nm', 'SFP');
+values (2, 1, 'ACW260719G3', 1, 2, '550 nm', 'SFP');
 
 insert into supplies (id, description, amount)
 values (1, 'Patch Kabel elektr. Cat5e 5 Meter', 10);
