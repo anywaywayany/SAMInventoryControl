@@ -1,6 +1,7 @@
 package com.samic.samic.views.dashboard;
 
 import com.samic.samic.components.UIFactory;
+import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.foundation.Guard;
 import com.samic.samic.exceptions.SamicException;
@@ -14,20 +15,26 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.CallbackDataProvider;
+import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import jakarta.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
 
 ;
 
@@ -41,6 +48,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private final ServiceStorageObject storageObjectService;
   private final AuthenticatedUser authenticatedUser;
   Grid<StorageObject> reservationGrid = new Grid<>(StorageObject.class, false);
+  Grid<StorageObject> hardwareGrid = new Grid<>(StorageObject.class, false);
 
 
   public DashboardView(ServiceReservation reservationService,
@@ -104,7 +112,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
   private void initHardware() {
     // MY_HARDWARE - PREPARE GRID
-    Grid<StorageObject> hardwareGrid = new Grid<>(StorageObject.class, false);
     hardwareGrid.isAllRowsVisible();
     hardwareGrid.setMaxHeight("300px");
     hardwareGrid.getStyle().setBorder("0px");
@@ -119,6 +126,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   }
 
   private void initHardwareData() {
+    //hardwareGrid.setItems( query -> storageObjectService.findStorageObjectByGivenUser(authenticatedUser.getUser().get()));
   }
 
   private void initReservation() {
@@ -147,17 +155,20 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
 
   void initReservationData() {
-    try {
+   /* try {
       System.out.println("Placeholder");
-//      reservationGrid.setItems(reservationService
-//              .findAllReservationByGivenUser(authenticatedUser
-//                                                     .getUser()
-//                                                     .get())
-//              .map(r -> storageObjectService.findStorageObjectByReservationID(r.getId())).toList());
+      reservationGrid.setItems(new CallbackDataProvider.FetchCallback<Reservation, Void>(){
+        @Override
+        public Stream<Reservation> fetch(Query<Reservation, Void> query){
+          return storageObjectService.findStorageObjectByUserId(authenticatedUser.getUser().get().getId(), VaadinSpringDataHelpers.toSpringPageRequest(query));
+        }
+      });
     } catch (StorageObjectException e) {
       UIFactory.NotificationError(e.getMessage()).open();
-    }
+    }*/
   }
+
+
 
   @Override
   public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {

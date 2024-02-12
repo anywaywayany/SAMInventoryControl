@@ -23,6 +23,9 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -108,7 +111,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
     }
 
     GridListDataView<StorageObject> finalStorageObjectList = storageObjectList;
-    searchField.addValueChangeListener(e -> finalStorageObjectList.refreshAll());
+    searchField.addValueChangeListener(e -> listFilteredStorageObjects(e.getValue()));
     filterStorage.addValueChangeListener(e -> finalStorageObjectList.refreshAll());
 
     storageObjectList.addFilter(storageobject -> {
@@ -135,6 +138,12 @@ public class FreieLagerobjekteView extends VerticalLayout {
                                                      JustifyContentMode.START,
                                                      grid)),
             reservationDialog);
+  }
+
+  private void listFilteredStorageObjects(String filterString){
+    String filter = "%" + filterString + "%";
+    grid.setItems( query ->
+      storageObjectService.searchSto(filter, PageRequest.of(query.getPage(), query.getPageSize())));
   }
 
   private void onCancel() {

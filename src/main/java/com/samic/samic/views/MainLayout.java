@@ -130,14 +130,6 @@ private Footer createFooter() {
 	if (maybeUser.isPresent()) {
 	User user = maybeUser.get();
 
-	/* TODO remove if attribute gets deleted in backend
-	Avatar avatar = new Avatar(user.getName());
-	StreamResource resource = new StreamResource("profile-pic",
-			() -> new ByteArrayInputStream(user.getProfilePicture()));
-	avatar.setImageResource(resource);
-	avatar.setThemeName("xsmall");
-	avatar.getElement().setAttribute("tabindex", "-1");*/
-
 	MenuBar userMenu = new MenuBar();
 	userMenu.setThemeName("tertiary-inline contrast");
 

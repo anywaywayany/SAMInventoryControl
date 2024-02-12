@@ -6,22 +6,27 @@ import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
 import com.samic.samic.exceptions.StorageObjectException;
+import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import jakarta.persistence.EntityManagerFactory;
-//import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static com.samic.samic.data.constants.ConstantsDomain.P;
 
 
 @Service
@@ -35,7 +40,7 @@ public class ServiceStorageObject{
     private final RepositoryStorageObject repositoryStorageObject;
     @Autowired
     private final EntityManagerFactory    emf;
-//    private final Logger                  log = LoggerFactory.getLogger(this.getClass());
+    //    private final Logger                  log = LoggerFactory.getLogger(this.getClass());
     //    public ServiceStorageObject(@Qualifier("storageObject") RepositoryStorageObject repositoryStorageObject){
     //        this.repositoryStorageObject = repositoryStorageObject;
     //    }
@@ -44,28 +49,29 @@ public class ServiceStorageObject{
     public StorageObject saveStorageObject(StorageObject storageObject){
 
         if(storageObject != null){
-//            System.out.println("------------- 1 " + storageObject.getReservation().getReservedFrom());
+            //            System.out.println("------------- 1 " + storageObject.getReservation().getReservedFrom());
             log.warn("saveStorageObject() | ######################## USER1 ########################, {}: ", storageObject.getStoredAtUser());
 
             log.debug("saveStorageObject() | StorageObject is not null, {}: ------ , {}", storageObject, storageObject.getStoredAtUser());
             if(storageObject.getId() != null){
-//                System.out.println("------------- 2 " + storageObject.getReservation().getReservedFrom());
+                //                System.out.println("------------- 2 " + storageObject.getReservation().getReservedFrom());
                 log.warn("saveStorageObject() | ######################## USER2 ########################, {}: ", storageObject.getStoredAtUser());
                 log.debug("saveStorageObject() | StorageObject id is not null, StorageObject ID: {}, \nstorageObject: {}", storageObject.getId(), storageObject);
                 if(doesObjectExistById(storageObject.getId())){
-//                    System.out.println("------------- 3 " + storageObject.getReservation().getReservedFrom());
+                    //                    System.out.println("------------- 3 " + storageObject.getReservation().getReservedFrom());
                     log.warn("saveStorageObject() | ######################## USER3 ########################, {}: ", storageObject.getStoredAtUser());
                     log.debug("saveStorageObject() | StorageObject exists, StorageObject ID: {},\nstorageObject: {}", storageObject.getId(), storageObject);
                     StorageObject fetchedStorageObject = findStorageObjectById(storageObject.getId());
-//                    System.out.println("------------- 4 " + fetchedStorageObject.getReservation().getReservedFrom());
+                    //                    System.out.println("------------- 4 " + fetchedStorageObject.getReservation().getReservedFrom());
                     log.warn("saveStorageObject() | ######################## USER4 ########################, {}: ", storageObject.getStoredAtUser());
                     log.debug("saveStorageObject() | StorageObject found with ID: {},\nFetched StorageObject{},", storageObject.getId(), fetchedStorageObject);
                     if(fetchedStorageObject != null){
-//                        System.out.println("------------- 5 " + fetchedStorageObject.getReservation().getReservedFrom());
+                        //                        System.out.println("------------- 5 " + fetchedStorageObject.getReservation().getReservedFrom());
                         log.warn("saveStorageObject() | ######################## USER5 ########################i, {}: ", storageObject.getStoredAtUser());
                         log.debug("saveStorageObject() | in if statement, fetchedStorageObject: {},\nStorageObject: {}", fetchedStorageObject.getId(), fetchedStorageObject);
-                        if(fetchedStorageObject.getId().equals(storageObject.getId())){
-//                            System.out.println("------------- 6 " + fetchedStorageObject.getReservation().getReservedFrom());
+                        if(fetchedStorageObject.getId()
+                                               .equals(storageObject.getId())){
+                            //                            System.out.println("------------- 6 " + fetchedStorageObject.getReservation().getReservedFrom());
                             log.warn("saveStorageObject() | ######################## USER6 ########################, {}: ", storageObject.getStoredAtUser());
                             log.debug("saveStorageObject() | fetched StorageObject equals given StorageObject, fetchedStorageObject: {},\nStorageObject: {}", fetchedStorageObject.getId(), storageObject);
                             fetchedStorageObject = storageObject;
@@ -99,8 +105,10 @@ public class ServiceStorageObject{
     public StorageObject findStorageObjectById(Long id){
         if(id != null){
             log.debug("findStorageObjectById() | id is not null, id: {}", id);
-            if(repositoryStorageObject.findById(id).isPresent()){
-                return repositoryStorageObject.findById(id).get();
+            if(repositoryStorageObject.findById(id)
+                                      .isPresent()){
+                return repositoryStorageObject.findById(id)
+                                              .get();
             }else{
                 throw new StorageObjectException("Could not find StorageObject with id: '%s' in DB".formatted(id));
             }
@@ -109,35 +117,36 @@ public class ServiceStorageObject{
         }
     }
 
-//    public StorageObject findStorageObjectByID(Long id){
-//        StorageObject sto = new StorageObject();
-//        EntityManager em = emf.createEntityManager();
-//        em.getTransaction().begin();
-//
-//        EntityGraph<?>            entityGraph = em.createEntityGraph("graph.StorageObjectStorage");
-//        TypedQuery<StorageObject> query       = em.createQuery("SELECT a FROM StorageObject a", StorageObject.class).setHint("javax.persistence.fetchgraph", entityGraph);
-//        List<StorageObject> resultList = query.getResultList();
-//
-//        em.getTransaction().commit();
-//        em.close();
-//
-//        for(StorageObject so : resultList){
-//            if(so.getId().equals(id)){
-//                sto = so;
-//            }
-//        }
-//
-//        if(sto != null){
-//            return sto;
-//        }else{
-//            throw new StorageObjectException("Could not find StorageObject with id: '%s' in DB".formatted(id));
-//        }
-//    }
+    //    public StorageObject findStorageObjectByID(Long id){
+    //        StorageObject sto = new StorageObject();
+    //        EntityManager em = emf.createEntityManager();
+    //        em.getTransaction().begin();
+    //
+    //        EntityGraph<?>            entityGraph = em.createEntityGraph("graph.StorageObjectStorage");
+    //        TypedQuery<StorageObject> query       = em.createQuery("SELECT a FROM StorageObject a", StorageObject.class).setHint("javax.persistence.fetchgraph", entityGraph);
+    //        List<StorageObject> resultList = query.getResultList();
+    //
+    //        em.getTransaction().commit();
+    //        em.close();
+    //
+    //        for(StorageObject so : resultList){
+    //            if(so.getId().equals(id)){
+    //                sto = so;
+    //            }
+    //        }
+    //
+    //        if(sto != null){
+    //            return sto;
+    //        }else{
+    //            throw new StorageObjectException("Could not find StorageObject with id: '%s' in DB".formatted(id));
+    //        }
+    //    }
 
     @Transactional
     public Optional<StorageObject> findStorageObjectByIDOptional(Long id){
         if(id != null){
-            if(repositoryStorageObject.findById(id).isPresent()){
+            if(repositoryStorageObject.findById(id)
+                                      .isPresent()){
                 return repositoryStorageObject.findById(id);
             }else{
                 throw new StorageObjectException("Could not find StorageObject with id: '%s' in DB".formatted(id));
@@ -149,7 +158,8 @@ public class ServiceStorageObject{
 
     public void deleteStorageObjectById(Long id){
         if(id != null){
-            if(!repositoryStorageObject.findAll().isEmpty()){
+            if(!repositoryStorageObject.findAll()
+                                       .isEmpty()){
                 repositoryStorageObject.deleteById(id);
             }else{
                 throw new StorageObjectException("StorageObject DB is empty!");
@@ -161,7 +171,8 @@ public class ServiceStorageObject{
 
     public void deleteByObject(StorageObject storageObject){
         if(storageObject != null){
-            if(!repositoryStorageObject.findAll().isEmpty()){
+            if(!repositoryStorageObject.findAll()
+                                       .isEmpty()){
                 repositoryStorageObject.delete(storageObject);
             }else{
                 throw new StorageObjectException("StorageObject DB is empty!");
@@ -182,7 +193,8 @@ public class ServiceStorageObject{
     @Transactional
     public Optional<StorageObject> findStorageByNameOptional(ObjectType objectType){
         if(objectType != null){
-            if(repositoryStorageObject.findStorageObjectByObjectTypeName(objectType).isPresent()){
+            if(repositoryStorageObject.findStorageObjectByObjectTypeName(objectType)
+                                      .isPresent()){
                 return repositoryStorageObject.findStorageObjectByObjectTypeName(objectType);
             }else{
                 throw new StorageObjectException("Could not find StorageObject with objectType: '%s' in DB".formatted(objectType.getName()));
@@ -194,17 +206,20 @@ public class ServiceStorageObject{
 
     @Transactional
     public Stream<StorageObject> findAll(){
-        if(repositoryStorageObject.findAll().isEmpty()){
+        if(repositoryStorageObject.findAll()
+                                  .isEmpty()){
             throw new StorageObjectException("StorageObject list is empty!");
         }else{
-            return repositoryStorageObject.findAll().stream();
+            return repositoryStorageObject.findAll()
+                                          .stream();
         }
     }
 
     @Transactional
     public List<StorageObject> findNotReservedStorageObjects(){
         List<StorageObject> freeStorageObjects = new ArrayList<>();
-        if(!repositoryStorageObject.findAll().isEmpty()){
+        if(!repositoryStorageObject.findAll()
+                                   .isEmpty()){
             List<StorageObject>     storageObjectList = repositoryStorageObject.findAll();
             Iterator<StorageObject> iter              = storageObjectList.iterator();
             while(iter.hasNext()){
@@ -256,7 +271,8 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStorageObjectByUserId(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findAllByStoredAtUser_Id(id, request).stream();
+            return repositoryStorageObject.findAllByStoredAtUser_Id(id, request)
+                                          .stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -282,7 +298,8 @@ public class ServiceStorageObject{
     ////////////////////
     public Stream<StorageObject> findAllStoageObjectBySFPID(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsBySfp_Id(id, request).stream();
+            return repositoryStorageObject.findStorageObjectsBySfp_Id(id, request)
+                                          .stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -298,7 +315,8 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findAllStorageObjectByCPEID(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectByCpe_Id(id, request).stream();
+            return repositoryStorageObject.findStorageObjectByCpe_Id(id, request)
+                                          .stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -314,7 +332,8 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectsByStorageId(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsByStorage_Id(id, request).stream();
+            return repositoryStorageObject.findStorageObjectsByStorage_Id(id, request)
+                                          .stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -330,7 +349,8 @@ public class ServiceStorageObject{
 
     public Stream<StorageObject> findStorageObjectsBySupplyId(Long id, PageRequest request){
         if(id != null){
-            return repositoryStorageObject.findStorageObjectsBySupply_Id(id, request).stream();
+            return repositoryStorageObject.findStorageObjectsBySupply_Id(id, request)
+                                          .stream();
         }else{
             throw new StorageObjectException("Given id is null!");
         }
@@ -345,22 +365,57 @@ public class ServiceStorageObject{
     }
 
     public Stream<StorageObject> findFreeStorageObjects(){
-        Stream<StorageObject> freeStorageObjects = repositoryStorageObject.findAll().stream();
-        return freeStorageObjects.filter(storageObject -> storageObject.getReservation() == null).filter(storageObject -> storageObject.getStoredAtUser() == null).filter(storageObject -> storageObject.getStoredAtCustomer() == null);
+        Stream<StorageObject> freeStorageObjects = repositoryStorageObject.findAll()
+                                                                          .stream();
+        return freeStorageObjects.filter(storageObject -> storageObject.getReservation() == null)
+                                 .filter(storageObject -> storageObject.getStoredAtUser() == null)
+                                 .filter(storageObject -> storageObject.getStoredAtCustomer() == null);
 
     }
 
     public Stream<StorageObject> findReservedStorageObjectsAsStream(){
-        Stream<StorageObject> reservedStorageObjects = repositoryStorageObject.findAll().stream();
-        return reservedStorageObjects.filter(storageObject -> storageObject.getReservation() != null).filter(storageObject -> storageObject.getStoredAtUser() == null);
+        Stream<StorageObject> reservedStorageObjects = repositoryStorageObject.findAll()
+                                                                              .stream();
+        return reservedStorageObjects.filter(storageObject -> storageObject.getReservation() != null)
+                                     .filter(storageObject -> storageObject.getStoredAtUser() == null);
     }
 
     public Stream<StorageObject> findStorageObjectByGivenUser(User user){
-        Stream<StorageObject> storageObjectOnUser = repositoryStorageObject.findAll().stream();
-        return storageObjectOnUser.filter(stor -> stor.getStoredAtUser() != null).filter(storageObject -> storageObject.getStoredAtUser().getId().equals(user.getId()));
+        Stream<StorageObject> storageObjectOnUser = repositoryStorageObject.findAll()
+                                                                           .stream();
+        return storageObjectOnUser.filter(stor -> stor.getStoredAtUser() != null)
+                                  .filter(storageObject -> storageObject.getStoredAtUser()
+                                                                        .getId()
+                                                                        .equals(user.getId()));
     }
 
     public Optional<StorageObject> findStorageObjectByCustomer(Customer customer){
         return repositoryStorageObject.findStorageObjectByStoredAtCustomer(customer);
     }
+
+//    public Stream<StorageObject> listStorageObjectByName(String filterStrig){
+//        String              likeFiler  = "%"+filterStrig+"%";
+//        Page<StorageObject> returnTemp = repositoryStorageObject.findAllByObjectTypeNameLikeIgnoreCase(likeFiler, ); return returnTemp.stream();
+//    }
+
+//    public Stream<StorageObject> searchSpringRepoMethod(String keyword, Query<StorageObject, Void> query){
+//        keyword = P+keyword+P;
+//        List<StorageObject> data = repositoryStorageObject.findAllByObjectTypeNameLikeIgnoreCase(keyword, keyword, toPageable(query));
+//        return data.stream();
+//    }
+
+    public Stream<StorageObject> searchSto(String filterString, Pageable pageable){
+        return repositoryStorageObject.filterStorageObjectsByObjectTypeNameName(filterString, pageable).stream();
+    }
+    public Stream<StorageObject> searchTempo(String filter , Pageable pageable ){
+        return repositoryStorageObject.findAll().stream().filter(f -> f.getObjectTypeName().equals(filter));
+    }
+
+    public <T, F> Pageable toPageable(Query<T, F> query){
+        return PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query));
+    }
+
+//    public Stream<StorageObject> findStorageObjectByUserId(Long id, PageRequest query){
+//        return repositoryStorageObject.findAllByStoredAtUser_Id(id, query).stream();
+//    }
 }
