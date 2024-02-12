@@ -1,4 +1,4 @@
-package com.samic.samic.views.lagerobjekt_aufnehmen;
+package com.samic.samic.views.lagerobjekt_erfassen.lagerobjekt_aufnehmen;
 
 import com.samic.samic.components.UIFactory;
 import com.samic.samic.data.entity.StorageObject;

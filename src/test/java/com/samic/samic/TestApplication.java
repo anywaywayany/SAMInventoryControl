@@ -3,19 +3,31 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
+import com.samic.samic.config.ORCLConfig;
+import jakarta.persistence.EntityListeners;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.devtools.restart.RestartScope;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
-@Import(TestContainerConfiguration.class)
+//@Import(TestContainerConfiguration.class)
 @ComponentScan(basePackages = {"com.samic.samic.data.repositories"})
+@Configuration
+@EnableTransactionManagement
+@EntityListeners(AuditingEntityListener.class)
+@Import(ORCLConfig.class)
 public class TestApplication {
 
     @Bean
@@ -35,7 +47,7 @@ public class TestApplication {
 
     public static void main(String[] args){
         SpringApplication.from(Application::main)
-                .with(TestContainerConfiguration.class)
+                .with(TestApplication.class)
                 .run(args);
     }
 }

@@ -66,6 +66,7 @@ entity StorageObject {
     - cpe : CPE
     - sfp : SFP
     - supply : Supply
+    - processed : boolean
 }
 
 entity ObjectType {
@@ -180,7 +181,7 @@ CPE .up. Type
 
 StorageObject --> Customer : embedded
 
-StorageObject "1" -right- "1" ObjectType
+StorageObject "n" -right- "1" ObjectType
 
 Storage "1" -up- "1..n" StorageObject
 Status .up. StorageObject

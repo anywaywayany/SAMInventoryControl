@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -17,12 +18,13 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional
 public class ServiceCPE{
 
     @Autowired
     private final RepositoryCPE repositoryCPE;
 
-
+    @Transactional
     public CPE saveCPEByObject(CPE cpe){
         if(cpe != null){
             if(cpe.getId() != null){
@@ -49,7 +51,7 @@ public class ServiceCPE{
             throw new SamicException("CPE is null!");
         }
     }
-
+    @Transactional
     public CPE findCPEByID(Long id){
         if(id != null){
             if(repositoryCPE.findById(id).isPresent()){
@@ -61,7 +63,7 @@ public class ServiceCPE{
             throw new SamicException("Given id is null!");
         }
     }
-
+    @Transactional
     public Optional<CPE> findCPEByIDOptional(Long id){
         if(id != null){
             if(repositoryCPE.findById(id).isPresent()){
@@ -74,7 +76,7 @@ public class ServiceCPE{
         }
     }
 
-
+    @Transactional
     public void deleteCPEtById(Long id){
         if(id != null){
             repositoryCPE.deleteById(id);
@@ -101,6 +103,7 @@ public class ServiceCPE{
         }
     }
 
+    @Transactional
     public Optional<CPE> findCPEBySerialbumberOptional(String serialnumber){
         if(serialnumber != null){
             if(repositoryCPE.findCPEBySerialnumber(serialnumber).isPresent()){
@@ -113,14 +116,17 @@ public class ServiceCPE{
         }
     }
 
+    @Transactional
     public Stream<CPE> findAll(){
         return repositoryCPE.findAll().stream();
     }
 
+    @Transactional
     public Stream<CPE> findAllCPEByProducerIDPageRequest(Long id, PageRequest request){
         return repositoryCPE.findCPESByProducerId(id, request).stream();
     }
 
+    @Transactional
     public Page<CPE> findAll(Pageable pageable){
         return repositoryCPE.findAll(pageable);
     }

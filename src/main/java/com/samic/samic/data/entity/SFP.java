@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @Entity
@@ -19,16 +22,22 @@ public class SFP extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_producer", foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
+    @ManyToOne(fetch = FetchType.EAGER,
+               cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "fk_producer",
+                foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
     private Producer producer;
 
+    @OneToMany(mappedBy = "sfp",
+               fetch = FetchType.LAZY,
+               cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<StorageObject> storageObject = new ArrayList<>();
     /*
     attributes
      */
     @NotBlank
     @Column(name = "wavelength")
-    private String wavelength;
+    private String              wavelength;
 
     @Min(0)
     @Column(name = "nic_speed")
@@ -46,5 +55,28 @@ public class SFP extends AbstractIdentityClass<Long>{
     @Column(name = "type_SFP")
     private SFPType sfpType;
 
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("SFP:\n")
+//               .append("producer=")
+//               .append(producer)
+//               .append('\'')
+               .append("wavelength='")
+               .append(wavelength)
+               .append("\n")
+               .append("nicSpeed=")
+               .append(nicSpeed)
+               .append("\n")
+               .append("serialnumber='")
+               .append(serialnumber);
+//               .append('\'')
+//               .append("type=")
+//               .append(type)
+//               .append('\'')
+//               .append("sfpType=")
+//               .append(sfpType);
+        return builder.toString();
+    }
 
 }

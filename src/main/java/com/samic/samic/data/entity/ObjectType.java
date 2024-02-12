@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @Builder
@@ -18,13 +21,21 @@ public class ObjectType extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToOne(mappedBy = "objectTypeName", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private StorageObject storageObject;
+    @OneToMany(mappedBy = "objectTypeName", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    private List<StorageObject> storageObject = new ArrayList<>();
 
 
     /*
     attributes
      */
-    @Column(name="objectType_name", length = ConstantsDomain.DEFAULT_LENGTH)
+    @Column(name="object_Type_name", length = ConstantsDomain.DEFAULT_LENGTH)
     private String name;
+
+      @Override
+      public String toString(){
+          StringBuilder builder = new StringBuilder();
+
+          builder.append(name);
+          return builder.toString();
+      }
 }

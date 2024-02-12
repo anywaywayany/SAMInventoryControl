@@ -1,36 +1,39 @@
 package com.samic.samic.data.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @MappedSuperclass
-public class AbstractIdentityClass<PK extends Serializable> implements Persistable<PK>{
+public class AbstractIdentityClass<Long extends Serializable> implements Persistable<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "idgenerator")
     @SequenceGenerator(name = "idgenerator", initialValue = 1000)
-    private @Nullable PK id;
+    private @Nullable Long id;
 
     @Nullable
     @Override
-    public PK getId() {
+    public Long getId() {
         return id;
     }
+
 
     /**
      * Sets the id of the entity.
      *
      * @param id the id to set
      */
-    protected void setId(@Nullable PK id) {
+    protected void setId(@Nullable Long id) {
         this.id = id;
     }
 
@@ -45,10 +48,14 @@ public class AbstractIdentityClass<PK extends Serializable> implements Persistab
         return null == getId();
     }
 
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime lastModifiedAt;
 
-    @CreatedDate
+
+
+
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
 
@@ -77,13 +84,22 @@ public class AbstractIdentityClass<PK extends Serializable> implements Persistab
         return null == this.getId() ? false : this.getId().equals(that.getId());
     }
 
+//    @Override
+//    public int hashCode() {
+//
+//        int hashCode = 17;
+//
+////        hashCode += null == getId() ? 0 : getId().hashCode() * 31;
+//        return id == null ? Objects.hash(43): Objects.hash(id);
+//
+////        return hashCode;
+//    }
+
     @Override
     public int hashCode() {
-
-        int hashCode = 17;
-
-        hashCode += null == getId() ? 0 : getId().hashCode() * 31;
-
-        return hashCode;
+        if (getId() != null) {
+            return getId().hashCode();
+        }
+        return super.hashCode();
     }
 }
