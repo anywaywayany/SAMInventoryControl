@@ -31,57 +31,54 @@ public class ServiceLagerObjectErfassen{
     private final ServiceStorageObject serviceStorageObject;
 
 
-    public StorageObject LagerOBjectErfassenSFP(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){
-
-
-        return saveSFP_Erfassen(storageObject, storage, producer, sfp);
-    }
-
     public StorageObject LagerOBjectErfassenCPE(StorageObject storageObject, Storage storage, Producer producer, CPE cpe){
 
 
         isNotNull(storageObject, "storageObject in StorageObejectErfassen() | Backend ");
         isNotNull(storage, "storage in StorageObejectErfassen() | Backend ");
         isNotNull(producer, "producer in StorageObejectErfassen() | Backend ");
+        isNotNull(cpe, "cpe in StorageObejectErfassen() | Backend ");
+
 
         storageObject.setStorage(storage);
         var cpe2 = serviceCPE.saveCPEByObject(cpe);
         cpe2.setProducer(producer);
         storageObject.setCpe(cpe2);
-        StorageObject storageObject1 = serviceStorageObject.saveStorageObject(storageObject);
 
-        return  storageObject1;
-
-    }
-
-
-    public void LagerOBjectErfassenSUPPLY(StorageObject storageObject, Storage storage, Producer producer, Supply supply){
-
-        // Prüfen
-
+        return serviceStorageObject.saveStorageObject(storageObject);
 
     }
 
 
-    public StorageObject saveSFP_Erfassen(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){
+    public StorageObject LagerOBjectErfassenSUPPLY(StorageObject storageObject, Storage storage, Supply supply){
+
+        isNotNull(storageObject, "storageObject in StorageObejectErfassen() | Backend ");
+        isNotNull(storage, "storage in StorageObejectErfassen() | Backend ");
+        isNotNull(supply, "supply in StorageObejectErfassen() | Backend ");
+
+        storageObject.setStorage(storage);
+        var supply1 = serviceSupply.saveSupplyByObject(supply);
+        storageObject.setSupply(supply1);
+
+        return serviceStorageObject.saveStorageObject(storageObject);
+
+
+    }
+
+
+    public StorageObject LagerOBjectErfassenSFP(StorageObject storageObject, Storage storage, Producer producer, SFP sfp){
         isNotNull(storageObject, "storageObject in StorageObejectErfassen() | Backend ");
         isNotNull(storage, "storage in StorageObejectErfassen() | Backend ");
         isNotNull(producer, "producer in StorageObejectErfassen() | Backend ");
+        isNotNull(sfp, "sfp in StorageObejectErfassen() | Backend ");
+
+        storageObject.setStorage(storage);
+        var sfp1 = serviceSFP.saveSFPByObject(sfp);
+        sfp1.setProducer(producer);
+        storageObject.setSfp(sfp1);
 
 
-        StorageObject storageObject1 = serviceStorageObject.findStorageObjectById(storageObject.getId());
-
-        // if StorageObject not null -> fetch StorageObject from DB
-
-        // if SFP not null ->
-
-        return storageObject1;
+        return serviceStorageObject.saveStorageObject(storageObject);
     }
 
-    private void saveCPE_Erfassen(StorageObject storageObject, Storage storage, Producer producer, CPE cpe){
-    }
-
-
-    private void saveSupply_Erfassen(StorageObject storageObject, Storage storage, Producer producer, Supply supply){
-    }
 }
