@@ -18,12 +18,15 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 @Component
 @Scope("prototype")
 public class AppSettings extends VerticalLayout {
-  private IntegerField reservationMaxDuration = new IntegerField("Maximale erlaubte Reservierungsdauer:");
-  private final Grid<NotificationLimit> notificationLimitsGrid = new Grid<>(NotificationLimit.class, false);
+
+  private final Grid<NotificationLimit> notificationLimitsGrid = new Grid<>(NotificationLimit.class,
+      false);
   private final Grid<Storage> storageGrid = new Grid<>(Storage.class, false);
   private final DataProviderAdmin dataProvider;
   private final NotificationLimitForm notificationLimitForm;
   private final StorageForm storageForm;
+  private final IntegerField reservationMaxDuration = new IntegerField(
+      "Maximale erlaubte Reservierungsdauer:");
 
   public AppSettings(DataProviderAdmin dataProvider, NotificationLimitForm notificationLimitForm,
       StorageForm storageForm) {
@@ -41,12 +44,11 @@ public class AppSettings extends VerticalLayout {
     notificationLimitsGrid.setMaxHeight("200px");
     //notificationLimitsGrid.setWidthFull();
     notificationLimitsGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS);
-    notificationLimitsGrid.addComponentColumn(item -> {
-      return new Span(
-          UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten", e -> onEdit(item)),
-          UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-              e -> onRemove(item)));
-    }).setFrozenToEnd(true);
+    notificationLimitsGrid.addComponentColumn(item -> new Span(
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+            e -> onEdit(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+            e -> onRemove(item)))).setFrozenToEnd(true);
 
     storageGrid.setItems(dataProvider.getStorages(10));
 
@@ -60,13 +62,11 @@ public class AppSettings extends VerticalLayout {
     storageGrid.setMaxHeight("300px");
     //storageGrid.setWidthFull();
     storageGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS);
-    storageGrid.addComponentColumn(item -> {
-      return new Span(
-          UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten", e -> onEdit(item)),
-          UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-              e -> onRemove(item)));
-    }).setFrozenToEnd(true);
-
+    storageGrid.addComponentColumn(item -> new Span(
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+            e -> onEdit(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+            e -> onRemove(item)))).setFrozenToEnd(true);
 
 
   }
@@ -76,25 +76,26 @@ public class AppSettings extends VerticalLayout {
   private void initUI() {
     add(
         UIFactory.childContainer(JustifyContentMode.START,
-        UIFactory.rootComponentContainer("Reservierungsdauer",
+            UIFactory.rootComponentContainer("Reservierungsdauer",
                 reservationMaxDuration,
-            UIFactory.btnPrimary("Speichern", e -> onSave(reservationMaxDuration.getValue()))
-        ),
-        UIFactory.rootComponentContainer("Benachrichtigungslimits",
-            UIFactory.childContainer(JustifyContentMode.START,
-                notificationLimitsGrid,
-                storageGrid
-            )),
-        UIFactory.rootComponentContainer("Lager bearbeiten",
-            UIFactory.childContainer(JustifyContentMode.START,
-                storageGrid)))
-        );
+                UIFactory.btnPrimary("Speichern", e -> onSave(reservationMaxDuration.getValue()))
+            ),
+            UIFactory.rootComponentContainer("Benachrichtigungslimits",
+                UIFactory.childContainer(JustifyContentMode.START,
+                    notificationLimitsGrid,
+                    storageGrid
+                )),
+            UIFactory.rootComponentContainer("Lager bearbeiten",
+                UIFactory.childContainer(JustifyContentMode.START,
+                    storageGrid)))
+    );
   }
 
   private void onRemove(NotificationLimit item) {
     dataProvider.removeNotificationLimit(item);
     notificationLimitsGrid.getDataProvider().refreshAll();
   }
+
   private void onRemove(Storage storage) {
     dataProvider.removeStorage(storage);
     storageGrid.getDataProvider().refreshAll();
@@ -111,14 +112,18 @@ public class AppSettings extends VerticalLayout {
             ),
             UIFactory.childContainer(
                 JustifyContentMode.START,
-                UIFactory.btnPrimary("Speichern", e -> {onSave(); dialog.close();}),
-                UIFactory.btnPrimaryError("Abbrechen", e -> {dialog.close();})
+                UIFactory.btnPrimary("Speichern", e -> {
+                  onSave();
+                  dialog.close();
+                }),
+                UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close())
             )
         )
     );
 
     dialog.open();
   }
+
   private void onEdit(Storage item) {
     Dialog dialog = new Dialog();
     storageForm.setBean(item);
@@ -130,8 +135,11 @@ public class AppSettings extends VerticalLayout {
             ),
             UIFactory.childContainer(
                 JustifyContentMode.START,
-                UIFactory.btnPrimary("Speichern", e -> {onSave(item); dialog.close();}),
-                UIFactory.btnPrimaryError("Abbrechen", e -> {dialog.close();})
+                UIFactory.btnPrimary("Speichern", e -> {
+                  onSave(item);
+                  dialog.close();
+                }),
+                UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close())
             )
         )
     );
@@ -142,18 +150,19 @@ public class AppSettings extends VerticalLayout {
   private void onSave() {
     if (notificationLimitForm.isValid()) {
       dataProvider.saveNotificationLimit(notificationLimitForm.saveBean());
-      UIFactory.NotificationSuccess("Benachrichtigungslimit gespeichert").open();
+      UIFactory.notificationSuccess("Benachrichtigungslimit gespeichert").open();
     } else {
-      UIFactory.NotificationError("Ändrungen können nicht übernommen werden, da Fehlerhaft").open();
+      UIFactory.notificationError("Ändrungen können nicht übernommen werden, da Fehlerhaft").open();
     }
     notificationLimitsGrid.getDataProvider().refreshAll();
   }
+
   private void onSave(Storage storage) {
     if (storageForm.isValid()) {
       dataProvider.saveStorage(storageForm.saveBean());
-      UIFactory.NotificationSuccess("Benachrichtigungslimit gespeichert").open();
+      UIFactory.notificationSuccess("Benachrichtigungslimit gespeichert").open();
     } else {
-      UIFactory.NotificationError("Ändrungen können nicht übernommen werden, da Fehlerhaft").open();
+      UIFactory.notificationError("Ändrungen können nicht übernommen werden, da Fehlerhaft").open();
     }
     storageGrid.getDataProvider().refreshAll();
   }
@@ -162,7 +171,7 @@ public class AppSettings extends VerticalLayout {
   private void onSave(Integer value) {
     dataProvider.saveReservationDuration(value);
     reservationMaxDuration.setValue(dataProvider.getReservationDuration());
-    UIFactory.NotificationSuccess("Maximale Reservierungsdauer geändert").open();
+    UIFactory.notificationSuccess("Maximale Reservierungsdauer geändert").open();
   }
 
 }

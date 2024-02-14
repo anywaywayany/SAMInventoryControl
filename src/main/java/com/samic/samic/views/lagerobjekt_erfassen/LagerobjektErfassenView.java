@@ -12,7 +12,6 @@ import com.samic.samic.data.entity.Storage;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.Supply;
 import com.samic.samic.data.entity.Type;
-import com.samic.samic.services.ServiceCPE;
 import com.samic.samic.services.ServiceLagerObjectErfassen;
 import com.samic.samic.services.ServiceObjectType;
 import com.samic.samic.services.ServiceProducer;
@@ -28,7 +27,6 @@ import com.vaadin.flow.router.BeforeLeaveObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -56,10 +54,9 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
   ComboBox<Producer> producerSelect = new ComboBox<>("Hersteller");
   private VerticalLayout storageContainer;
 
-  public LagerobjektErfassenView(
-      EntityManager em, ServiceStorageObject storageObjectService,
+  public LagerobjektErfassenView(ServiceStorageObject storageObjectService,
       ServiceProducer producerService,
-      ServiceStorage storageService, ServiceObjectType serviceObjectType, ServiceCPE cpeService,
+      ServiceStorage storageService, ServiceObjectType serviceObjectType,
       CPEForm cpeForm,
       SFPForm sfpForm,
       SupplyForm supplyForm, ServiceLagerObjectErfassen lagerObjectErfassenService) {
@@ -72,7 +69,6 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     this.sfpForm = sfpForm;
     this.supplyForm = supplyForm;
     this.lagerObjectErfassenService = lagerObjectErfassenService;
-    // ----------------------------
 
     initUI();
   }
@@ -138,9 +134,10 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       formChildContainer.remove(cpeForm);
       formChildContainer.add(sfpForm);
     } else if (value.equals(Type.SUPPLY)) {
-      this.supplyForm.setSupplyBeans(serviceObjectType.findAll().toList(),
+      this.supplyForm.setSupplyBeans(
           StorageObject.builder().objectTypeName(ObjectType.builder().build())
               .supply(Supply.builder().build()).storage(storage).build());
+      producerSelect.setEnabled(false);
       formChildContainer.remove(sfpForm);
       formChildContainer.remove(cpeForm);
       formChildContainer.add(supplyForm);
@@ -158,49 +155,51 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     if (selectedType.equals(Type.ROUTER) || selectedType.equals(Type.SWITCH) || selectedType.equals(
         Type.IP_PHONE)) {
       if (cpeForm.isValid()) {
-
         saved = cpeForm.saveStorageObject();
         saved.setStorage(value);
         saved.getCpe().setType(selectedType);
         saved.getCpe().setProducer(producer);
-        System.out.println(saved.getStorage().getId());
-        System.out.println(saved.getObjectTypeName().getId() + saved.getObjectTypeName().getName());
-        System.out.println(saved.getCpe().getSerialnumber());
-        System.out.println(saved.getCpe().getMacAddress());
 
         persisted = lagerObjectErfassenService.LagerOBjectErfassenCPE(saved, value, producer,
             saved.getCpe());
         if (persisted != null) {
-          UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+          UIFactory.notificationInfoNoDuration("LagerID: " + persisted.getId().toString()).open();
+          UIFactory.notificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+
         }
       } else {
-        UIFactory.NotificationError("Speichern nicht möglich. Eingaben kontrollieren").open();
+        UIFactory.notificationError("Speichern nicht möglich. Eingaben kontrollieren").open();
         return;
       }
     } else if (selectedType.equals(Type.SFP)) {
       if (sfpForm.isValid()) {
         saved = sfpForm.saveStorageObject();
-        persisted = storageObjectService.saveStorageObject(saved);
+        System.out.println(producer);
+        persisted = lagerObjectErfassenService.LagerOBjectErfassenSFP(saved, value, producer,
+            saved.getSfp());
         if (persisted != null) {
-          UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+          UIFactory.notificationInfoNoDuration("LagerID: " + persisted.getId().toString()).open();
+          UIFactory.notificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
         }
       } else {
-        UIFactory.NotificationError("Speichern nicht möglich . Eingaben kontrollieren").open();
+        UIFactory.notificationError("Speichern nicht möglich . Eingaben kontrollieren").open();
         return;
       }
     } else if (selectedType.equals(Type.SUPPLY)) {
       if (supplyForm.isValid()) {
         saved = supplyForm.saveStorageObject();
-        persisted = storageObjectService.saveStorageObject(saved);
+
+        persisted = lagerObjectErfassenService.LagerOBjectErfassenSUPPLY(saved, value,
+            saved.getSupply());
         if (persisted != null) {
-          UIFactory.NotificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
+          UIFactory.notificationInfoNoDuration("LagerID: " + persisted.getId().toString()).open();
+          UIFactory.notificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
         }
       } else {
-        UIFactory.NotificationError("Speichern nicht möglich. Eingaben kontrollieren").open();
+        UIFactory.notificationError("Speichern nicht möglich. Eingaben kontrollieren").open();
         return;
       }
     }
-    //        this.storageObject = storageObjectService.saveStorageObject(StorageObject.builder().name("Temporary Name").build());
     changeForm(selectedType, value);
   }
 

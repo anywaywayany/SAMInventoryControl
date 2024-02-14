@@ -3,8 +3,10 @@ package com.samic.samic.components;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -60,9 +62,7 @@ public class UIFactory {
   public static Button btnPrimary(String text, HashMap<String, String> cssKeyValue) {
     Button btnPrimary = new Button(text);
     cssKeyValue.forEach(
-        (cssKey, cssValue) -> {
-          btnPrimary.getStyle().set(cssKey, cssValue);
-        });
+        (cssKey, cssValue) -> btnPrimary.getStyle().set(cssKey, cssValue));
     return btnPrimary;
   }
 
@@ -97,7 +97,7 @@ public class UIFactory {
     return btnIconWithTooltip;
   }
 
-  public static Notification NotificationSuccess(String text) {
+  public static Notification notificationSuccess(String text) {
     Notification notification = new Notification(text);
     notification.setDuration(5000);
     notification.setPosition(Notification.Position.BOTTOM_CENTER);
@@ -105,7 +105,7 @@ public class UIFactory {
     return notification;
   }
 
-  public static Notification NotificationError(String text) {
+  public static Notification notificationError(String text) {
     Notification notification = new Notification(text);
     notification.setDuration(5000);
     notification.setPosition(Notification.Position.BOTTOM_CENTER);
@@ -113,6 +113,15 @@ public class UIFactory {
     return notification;
   }
 
+  public static Notification notificationInfoNoDuration(String text) {
+    Notification notification = new Notification();
+    notification.setPosition(Notification.Position.BOTTOM_CENTER);
+    notification.addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+    notification.setDuration(0);
+    notification.add(new Text(text),
+        new Button(VaadinIcon.CLOSE.create(), e -> notification.close()));
+    return notification;
+  }
 
   ///////////---------------------GridUtils≈---------------------///////////
   public static VerticalLayout LazyComponent(SerializableSupplier<? extends Component> component) {
