@@ -71,13 +71,11 @@ public class MeineHardwareView extends TabSheet {
           storageObjectGrid.setItems(
               storageObjectService.findStorageObjectByGivenUser(authenticatedUser.getUser().get())
                   .toList());
-          storageObjectGrid.addComponentColumn(item -> {
-            return new Span(
-                UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(),
-                    "Ins Lager verschieben", e -> moveToStorage(item)),
-                UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT_SOLID.create(), "Bearbeiten",
-                    e -> onEdit(item)));
-          });
+          storageObjectGrid.addComponentColumn(item -> new Span(
+              UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(),
+                  "Ins Lager verschieben", e -> moveToStorage(item)),
+              UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT_SOLID.create(), "Bearbeiten",
+                  e -> onEdit(item))));
           return this.storageObjectGrid;
         }));
 
@@ -87,13 +85,11 @@ public class MeineHardwareView extends TabSheet {
               reservationGrid.populate(
                   reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
                       .get()).toList());
-              reservationGrid.addComponentColumn(item -> {
-                return new Span(
-                    UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-                        e -> onDelete(item)),
-                    UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-                        e -> onEdit(item)));
-              });
+              reservationGrid.addComponentColumn(item -> new Span(
+                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+                      e -> onDelete(item)),
+                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+                      e -> onEdit(item))));
               return this.reservationGrid;
             }));
   }
@@ -118,7 +114,7 @@ public class MeineHardwareView extends TabSheet {
       sfpForm.setSFPBeans(List.of(item.getObjectTypeName()), item);
       hl.add(sfpForm);
     } else {
-      supplyForm.setSupplyBeans(List.of(item.getObjectTypeName()), item);
+      supplyForm.setSupplyBeans(item);
       hl.add(supplyForm);
     }
     dialog.open();
@@ -126,7 +122,7 @@ public class MeineHardwareView extends TabSheet {
 
   private void onSave(StorageObject storageObject) {
     storageObjectService.saveStorageObject(storageObject);
-    UIFactory.NotificationSuccess("Lagerobjekt geändert").open();
+    UIFactory.notificationSuccess("Lagerobjekt geändert").open();
     storageObjectGrid.getDataProvider().refreshAll();
   }
 
@@ -143,7 +139,7 @@ public class MeineHardwareView extends TabSheet {
             UIFactory.childContainer(JustifyContentMode.END,
                 UIFactory.btnPrimary("Speichern", e -> {
                   if (storages.getValue() == null) {
-                    UIFactory.NotificationError("Lager kann nicht leer sein").open();
+                    UIFactory.notificationError("Lager kann nicht leer sein").open();
                   } else {
                     onSave(storageObject, storages.getValue());
                     dialog.close();
@@ -166,7 +162,7 @@ public class MeineHardwareView extends TabSheet {
     Dialog dialog = new Dialog();
     dialog.add(reservationForm,
         UIFactory.btnPrimary("Speichern", e -> {
-          onSave(item);
+          onSave();
           dialog.close();
         }),
         UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close()));
@@ -174,7 +170,7 @@ public class MeineHardwareView extends TabSheet {
 
   }
 
-  private void onSave(Reservation item) {
+  private void onSave() {
     reservationService.saveReservationByObject(reservationForm.save());
     reservationGrid.getDataProvider().refreshAll();
   }
@@ -182,7 +178,7 @@ public class MeineHardwareView extends TabSheet {
   private void onDelete(Reservation item) {
     reservationService.deleteByObject(item);
     reservationGrid.getDataProvider().refreshAll();
-    UIFactory.NotificationSuccess("Deleted");
+    UIFactory.notificationSuccess("Deleted");
   }
 
 }

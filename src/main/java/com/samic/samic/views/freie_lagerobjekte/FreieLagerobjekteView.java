@@ -2,10 +2,17 @@ package com.samic.samic.views.freie_lagerobjekte;
 
 import com.samic.samic.components.UIFactory;
 import com.samic.samic.components.form.ReservationForm;
-import com.samic.samic.data.entity.*;
+import com.samic.samic.data.entity.Customer;
+import com.samic.samic.data.entity.ObjectType;
+import com.samic.samic.data.entity.Reservation;
+import com.samic.samic.data.entity.Storage;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.exceptions.SamicException;
 import com.samic.samic.security.AuthenticatedUser;
-import com.samic.samic.services.*;
+import com.samic.samic.services.ServiceObjectType;
+import com.samic.samic.services.ServiceReservation;
+import com.samic.samic.services.ServiceStorage;
+import com.samic.samic.services.ServiceStorageObject;
 import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -23,12 +30,9 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
+import org.springframework.data.domain.PageRequest;
 
 @PageTitle("Freie Lagerobjekte")
 @Route(value = "freieLagerobjekte", layout = MainLayout.class)
@@ -52,10 +56,10 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
 
   public FreieLagerobjekteView(ServiceStorageObject storageObjectService,
-                               ServiceObjectType objectTypeService,
-                               ServiceStorage storageService, AuthenticatedUser authenticatedUser, ServiceUser userService,
-                               ReservationForm reservationForm,
-                               ServiceReservation reservationService) {
+      ServiceObjectType objectTypeService,
+      ServiceStorage storageService, AuthenticatedUser authenticatedUser,
+      ReservationForm reservationForm,
+      ServiceReservation reservationService) {
     this.storageObjectService = storageObjectService;
     this.objectTypeService = objectTypeService;
     this.authenticatedUser = authenticatedUser;
@@ -68,11 +72,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
   private void initUI() {
     reservationDialog.add(
-            UIFactory.rootComponentContainer("Gerät reservieren", reservationForm,
-                                             UIFactory.childContainer(JustifyContentMode.START,
-                                                                      UIFactory.btnPrimary("Reservieren", onClick -> reserve()),
-                                                                      UIFactory.btnPrimaryError("Abbrechen", onClick -> onCancel())))
-                         );
+        UIFactory.rootComponentContainer("Gerät reservieren", reservationForm,
+            UIFactory.childContainer(JustifyContentMode.START,
+                UIFactory.btnPrimary("Reservieren", onClick -> reserve()),
+                UIFactory.btnPrimaryError("Abbrechen", onClick -> onCancel())))
+    );
     searchField.setWidth("20%");
     searchField.setPlaceholder("Suchen...");
     searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
@@ -83,11 +87,10 @@ public class FreieLagerobjekteView extends VerticalLayout {
         .setFlexGrow(1);
     grid.addColumn(StorageObject::getRemark).setHeader("Anmerkung").setAutoWidth(true)
         .setFlexGrow(2);
-    grid.addComponentColumn(item -> {
-      return new Span(
-              new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
-              new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)));
-    }).setHeader("Aktionen").setAutoWidth(true).setFrozenToEnd(true);
+    grid.addComponentColumn(item -> new Span(
+            new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
+            new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)))).setHeader("Aktionen")
+        .setAutoWidth(true).setFrozenToEnd(true);
     grid.setItemDetailsRenderer(createStorageObjectDetailsRenderer());
     grid.getStyle().setBorder("0px");
 
@@ -107,43 +110,33 @@ public class FreieLagerobjekteView extends VerticalLayout {
       storageObjectList = grid.setItems(storageObjectService.findFreeStorageObjects().toList());
     } catch (SamicException e) {
       storageObjectList = grid.setItems(List.of());
-      UIFactory.NotificationError(e.getMessage()).open();
+      UIFactory.notificationError(e.getMessage()).open();
     }
 
     GridListDataView<StorageObject> finalStorageObjectList = storageObjectList;
     searchField.addValueChangeListener(e -> listFilteredStorageObjects(e.getValue()));
     filterStorage.addValueChangeListener(e -> finalStorageObjectList.refreshAll());
 
-    storageObjectList.addFilter(storageobject -> {
-      String searchTerm = searchField.getValue().trim();
-      boolean matchesName = matchesTerm(storageobject.getObjectTypeName().getName(), searchTerm);
-
-      if (searchTerm.isEmpty()) {
-        return true;
-      }
-
-      return matchesName;// || matchesProfession;
-    });
-
     add(
-            UIFactory.rootComponentContainer("",
-                                             UIFactory.childContainer(
-                                                     JustifyContentMode.START,
-                                                     searchField,
-                                                     filterStorage,
-                                                     filterObjectType
-                                                                     )),
-            UIFactory.rootComponentContainer("",
-                                             UIFactory.childContainer(
-                                                     JustifyContentMode.START,
-                                                     grid)),
-            reservationDialog);
+        UIFactory.rootComponentContainer("",
+            UIFactory.childContainer(
+                JustifyContentMode.START,
+                searchField,
+                filterStorage,
+                filterObjectType
+            )),
+        UIFactory.rootComponentContainer("",
+            UIFactory.childContainer(
+                JustifyContentMode.START,
+                grid)),
+        reservationDialog);
   }
 
-  private void listFilteredStorageObjects(String filterString){
+  private void listFilteredStorageObjects(String filterString) {
     String filter = "%" + filterString + "%";
-    grid.setItems( query ->
-      storageObjectService.searchSto(filter, PageRequest.of(query.getPage(), query.getPageSize())));
+    grid.setItems(query ->
+        storageObjectService.searchSto(filter,
+            PageRequest.of(query.getPage(), query.getPageSize())));
   }
 
   private void onCancel() {
@@ -155,41 +148,36 @@ public class FreieLagerobjekteView extends VerticalLayout {
     Reservation reservationToSave = reservationForm.save();
 
     reservationToSave.setReservedFrom(authenticatedUser.getUser().get());
-    System.out.println("##################################Setze User auf Reservierung: " + reservationToSave.getReservedFrom().getId());
 
     var persistedReservation = reservationService.saveReservationByObject(reservationToSave);
-      this.storageObjectToSave.setReservation(persistedReservation);
-    System.out.println("##################################Setze User auf Reservierung: " + storageObjectToSave.getReservation().getReservedFrom().getId());
-    var persisted = storageObjectService.saveStorageObject(storageObjectToSave);
-    System.out.println("##################################Setze User auf Reservierung: " + persisted.getReservation().getReservedFrom().getId());
+    this.storageObjectToSave.setReservation(persistedReservation);
+    storageObjectService.saveStorageObject(storageObjectToSave);
 
     this.storageObjectToSave = null;
     reservationDialog.close();
 
-    UIFactory.NotificationSuccess("Reservierung erfolgreich durchgeführt").open();
-  }
-
-  private boolean matchesTerm(String value, String searchTerm) {
-    return value.toLowerCase().contains(searchTerm.toLowerCase());
+    UIFactory.notificationSuccess("Reservierung erfolgreich durchgeführt").open();
   }
 
   private ComponentRenderer<StorageObjectDetailsForm, StorageObject> createStorageObjectDetailsRenderer() {
     return new ComponentRenderer<>(StorageObjectDetailsForm::new,
-                                   StorageObjectDetailsForm::setStorageObject);
+        StorageObjectDetailsForm::setStorageObject);
   }
 
 
   private void openReservationForm(StorageObject storageObject) {
     this.storageObjectToSave = storageObject;
-    reservationForm.setBean(Reservation.builder().customer(Customer.builder().connectionNo(0).build()).build());
+    reservationForm.setBean(
+        Reservation.builder().customer(Customer.builder().connectionNo(0).build()).build());
     reservationDialog.open();
   }
+
   private void addToUser(StorageObject item) {
     item.setStoredAtUser(authenticatedUser.getUser().get());
     item.setStorage(null);
 
     storageObjectService.saveStorageObject(item);
-    UIFactory.NotificationSuccess("Lagerobjekt erfolgreich deinem Lager hinzugefügt").open();
+    UIFactory.notificationSuccess("Lagerobjekt erfolgreich deinem Lager hinzugefügt").open();
   }
 
 

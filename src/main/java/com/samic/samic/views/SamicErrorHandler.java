@@ -26,10 +26,8 @@ public class SamicErrorHandler extends VerticalLayout implements ErrorHandler,
   public void error(ErrorEvent errorEvent) {
     logger.error("Something wrong happened", errorEvent.getThrowable());
     if (UI.getCurrent() != null) {
-      UI.getCurrent().access(() -> {
-        UIFactory.NotificationError("An internal error has occurred." +
-            "Contact support for assistance.");
-      });
+      UI.getCurrent().access(() -> UIFactory.notificationError("An internal error has occurred." +
+          "Contact support for assistance."));
     }
   }
 
