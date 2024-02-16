@@ -1,6 +1,7 @@
 package com.samic.samic.components.form;
 
 import com.samic.samic.components.UIFactory;
+import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -73,11 +74,14 @@ public class CPEForm extends FormLayout {
         .bind(StorageObject::getProjectDevice, StorageObject::setProjectDevice);
 
     //TODO bind connectionNumber and trackingNumber
-//    binderStorageObject.forField(connectionNumber)
-//        .withNullRepresentation("")
-//        .bind(so -> so.getStoredAtCustomer().connectionNo().toString(), (so, value) -> so.setStoredAtCustomer(
-//            Customer.builder().connectionNo(Integer.valueOf(value)).build()));
-//
+    binderStorageObject.forField(connectionNumber)
+        .withNullRepresentation("")
+        .withValidator(value -> isProjectEquipment.getValue() && !value.isEmpty(),
+            "Verbindungsnummer darf nicht leer sein")
+        .withConverter(Integer::valueOf, String::valueOf)
+        .bind(so -> so.getStoredAtCustomer().connectionNo(),
+            (so, value) -> so.setStoredAtCustomer(Customer.builder().connectionNo(value).build()));
+
 //    binderStorageObject.forField(trackingNumber)
 //        .bind(StorageObject::getTrackingNumber, StorageObject::setTrackingNumber);
 
