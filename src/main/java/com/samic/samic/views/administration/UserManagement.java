@@ -4,6 +4,7 @@ import com.samic.samic.components.UIFactory;
 import com.samic.samic.components.form.UserForm;
 import com.samic.samic.data.entity.Profile;
 import com.samic.samic.data.entity.User;
+import com.samic.samic.services.ServiceUser;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.details.Details;
@@ -25,7 +26,7 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 public class UserManagement extends VerticalLayout {
 
   private static final String DATE_PATTERN = "dd.MM.yyyy";
-  private final DataProviderAdmin dataProvider;
+  private final ServiceUser userService;
   private final UserForm userForm;
   private final UserForm userFormDialog;
   VirtualList<User> virtualList = new VirtualList<>();
@@ -77,9 +78,9 @@ public class UserManagement extends VerticalLayout {
             return cardLayout;
           });
 
-  public UserManagement(DataProviderAdmin dataProvider, UserForm userForm,
+  public UserManagement(ServiceUser userService, UserForm userForm,
       UserForm userFormDialog) {
-    this.dataProvider = dataProvider;
+    this.userService = userService;
     this.userForm = userForm;
     this.userFormDialog = userFormDialog;
     userForm.setBean(User.builder().profile(Profile.builder().build()).build());
@@ -87,7 +88,7 @@ public class UserManagement extends VerticalLayout {
 
   @PostConstruct
   private void initUI() {
-    virtualList.setItems(dataProvider.getUsers(10));
+    virtualList.setItems(userService.findAll());
     virtualList.setRenderer(userComponentRenderer);
     userForm.add(
         UIFactory.childContainer(JustifyContentMode.START,
@@ -109,7 +110,7 @@ public class UserManagement extends VerticalLayout {
 
   private void onCreate() {
     if (userForm.isValid()) {
-      dataProvider.saveUser(userForm.saveBean());
+      userService.saveUser(userForm.saveBean());
       userForm.clearFields();
       virtualList.getDataProvider().refreshAll();
       UIFactory.notificationSuccess("Benutzer angelegt").open();
@@ -135,7 +136,7 @@ public class UserManagement extends VerticalLayout {
 
   private void onSave(UserForm userForm) {
     if (userForm.isValid()) {
-      dataProvider.saveUser(userForm.saveBean());
+      userService.saveUser(userForm.saveBean());
       UIFactory.notificationSuccess("Benutzer gespeichert").open();
       virtualList.getDataProvider().refreshAll();
     } else {
@@ -144,14 +145,14 @@ public class UserManagement extends VerticalLayout {
   }
 
   private void onDelete(User user) {
-    dataProvider.removeUser(user);
+    userService.deleteByObject(user);
     UIFactory.notificationSuccess("Benutzer entfernt").open();
     virtualList.getDataProvider().refreshAll();
   }
 
   private void onDeactivate(User user) {
     user.setActivated(false);
-    dataProvider.saveUser(user);
+    userService.saveUser(user);
     virtualList.getDataProvider().refreshAll();
     UIFactory.notificationSuccess("Benutzer deaktiviert").open();
   }
