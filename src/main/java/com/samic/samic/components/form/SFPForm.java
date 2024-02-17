@@ -77,9 +77,9 @@ public class SFPForm extends FormLayout {
     //TODO bind connectionNumber and trackingNumber
     binderStorageObject.forField(connectionNumber)
         .withNullRepresentation("")
-        .withValidator(value -> isProjectEquipment.getValue() && !value.isEmpty(),
+        /*.withValidator(value -> isProjectEquipment.getValue() && !value.isEmpty(),
             "Verbindungsnummer darf nicht leer sein")
-        .withConverter(Integer::valueOf, String::valueOf)
+        */.withConverter(Integer::valueOf, String::valueOf)
         .bind(so -> so.getStoredAtCustomer().connectionNo(),
             (so, value) -> so.setStoredAtCustomer(Customer.builder().connectionNo(value).build()));
 

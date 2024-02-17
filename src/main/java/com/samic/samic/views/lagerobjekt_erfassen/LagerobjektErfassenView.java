@@ -47,6 +47,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
 
 
   private final ServiceLagerObjectErfassen lagerObjectErfassenService;
+  private final ServiceProducer getProducerService;
 
   HorizontalLayout formChildContainer = UIFactory.childContainer(JustifyContentMode.START);
   ComboBox<Storage> storageComboBox;
@@ -60,7 +61,8 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       ServiceStorage storageService, ServiceObjectType serviceObjectType,
       CPEForm cpeForm,
       SFPForm sfpForm,
-      SupplyForm supplyForm, ServiceLagerObjectErfassen lagerObjectErfassenService) {
+      SupplyForm supplyForm, ServiceLagerObjectErfassen lagerObjectErfassenService,
+      ServiceProducer getProducerService) {
 
     this.storageObjectService = storageObjectService;
     this.producerService = producerService;
@@ -70,6 +72,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     this.sfpForm = sfpForm;
     this.supplyForm = supplyForm;
     this.lagerObjectErfassenService = lagerObjectErfassenService;
+    this.getProducerService = getProducerService;
 
     initUI();
   }
@@ -122,7 +125,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     if (value.equals(Type.ROUTER) || value.equals(Type.SWITCH) || value.equals(Type.IP_PHONE)) {
       this.cpeForm.setCPEBeans(serviceObjectType.findAll().toList(),
           StorageObject.builder().objectTypeName(ObjectType.builder().build()).storedAtCustomer(
-                  Customer.builder().build())
+                  Customer.builder().connectionNo(0).build())
               .cpe(CPE.builder().type(value)
                   .build()).storage(storage).build());
       producerSelect.setEnabled(true);
@@ -132,7 +135,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     } else if (value.equals(Type.SFP)) {
       this.sfpForm.setSFPBeans(serviceObjectType.findAll().toList(),
           StorageObject.builder().objectTypeName(ObjectType.builder().build()).storedAtCustomer(
-                  Customer.builder().build())
+                  Customer.builder().connectionNo(0).build())
               .sfp(SFP.builder().type(value).build()).storage(storage).build());
       producerSelect.setEnabled(true);
       formChildContainer.remove(supplyForm);
@@ -180,7 +183,8 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     } else if (selectedType.equals(Type.SFP)) {
       if (sfpForm.isValid()) {
         saved = sfpForm.saveStorageObject();
-        System.out.println(producer);
+        saved.getSfp().setProducer(producer);
+        saved.getSfp().setType(selectedType);
         persisted = lagerObjectErfassenService.LagerOBjectErfassenSFP(saved, value, producer,
             saved.getSfp());
         if (persisted != null) {
