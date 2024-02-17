@@ -211,38 +211,38 @@ public class Fixtures{
 
     private static Profile giveProfile2(){
         return Profile.builder()
-                       .firstName("BBB")
-                       .lastName("Lane2")
-                       .username("management2")
-                       .phone("22222222")
+                       .firstName("Susan")
+                       .lastName("Installer")
+                       .username("SusIns")
+                       .phone("00436601235689")
                        .build();
     }
 
     private static Profile giveProfile3(){
         return Profile.builder()
-                       .firstName("CCC")
-                       .lastName("Lane2")
-                       .username("management2")
-                       .phone("33333333")
+                       .firstName("Andreas")
+                       .lastName("Protocol")
+                       .username("AndPro")
+                       .phone("00436645698426")
                        .build();
     }
 
     private static Profile giveProfile4(){
         return Profile.builder()
-                       .firstName("DDD")
-                       .lastName("Lane2")
-                       .username("management2")
-                       .phone("44444444")
-                       .build();
+                .firstName("Max")
+                .lastName("Technician")
+                .username("MaxTec")
+                .phone("00436503568965")
+                .build();
     }
 
     private static Profile giveProfile5(){
         return Profile.builder()
-                       .firstName("EEE")
-                       .lastName("Lane2")
-                       .username("management2")
-                       .phone("55555555")
-                       .build();
+                .firstName("Caroline")
+                .lastName("Fastforward")
+                .username("CaFa")
+                .phone("00436769965482")
+                .build();
     }
 
     //////////////////////////////////////////////////// Storage
@@ -301,15 +301,15 @@ public class Fixtures{
 
     public static Storage giveStorage5(){
         return Storage.builder()
-                       .name("Storage E")
-                       .address(Address.builder()
-                                        .street("BackstreetD")
-                                        .houseNo(44)
-                                        .doorNo(4)
-                                        .zipCode(444)
-                                        .city("SinCity")
-                                        .build())
-                       .build();
+                .name("Lager SBG")
+                .address(Address.builder()
+                        .street("Ignaz Rieder Kai")
+                        .houseNo(7)
+                        .doorNo(1)
+                        .zipCode(5020)
+                        .city("Salzburg")
+                        .build())
+                .build();
     }
 
     //////////////////////////////////////////////////// Supply
