@@ -1188,10 +1188,16 @@ insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) val
 insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) values (764, 100, 12, null, 1);
 insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) values (765, 101, 12, 'refurbed', 1);
 
--- Storage Objects im Lager Kunde
--- insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (415, 2, 'B0-41-4E-2A-99-9E', 'KHW4715TG39', 'SWITCH');
--- insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (452, 415, 6, 'IOS alt', 2);
+---------------------------------------------------------------------------------------------------------------------
 
+-- Storage Objects für das  Lager Kunde
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (490, 2, 'B0-41-4E-2A-99-9E', 'KHW4715TG39', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (491, 2, 'DE-41-8E-7A-FF-9E', 'GHD4425TG87', 'SWITCH');
+
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (590, 490, 6, 'Test Kundenlager', 2);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (591, 491, 6, 'Test Kundenlager', 2);
+
+---------------------------------------------------------------------------------------------------------------------
 -- Storageobjects beim User Mgmt
 
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
@@ -1218,6 +1224,86 @@ insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STOR
 values (701, 1, 11, 1);
 insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
 values (709, 2, 12, 1);
+---------------------------------------------------------------------------------------------------------------------
+-- Stroageobjecst bei User MaxTec 4
+-- CPEs Router
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (450, 1, '6C-D9-0D-53-40-08', 'FAT9818MW55', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (451, 1, '16-70-4D-07-64-D0', 'LRS5858DG00', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (452, 1, 'FE-35-F9-49-9C-75', 'RNN3617MP35', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (453, 1, '5F-E2-8C-1C-27-31', 'HLE1605UQ95', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (454, 1, '85-64-60-5C-33-D5', 'FPD4107LP83', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (455, 1, '12-D1-4D-05-52-8A', 'NLG2963OG85', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (456, 1, 'DE-F2-E3-5E-06-B2', 'ZZO0407IL46', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (457, 1, '15-F7-0F-A3-C5-ED', 'KOM2576JC82', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (458, 1, '95-95-B9-8C-B4-6B', 'ERY2600BW02', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (459, 1, 'DC-F5-08-04-12-A1', 'UQT8124YE43', 'ROUTER');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (460, 1, '92-80-0F-A0-DE-B1', 'IDA0131DS79', 'ROUTER');
+
+-- Storageobjects
+
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (500, 450, 3, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (501, 451, 2, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (502, 452, 1, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (503, 453, 4, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (504, 454, 1, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (505, 455, 4, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (506, 456, 2, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (507, 457, 3, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (508, 458, 3, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (509, 459, 1, 4);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (510, 460, 2, 4);
+
+---------------------------------------------------------------------------------------------------------------------
+-- Stroageobjecst bei User PetHar 2
+-- CPES Switches
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (470, 4, 'D2-61-AE-1C-0F-1D', 'YDZ0492WH60', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (471, 4, '02-3F-FC-AE-C9-CD', 'NEK9257UZ20', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (472, 4, '2E-14-BF-EB-A5-E5', 'WEQ0478JM15', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (473, 4, '1D-0D-9D-27-B7-46', 'OWC6851EE47', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (474, 4, '83-4F-14-29-08-F6', 'RRE4293KK97', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (475, 4, '8C-D1-55-1D-F1-CD', 'JJK8513VW58', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (476, 2, '79-E0-CC-C9-F0-43', 'TPN6557ZT59', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (477, 2, '18-E8-84-3D-1C-2B', 'KSX8177JS60', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (478, 2, '0A-9F-0C-3C-65-94', 'BAX9645FH83', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (479, 2, '3D-4F-67-D6-3A-A7', 'SAI9155DR00', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (480, 2, '3D-B0-C2-04-0E-AF', 'OXV8705BM06', 'SWITCH');
+
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (520, 470, 7, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (521, 471, 7, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (522, 472, 7, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (523, 473, 7, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (524, 474, 7, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (525, 475, 7, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (526, 476, 6, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (527, 477, 6, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (528, 478, 6, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (529, 479, 6, 2);
+insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
+values (530, 480, 6, 2);
+---------------------------------------------------------------------------------------------------------------------
+
+-- select * from STORAGE_OBJECTS where FK_STORAED_AT_USER = 4;
 
 
 --delete from RESERVATIONS where ID = 1;
@@ -1230,12 +1316,3 @@ insert into reservations (id, reserved_at, fk_user, last_modified, completed, co
 values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, '123413521',
         'Kunde benötigt PoE fähiges Device');
 
--- insert into object_types(id, objectType_name)
--- values (1, 'IMFC433');
--- insert into object_types(id, objectType_name)
--- values (2, 'EQVN997');
-
--- insert into storage_objects (id, fk_reservation, fk_CPE, fk_supply,
---                              fk_storaed_at_user, fk_storage, remark, status, project_device)
--- values (1, 1, 1 ,1 , 3, 1, 'pellentesque quis', 'AVAILABLE', true);
--- --insert into storage_objects (id, object_type, project_device, remark, fk_storage_object, fk_storaed_at_user, status, fk_reservation, supply, fk_cpe, SFP) values (2, 2, 0, 'pede malesuada in imperdiet et', 6, null, 'AVAILABLE', 2, null, '1', null);
