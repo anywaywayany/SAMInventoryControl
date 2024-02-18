@@ -4,7 +4,6 @@ package com.samic.samic.data.entity;
 import com.samic.samic.data.constants.ConstantsDomain;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +57,9 @@ public class StorageObject extends AbstractIdentityClass<Long>{
                cascade = {CascadeType.PERSIST})
     private List<StorageObjectHistory> storageObjectHistory = new ArrayList<>();
 
-    @Embedded
+
     @Column(name = "stored_at_customer")
-    private Customer storedAtCustomer;
+    private String verbindungsnummer;
 
 
     @ManyToOne(fetch = FetchType.EAGER,

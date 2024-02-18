@@ -122,11 +122,7 @@ public class ServiceSFP{
 
     @Transactional
     public Stream<SFP> findAll(){
-        if(repositorySFP.findAll().isEmpty()){
-            throw new SFPException("SFP list is empty!");
-        }else{
             return repositorySFP.findAll().stream();
-        }
     }
 
     @Transactional

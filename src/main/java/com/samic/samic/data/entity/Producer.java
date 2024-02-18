@@ -24,11 +24,11 @@ public class Producer extends AbstractIdentityClass<Long>{
      */
     @OneToMany(mappedBy = "producer",
                fetch = FetchType.LAZY,
-               cascade = CascadeType.PERSIST)
+               cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<SFP> sfp = new ArrayList<>();
     @OneToMany(mappedBy = "producer",
                fetch = FetchType.LAZY,
-               cascade = CascadeType.PERSIST)
+               cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<CPE> cpe = new ArrayList<>();
     /*
     attributes

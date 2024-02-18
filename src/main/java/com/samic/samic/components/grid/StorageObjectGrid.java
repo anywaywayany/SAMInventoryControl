@@ -17,8 +17,8 @@ public class StorageObjectGrid extends Grid<StorageObject> {
     setWidthFull();
 
     addColumn(item -> item.getId() != null ? item.getId() : " ").setHeader("LagerID");
-    addColumn(item -> item.getObjectTypeName()
-                          .getName()).setHeader("Gerätetyp");
+    addColumn(item -> item.getObjectTypeName() != null ? item.getObjectTypeName()
+                          .getName() : item.getSupply().getDescription()).setHeader("Gerätetyp");
     addColumn(StorageObject::getRemark).setHeader("Anmerkung");
     addColumn(item -> item.getSfp() == null ? item.getCpe() == null ? " " : item.getCpe()
                                                                                 .getProducer()

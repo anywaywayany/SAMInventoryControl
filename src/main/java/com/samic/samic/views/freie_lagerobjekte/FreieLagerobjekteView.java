@@ -31,6 +31,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.data.domain.PageRequest;
 
@@ -83,7 +84,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
     searchField.setValueChangeMode(ValueChangeMode.EAGER);
 
     grid.addColumn(StorageObject::getId).setHeader("Lager ID").setAutoWidth(true).setFlexGrow(0);
-    grid.addColumn(StorageObject::getObjectTypeName).setHeader("Gerätetyp").setAutoWidth(true)
+    grid.addColumn(so -> so.getObjectTypeName() != null ? so.getObjectTypeName().getName() : so.getSupply().getDescription()).setHeader("Gerätetyp").setAutoWidth(true)
         .setFlexGrow(1);
     grid.addColumn(StorageObject::getRemark).setHeader("Anmerkung").setAutoWidth(true)
         .setFlexGrow(2);
@@ -97,6 +98,8 @@ public class FreieLagerobjekteView extends VerticalLayout {
     filterStorage.setItemLabelGenerator(Storage::getName);
     filterStorage.setItems(storageService.findAll().toList());
     filterStorage.setAllowCustomValue(false);
+    filterStorage.setValue(filterStorage.getListDataView()
+                                        .getItem(0));
     filterStorage.setPlaceholder("Lager auswählen");
 
     filterObjectType.setItemLabelGenerator(ObjectType::getName);
@@ -104,18 +107,22 @@ public class FreieLagerobjekteView extends VerticalLayout {
     filterObjectType.setPlaceholder("Gerätetyp auswählen");
     filterObjectType.setWidth("250px");
 
-    GridListDataView<StorageObject> storageObjectList;
+    //GridListDataView<StorageObject> storageObjectList;
 
-    try {
-      storageObjectList = grid.setItems(storageObjectService.findFreeStorageObjects().toList());
+    listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
+                                                                    .getId());
+/*    try {
+      storageObjectList = grid.setItems(listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
+                                                                                                        .getId()));
     } catch (SamicException e) {
       storageObjectList = grid.setItems(List.of());
       UIFactory.notificationError(e.getMessage()).open();
-    }
+    }*/
 
-    GridListDataView<StorageObject> finalStorageObjectList = storageObjectList;
-    searchField.addValueChangeListener(e -> listFilteredStorageObjects(e.getValue()));
-    filterStorage.addValueChangeListener(e -> finalStorageObjectList.refreshAll());
+    //GridListDataView<StorageObject> finalStorageObjectList = storageObjectList;
+    searchField.addValueChangeListener(e -> listFilteredStorageObjects(e.getValue(), filterStorage.getValue()
+                                                                                                  .getId()));
+    filterStorage.addValueChangeListener(e -> listFilteredStorageObjects(searchField.getValue(), e.getValue().getId()));
 
     add(
         UIFactory.rootComponentContainer("",
@@ -132,11 +139,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
         reservationDialog);
   }
 
-  private void listFilteredStorageObjects(String filterString) {
+  private void listFilteredStorageObjects(String filterString, Long storageId) {
     String filter = "%" + filterString + "%";
     grid.setItems(query ->
         storageObjectService.searchSto(filter,
-            PageRequest.of(query.getPage(), query.getPageSize())));
+                                       PageRequest.of(query.getPage(), query.getPageSize()), storageId));
   }
 
   private void onCancel() {
@@ -168,7 +175,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
   private void openReservationForm(StorageObject storageObject) {
     this.storageObjectToSave = storageObject;
     reservationForm.setBean(
-        Reservation.builder().customer(Customer.builder().connectionNo(0).build()).build());
+        Reservation.builder().customer(Customer.builder().connectionNo("").build()).build());
     reservationDialog.open();
   }
 
@@ -195,7 +202,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
     }
 
     protected void setStorageObject(StorageObject storageObject) {
-      remark.setValue(storageObject.getRemark());
+        if(storageObject.getRemark() != null){
+            remark.setValue(storageObject.getRemark());
+        }else{
+            remark.setValue("");
+        }
     }
   }
 }

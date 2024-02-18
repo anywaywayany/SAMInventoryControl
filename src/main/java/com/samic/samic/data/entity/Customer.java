@@ -6,5 +6,5 @@ import lombok.Builder;
 //@NoArgsConstructor
 //@AllArgsConstructor
 @Builder
-public record Customer(Integer connectionNo){
+public record Customer(String connectionNo){
 }
