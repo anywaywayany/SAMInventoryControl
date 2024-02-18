@@ -152,6 +152,7 @@ public class MeineHardwareView extends TabSheet {
 
   private void onSave(StorageObject storageObject, Storage storage) {
     storageObject.setStorage(storage);
+    storageObject.setStoredAtUser(null);
     storageObjectService.saveStorageObject(storageObject);
     storageObjectGrid.getDataProvider().refreshAll();
   }

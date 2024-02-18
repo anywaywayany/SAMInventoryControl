@@ -23,7 +23,7 @@ public class SFP extends AbstractIdentityClass<Long>{
     relations
      */
     @ManyToOne(fetch = FetchType.EAGER,
-               cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+               cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_producer",
                 foreignKey = @ForeignKey(name = "fk_producer_2_sfp"))
     private Producer producer;

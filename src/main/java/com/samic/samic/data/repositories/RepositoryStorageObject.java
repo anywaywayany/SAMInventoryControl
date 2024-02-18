@@ -48,7 +48,7 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
 
     Stream<StorageObject> findStorageObjectByCpe_Id(Long id);
 
-    Optional<StorageObject> findStorageObjectByStoredAtCustomer(Customer customer);
+//    Optional<StorageObject> findStorageObjectByVerbindungsnummer(String verbinNr);
 
     //    List<StorageObject> findAllByObjectTypeNameLikeIgnoreCase(String keyword, String keyword1, Pageable pageable);
 
@@ -63,11 +63,11 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
     //    .objectTypeName) LIKE lower(:keyword) )")
     //    List<StorageObject> searchUnemployedWithOr2(String keyword, Pageable pageable);
 
-    @Query(value = "select s from StorageObject s join fetch s.objectTypeName where lower(s.objectTypeName.name) LIKE lower(:name) AND s.reservation = null AND s.storage != null AND   lower(s.storage.name) != lower('Kunde' )")
+    @Query(value = "select s from StorageObject s join fetch s.objectTypeName where lower(s.objectTypeName.name) LIKE lower(:name)" +
+                           " AND s.reservation = null AND s.storage != null AND lower(s.storage.name) != lower('Kunde' ) AND s.storage.id = :id")
     List<StorageObject> filterStorageObjectsByObjectTypeNameName(
             @Param("name")
-            String filterString, Pageable pageable);
-
+            String filterString, Pageable pageable, @Param("id") Optional<Long> storageID);
 
     //    Page<StorageObject> findStorageObjectByStoredAtUser_Id(Long id, PageRequest request);
 

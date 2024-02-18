@@ -12,9 +12,7 @@ import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,8 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static com.samic.samic.data.constants.ConstantsDomain.P;
 
 
 @Service
@@ -368,9 +364,7 @@ public class ServiceStorageObject{
         Stream<StorageObject> freeStorageObjects = repositoryStorageObject.findAll()
                                                                           .stream();
         return freeStorageObjects.filter(storageObject -> storageObject.getReservation() == null)
-                                 .filter(storageObject -> storageObject.getStoredAtUser() == null)
-                                 .filter(storageObject -> storageObject.getStoredAtCustomer() == null);
-
+                                 .filter(storageObject -> storageObject.getStoredAtUser() == null);
     }
 
     public Stream<StorageObject> findReservedStorageObjectsAsStream(){
@@ -389,9 +383,9 @@ public class ServiceStorageObject{
                                                                         .equals(user.getId()));
     }
 
-    public Optional<StorageObject> findStorageObjectByCustomer(Customer customer){
-        return repositoryStorageObject.findStorageObjectByStoredAtCustomer(customer);
-    }
+//    public Optional<StorageObject> findStorageObjectByCustomer(String verbindungsnummer){
+//        return repositoryStorageObject.findStorageObjectByVerbindungsnummer(verbindungsnummer);
+//    }
 
 //    public Stream<StorageObject> listStorageObjectByName(String filterStrig){
 //        String              likeFiler  = "%"+filterStrig+"%";
@@ -404,8 +398,8 @@ public class ServiceStorageObject{
 //        return data.stream();
 //    }
 
-    public Stream<StorageObject> searchSto(String filterString, Pageable pageable){
-        return repositoryStorageObject.filterStorageObjectsByObjectTypeNameName(filterString, pageable).stream();
+    public Stream<StorageObject> searchSto(String filterString, Pageable pageable, Long id){
+        return repositoryStorageObject.filterStorageObjectsByObjectTypeNameName(filterString, pageable, Optional.of(id)).stream();
     }
     public Stream<StorageObject> searchTempo(String filter , Pageable pageable ){
         return repositoryStorageObject.findAll().stream().filter(f -> f.getObjectTypeName().equals(filter));

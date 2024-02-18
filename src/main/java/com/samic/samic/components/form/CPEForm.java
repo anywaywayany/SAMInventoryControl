@@ -78,9 +78,8 @@ public class CPEForm extends FormLayout {
         .withNullRepresentation("")
         /*.withValidator(value -> isProjectEquipment.getValue() && !value.isEmpty(),
             "Verbindungsnummer darf nicht leer sein")
-        */.withConverter(Integer::valueOf, String::valueOf)
-        .bind(so -> so.getStoredAtCustomer().connectionNo(),
-            (so, value) -> so.setStoredAtCustomer(Customer.builder().connectionNo(value).build()));
+        */
+        .bind(StorageObject::getVerbindungsnummer, StorageObject::setVerbindungsnummer);
 
 //    binderStorageObject.forField(trackingNumber)
 //        .bind(StorageObject::getTrackingNumber, StorageObject::setTrackingNumber);

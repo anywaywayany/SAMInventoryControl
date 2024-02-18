@@ -124,8 +124,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
   private void changeForm(Type value, Storage storage) {
     if (value.equals(Type.ROUTER) || value.equals(Type.SWITCH) || value.equals(Type.IP_PHONE)) {
       this.cpeForm.setCPEBeans(serviceObjectType.findAll().toList(),
-          StorageObject.builder().objectTypeName(ObjectType.builder().build()).storedAtCustomer(
-                  Customer.builder().connectionNo(0).build())
+          StorageObject.builder().objectTypeName(ObjectType.builder().build()).verbindungsnummer("")
               .cpe(CPE.builder().type(value)
                   .build()).storage(storage).build());
       producerSelect.setEnabled(true);
@@ -134,8 +133,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       formChildContainer.add(cpeForm);
     } else if (value.equals(Type.SFP)) {
       this.sfpForm.setSFPBeans(serviceObjectType.findAll().toList(),
-          StorageObject.builder().objectTypeName(ObjectType.builder().build()).storedAtCustomer(
-                  Customer.builder().connectionNo(0).build())
+          StorageObject.builder().objectTypeName(ObjectType.builder().build()).verbindungsnummer("")
               .sfp(SFP.builder().type(value).build()).storage(storage).build());
       producerSelect.setEnabled(true);
       formChildContainer.remove(supplyForm);
