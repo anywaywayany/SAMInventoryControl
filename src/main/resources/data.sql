@@ -486,8 +486,7 @@ insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (361, 
 insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (362, 3, '01-10-23-E1-BE-97', 'VEN5401AQ16', 'IP_PHONE');
 
 -- HP
-insert into CPES (id, fk_producer, macaddress, serialnumber, type)
-values (363, 2, '00-09-48-0A-58-2A', 'ASZ2087U82ZB', 'SWITCH');
+insert into CPES (id, fk_producer, macaddress, serialnumber, type) values (363, 2, '00-09-48-0A-58-2A', 'ASZ2087U82ZB', 'SWITCH');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (364, 2, 'B4-A9-20-CF-DE-0F', 'CQS9633XK55', 'SWITCH');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (365, 2, '7F-39-D9-5D-CC-71', 'YRS1417AI13', 'SWITCH');
 insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (366, 2, '2C-9B-79-E3-BF-A5', 'GME7526YY92', 'SWITCH');
@@ -667,28 +666,30 @@ values (6, 'Patch Kabel opt. MM 1,5 Meter LC/LC', 5);
 -- Insert freier Lagerobjekte Version 2 ca 600 Stück
 
 -- C927 50 Stk IDs: 50-100  FK_CPE 7-57
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (50, 56, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (51, 57, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (52, 7, 1, 'IOS up to date');
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (53, 8, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (54, 9, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (55, 10, 1, 'keine Verpackung');
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (56, 11, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (57, 12, 1, 'IOS up to date');
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (50, 56, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (51, 57, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (52, 7, 1, 'IOS up to date', 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (53, 8, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (54, 9, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (55, 10, 1, 'keine Verpackung', 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (56, 11, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (57, 12, 1, 'IOS up to date', 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (66, 21, 1, 'Verpackung beschädigt', 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (68, 23, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (69, 24, 1, 'IOS alt', 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (70, 25, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (67, 22, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (71, 26, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (64, 19, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (63, 18, 1, null, 1);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark,fk_storage) values (65, 20, 1, 'keine Verpackung', 1);
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (58, 13, 1, null);
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (59, 14, 1, null);
+
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (60, 15, 1, null);
+
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (61, 16, 1, null);
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (62, 17, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (63, 18, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (64, 19, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (65, 20, 1, 'keine Verpackung');
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (66, 21, 1, 'Verpackung beschädigt');
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (67, 22, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (68, 23, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (69, 24, 1, 'IOS alt');
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (70, 25, 1, null);
-insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (71, 26, 1, null);
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (72, 27, 1, null);
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (73, 28, 1, 'Netzteil fehlt');
 insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark) values (74, 29, 1, null);
@@ -1222,10 +1223,10 @@ values (709, 2, 12, 1);
 insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no,
                           reserved_description)
 values (1, TIMESTAMP ' 2023-12-25 11:16:47.672127', 1, TIMESTAMP ' 2023-12-25 11:16:47.677192', 0,
-        12335134,
+        '12335134',
         'Kunde Bike Service Speedy');
 insert into reservations (id, reserved_at, fk_user, last_modified, completed, connection_no, reserved_description)
-values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, 123413521,
+values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, '123413521',
         'Kunde benötigt PoE fähiges Device');
 
 -- insert into object_types(id, objectType_name)

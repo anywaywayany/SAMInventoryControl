@@ -109,8 +109,9 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
     //GridListDataView<StorageObject> storageObjectList;
 
-    listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
-                                                                    .getId());
+    grid.setItems(storageObjectService.findFreeStorageObjects().toList());
+    /*listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
+                                                                    .getId());*/
 /*    try {
       storageObjectList = grid.setItems(listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
                                                                                                         .getId()));

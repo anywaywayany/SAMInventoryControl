@@ -64,7 +64,9 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
     //    List<StorageObject> searchUnemployedWithOr2(String keyword, Pageable pageable);
 
     @Query(value = "select s from StorageObject s join fetch s.objectTypeName where lower(s.objectTypeName.name) LIKE lower(:name)" +
-                           " AND s.reservation = null AND s.storage != null AND lower(s.storage.name) != lower('Kunde' ) AND s.storage.id = :id")
+                           " AND s.reservation = null AND s.storage != null AND lower(s.storage.name) != lower('Kunde' ) AND s.storage.id = :id"/* +
+                           "" +
+                           "select f from StorageObject f join fetch"*/)
     List<StorageObject> filterStorageObjectsByObjectTypeNameName(
             @Param("name")
             String filterString, Pageable pageable, @Param("id") Optional<Long> storageID);
