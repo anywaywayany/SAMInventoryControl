@@ -168,7 +168,7 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
             saved.getCpe());
         if (persisted != null) {
           UIFactory.notificationInfoNoDuration("LagerID: " + persisted.getId().toString() + " Ger"
-              + "ätetyp:" + persisted.getObjectTypeName().getName()).open();
+              + "ätetyp: " + persisted.getObjectTypeName().getName()).open();
           UIFactory.notificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
 
         }

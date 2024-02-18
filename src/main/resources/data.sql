@@ -1188,7 +1188,9 @@ insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) val
 insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) values (764, 100, 12, null, 1);
 insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) values (765, 101, 12, 'refurbed', 1);
 
-
+-- Storage Objects im Lager Kunde
+-- insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (415, 2, 'B0-41-4E-2A-99-9E', 'KHW4715TG39', 'SWITCH');
+-- insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (452, 415, 6, 'IOS alt', 2);
 
 -- Storageobjects beim User Mgmt
 

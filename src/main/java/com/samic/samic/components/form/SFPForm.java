@@ -25,7 +25,7 @@ public class SFPForm extends FormLayout {
   private final TextField connectionNumber = new TextField("Verbindungsnummer");
   private final TextField trackingNumber = new TextField("Sendungsnummer");
   private final TextField wavelength = new TextField("Wellenlänge");
-  private final IntegerField nicSpeed = new IntegerField("NIC Speed");
+  private final IntegerField nicSpeed = new IntegerField("NIC Speed Gbps");
   private final Binder<StorageObject> binderStorageObject = new Binder<>(StorageObject.class, true);
   private ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
   private TextField serialnumber = new TextField("Seriennummer");
