@@ -6,13 +6,19 @@ import com.samic.samic.views.abfragen.AbfragenView;
 import com.samic.samic.views.administration.AdministrationView;
 import com.samic.samic.views.dashboard.DashboardView;
 import com.samic.samic.views.freie_lagerobjekte.FreieLagerobjekteView;
-import com.samic.samic.views.lagerobjekt_erfassen.lagerobjekt_aufnehmen.LagerobjektAufnehmenView;
+import com.samic.samic.views.lagerobjekt_aufnehmen.LagerobjektAufnehmenView;
 import com.samic.samic.views.lagerobjekt_erfassen.LagerobjektErfassenView;
 import com.samic.samic.views.meine_hardware.MeineHardwareView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Footer;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -26,147 +32,154 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.util.Optional;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-/** The main view is a top-level placeholder for other views. */
+/**
+ * The main view is a top-level placeholder for other views.
+ */
 public class MainLayout extends AppLayout {
 
-private H2 viewTitle;
+  private H2 viewTitle;
 
-private AuthenticatedUser authenticatedUser;
-private AccessAnnotationChecker accessChecker;
+  private AuthenticatedUser authenticatedUser;
+  private AccessAnnotationChecker accessChecker;
 
-public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
-	this.authenticatedUser = authenticatedUser;
-	this.accessChecker = accessChecker;
+  public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
+    this.authenticatedUser = authenticatedUser;
+    this.accessChecker = accessChecker;
 
-	setPrimarySection(Section.DRAWER);
-	addDrawerContent();
-	addHeaderContent();
-}
+    setPrimarySection(Section.DRAWER);
+    addDrawerContent();
+    addHeaderContent();
+  }
 
-private void addHeaderContent() {
-	DrawerToggle toggle = new DrawerToggle();
-	toggle.setAriaLabel("Menu toggle");
+  private void addHeaderContent() {
+    DrawerToggle toggle = new DrawerToggle();
+    toggle.setAriaLabel("Menu toggle");
 
-	viewTitle = new H2();
-	viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+    viewTitle = new H2();
+    viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
-	Image logo = new Image("/images/logo_samic.svg", "Samic logo");
-	logo.setHeight("34px");
+    Image logo = new Image("/images/logo_samic.svg", "Samic logo");
+    logo.setHeight("34px");
 
-	addToNavbar(true, toggle, viewTitle, logo);
+    addToNavbar(true, toggle, viewTitle, logo);
 
-	logo.getStyle().setFloat(Style.FloatCss.RIGHT);
-	logo.getStyle().setPosition(Style.Position.ABSOLUTE);
-	logo.getStyle().setRight("20px");
-}
+    logo.getStyle().setFloat(Style.FloatCss.RIGHT);
+    logo.getStyle().setPosition(Style.Position.ABSOLUTE);
+    logo.getStyle().setRight("20px");
+  }
 
-private void addDrawerContent() {
-	H1 appName = new H1("");
-	appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-	Header header = new Header(appName);
+  private void addDrawerContent() {
+    H1 appName = new H1("");
+    appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+    Header header = new Header(appName);
 
-	Scroller scroller = new Scroller(createNavigation());
+    Scroller scroller = new Scroller(createNavigation());
 
-	addToDrawer(header, scroller, createFooter());
-}
+    addToDrawer(header, scroller, createFooter());
+  }
 
-private SideNav createNavigation() {
-	SideNav nav = new SideNav();
+  private SideNav createNavigation() {
+    SideNav nav = new SideNav();
 
-	if (accessChecker.hasAccess(DashboardView.class)) {
-	nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
-	}
+    if (accessChecker.hasAccess(DashboardView.class)) {
+      nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
+    }
 
-	if (accessChecker.hasAccess(LagerobjektErfassenView.class)) {
-	nav.addItem(
-		new SideNavItem(
-			"Lagerobjekt erfassen",
-			LagerobjektErfassenView.class,
-			LineAwesomeIcon.DASHCUBE.create()));
-	}
-	if (accessChecker.hasAccess(LagerobjektAufnehmenView.class))
-		nav.addItem(
-				new SideNavItem(
-				"Lagerobjekt aufnehmen",
-				LagerobjektAufnehmenView.class,
-				LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
-	if (accessChecker.hasAccess(FreieLagerobjekteView.class))
-		nav.addItem(
-				new SideNavItem(
-				"Freie Lagerobjekte",
-				FreieLagerobjekteView.class,
-				LineAwesomeIcon.SEARCH_SOLID.create()));
-	if (accessChecker.hasAccess(MeineHardwareView.class))
-		nav.addItem(
-				new SideNavItem(
-				"Meine Hardware",
-				MeineHardwareView.class,
-				LineAwesomeIcon.STRIPE.create()));
+    if (accessChecker.hasAccess(LagerobjektErfassenView.class)) {
+      nav.addItem(
+          new SideNavItem(
+              "Lagerobjekt erfassen",
+              LagerobjektErfassenView.class,
+              LineAwesomeIcon.DASHCUBE.create()));
+    }
+		if (accessChecker.hasAccess(LagerobjektAufnehmenView.class)) {
+			nav.addItem(
+					new SideNavItem(
+							"Lagerobjekt aufnehmen",
+							LagerobjektAufnehmenView.class,
+							LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
+		}
+		if (accessChecker.hasAccess(FreieLagerobjekteView.class)) {
+			nav.addItem(
+					new SideNavItem(
+							"Freie Lagerobjekte",
+							FreieLagerobjekteView.class,
+							LineAwesomeIcon.SEARCH_SOLID.create()));
+		}
+		if (accessChecker.hasAccess(MeineHardwareView.class)) {
+			nav.addItem(
+					new SideNavItem(
+							"Meine Hardware",
+							MeineHardwareView.class,
+							LineAwesomeIcon.STRIPE.create()));
+		}
 
-	if (accessChecker.hasAccess(AbfragenView.class))
-		nav.addItem(
-				new SideNavItem(
-						"Abfragen",
-						AbfragenView.class,
-						LineAwesomeIcon.QUESTION_CIRCLE_SOLID.create()
-				)
-		);
-	if (accessChecker.hasAccess(AdministrationView.class))
-		nav.addItem(
-				new SideNavItem(
-						"Administration",
-						AdministrationView.class,
-						LineAwesomeIcon.COG_SOLID.create()
-				)
-		);
+		if (accessChecker.hasAccess(AbfragenView.class)) {
+			nav.addItem(
+					new SideNavItem(
+							"Abfragen",
+							AbfragenView.class,
+							LineAwesomeIcon.QUESTION_CIRCLE_SOLID.create()
+					)
+			);
+		}
+		if (accessChecker.hasAccess(AdministrationView.class)) {
+			nav.addItem(
+					new SideNavItem(
+							"Administration",
+							AdministrationView.class,
+							LineAwesomeIcon.COG_SOLID.create()
+					)
+			);
+		}
 
-	return nav;
-}
+    return nav;
+  }
 
-private Footer createFooter() {
-	Footer layout = new Footer();
+  private Footer createFooter() {
+    Footer layout = new Footer();
 
-	Optional<User> maybeUser = authenticatedUser.getUser();
-	if (maybeUser.isPresent()) {
-	User user = maybeUser.get();
+    Optional<User> maybeUser = authenticatedUser.getUser();
+    if (maybeUser.isPresent()) {
+      User user = maybeUser.get();
 
-	MenuBar userMenu = new MenuBar();
-	userMenu.setThemeName("tertiary-inline contrast");
+      MenuBar userMenu = new MenuBar();
+      userMenu.setThemeName("tertiary-inline contrast");
 
-	MenuItem userName = userMenu.addItem("");
-	Div div = new Div();
-	// div.add(avatar);
-	div.add(user.getProfile().getFirstName()); // habs hier ändern müssen. Kannst aber anpassen.
-	div.add(new Icon("lumo", "dropdown"));
-	div.getElement().getStyle().set("display", "flex");
-	div.getElement().getStyle().set("align-items", "center");
-	div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
-	userName.add(div);
-	userName
-		.getSubMenu()
-		.addItem(
-			"Sign out",
-			e -> {
-				authenticatedUser.logout();
-			});
+      MenuItem userName = userMenu.addItem("");
+      Div div = new Div();
+      // div.add(avatar);
+      div.add(user.getProfile().getFirstName()); // habs hier ändern müssen. Kannst aber anpassen.
+      div.add(new Icon("lumo", "dropdown"));
+      div.getElement().getStyle().set("display", "flex");
+      div.getElement().getStyle().set("align-items", "center");
+      div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
+      userName.add(div);
+      userName
+          .getSubMenu()
+          .addItem(
+              "Sign out",
+              e -> {
+                authenticatedUser.logout();
+              });
 
-	layout.add(userMenu);
-	} else {
-	Anchor loginLink = new Anchor("login", "Sign in");
-	layout.add(loginLink);
-	}
+      layout.add(userMenu);
+    } else {
+      Anchor loginLink = new Anchor("login", "Sign in");
+      layout.add(loginLink);
+    }
 
-	return layout;
-}
+    return layout;
+  }
 
-@Override
-protected void afterNavigation() {
-	super.afterNavigation();
-	viewTitle.setText(getCurrentPageTitle());
-}
+  @Override
+  protected void afterNavigation() {
+    super.afterNavigation();
+    viewTitle.setText(getCurrentPageTitle());
+  }
 
-private String getCurrentPageTitle() {
-	PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
-	return title == null ? "" : title.value();
-}
+  private String getCurrentPageTitle() {
+    PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
+    return title == null ? "" : title.value();
+  }
 }
