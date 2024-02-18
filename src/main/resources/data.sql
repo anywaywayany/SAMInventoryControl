@@ -16,7 +16,7 @@
 
 insert into users(id, created_At, last_login, first_name, last_name, user_name, email,
                   hashed_password, phone, role)
-values (1, date '2019-05-26', date '2023-05-26', 'Management', 'Lane', 'management',
+values (1, date '2019-05-26', date '2023-05-26', 'Management', 'User', 'management',
         'management.toccafondi@viipo.ae',
         '$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.',
         '(762) 444526-5961', 'MANAGMENT');
@@ -50,11 +50,11 @@ values (4, date '2019-05-26', date '2023-05-26', 'Max', 'Technician', 'MaxTec',
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
 values (1, 'Hauptlager', 'Spengergasse', 10, 20, 1050, 'Wien');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (2, 'Kunde', 'Lagert beim Kunden', 1, 1, 0, 'Österreich');
+values (2, 'Kunde', 'Beim Kunden installiert', 0, 0, 0, 'Österreich');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
 values (3, 'Lager STMK', 'Herrengasse', 100, 1, 8020, 'Graz');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
-values (4, 'Lager KTN', 'Lindwurmstra?e', 4, 1, 9020, 'Klagenfurt');
+values (4, 'Lager KTN', 'Lindwurmweg', 13, 1, 9020, 'Klagenfurt');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
 values (5, 'Lager VBG', 'St. Anna Straße', 11, 1, 6900, 'Bregenz');
 insert into storages(id, storage_name, street, house_no, door_no, zip_code, city)
