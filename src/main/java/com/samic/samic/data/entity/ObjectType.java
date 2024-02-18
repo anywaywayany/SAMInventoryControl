@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -30,6 +31,11 @@ public class ObjectType extends AbstractIdentityClass<Long>{
      */
     @Column(name="object_Type_name", length = ConstantsDomain.DEFAULT_LENGTH)
     private String name;
+
+    @Transient
+    @Convert
+    @Column
+    private Map<String, Long > min;
 
       @Override
       public String toString(){
