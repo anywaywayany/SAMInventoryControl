@@ -21,8 +21,6 @@ public class SupplyForm extends FormLayout {
 
   @PostConstruct
   private void initUI() {
-    //storageObjectID.setReadOnly(true);
-
     add(description, amount);
 
     initBinder();

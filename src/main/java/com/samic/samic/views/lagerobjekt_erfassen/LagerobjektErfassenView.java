@@ -37,7 +37,6 @@ import java.util.stream.Stream;
 public class LagerobjektErfassenView extends VerticalLayout implements BeforeLeaveObserver {
 
 
-  private final ServiceStorageObject storageObjectService;
   private final ServiceProducer producerService;
   private final ServiceStorage storageService;
   private final ServiceObjectType serviceObjectType;
@@ -64,7 +63,6 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       SupplyForm supplyForm, ServiceLagerObjectErfassen lagerObjectErfassenService,
       ServiceProducer getProducerService) {
 
-    this.storageObjectService = storageObjectService;
     this.producerService = producerService;
     this.storageService = storageService;
     this.serviceObjectType = serviceObjectType;
