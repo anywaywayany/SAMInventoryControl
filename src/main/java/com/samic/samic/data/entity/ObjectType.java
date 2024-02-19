@@ -2,13 +2,11 @@ package com.samic.samic.data.entity;
 
 import com.samic.samic.data.constants.ConstantsDomain;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Entity
@@ -22,26 +20,32 @@ public class ObjectType extends AbstractIdentityClass<Long>{
     /*
     relations
      */
-    @OneToMany(mappedBy = "objectTypeName", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "objectTypeName",
+               fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST})
     private List<StorageObject> storageObject = new ArrayList<>();
 
 
     /*
     attributes
      */
-    @Column(name="object_Type_name", length = ConstantsDomain.DEFAULT_LENGTH)
+    @Column(name = "object_Type_name",
+            length = ConstantsDomain.DEFAULT_LENGTH)
     private String name;
 
-    @Transient
-    @Convert
-    @Column
-    private Map<String, Long > min;
+    @Column(name = "min_value")
+    @Positive
+    private Long minValue;
 
-      @Override
-      public String toString(){
-          StringBuilder builder = new StringBuilder();
+    @Column(name = "max_amount")
+    @Positive
+    private Long maxAmount;
 
-          builder.append(name);
-          return builder.toString();
-      }
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(name);
+        return builder.toString();
+    }
 }

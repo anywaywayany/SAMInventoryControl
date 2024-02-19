@@ -1188,7 +1188,19 @@ insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) val
 insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) values (764, 100, 12, null, 1);
 insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) values (765, 101, 12, 'refurbed', 1);
 
+------------------------------------------------Supplies-------------------------------------------------------------
+
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (766,1, 'LAN', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (767,2, 'LAN', 3);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (768,3, 'LAN Kabel', 3);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (769,4, 'LAN Kabel', 4);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (770,3, 'LAN', 5);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (771,4, 'LAN Kabel Werkzeug', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (772,6, 'LAN', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (773,2, 'WLAN Kabel :D', 1);
+
 ---------------------------------------------------------------------------------------------------------------------
+
 
 -- Storage Objects für das  Lager Kunde
 insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (490, 2, 'B0-41-4E-2A-99-9E', 'KHW4715TG39', 'SWITCH');

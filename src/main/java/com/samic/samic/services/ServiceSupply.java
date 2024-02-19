@@ -130,6 +130,9 @@ public class ServiceSupply{
             return repositorySupply.findAll().stream();
     }
 
+    public Long count(){
+        return repositorySupply.count();
+    }
 
 
 }

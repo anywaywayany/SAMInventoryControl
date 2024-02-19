@@ -3,7 +3,9 @@ package com.samic.samic.services;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
+import com.samic.samic.data.repositories.RepositoryObjectType;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
+import com.samic.samic.exceptions.ObjectTypeException;
 import com.samic.samic.exceptions.StorageObjectException;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
@@ -32,6 +34,8 @@ public class ServiceStorageObject{
     private final RepositoryStorageObject repositoryStorageObject;
     @Autowired
     private final EntityManagerFactory    emf;
+    @Autowired
+    private final RepositoryObjectType    repositoryObjectType;
     //    private final Logger                  log = LoggerFactory.getLogger(this.getClass());
     //    public ServiceStorageObject(@Qualifier("storageObject") RepositoryStorageObject repositoryStorageObject){
     //        this.repositoryStorageObject = repositoryStorageObject;
@@ -454,33 +458,97 @@ public class ServiceStorageObject{
                               VaadinSpringDataHelpers.toSpringDataSort(query));
     }
 
-    public void maxObjectTypes(){
-        StorageObject       sto     = new StorageObject();
-        Map<String, Long>   mapList = new HashMap<>();
-        List<StorageObject> all     = repositoryStorageObject.findAll();
+    //Map mit den Geräten und der Anzahl der Geräte mit stream und map hardocded 2
+    public Map<String, Long> findAmountOfObjectType1(){
+
+        Map<String, Long> mapList = new HashMap<>();
+
+        List<StorageObject> all = repositoryStorageObject.findAll();
+
+        if(all.isEmpty()){
+            throw new ObjectTypeException("Map is empty!");
+        }
+
         long c927 = all.stream()
-                       .filter(a -> a.getObjectTypeName()
+                       .filter(a -> a.getObjectTypeName() != null)
+                       .filter(b -> b.getObjectTypeName()
+                                     .getName()
                                      .equals("C927"))
                        .count();
+
         long C1111 = all.stream()
-                        .filter(a -> a.getObjectTypeName()
+                        .filter(a -> a.getObjectTypeName() != null)
+                        .filter(b -> b.getObjectTypeName()
+                                      .getName()
                                       .equals("C1111-4p"))
                         .count();
 
         long asr920 = all.stream()
-                         .filter(a -> a.getObjectTypeName()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
                                        .equals("ASR920-12SZ-IM"))
                          .count();
 
         long C897VAB = all.stream()
-                          .filter(a -> a.getObjectTypeName()
+                          .filter(a -> a.getObjectTypeName() != null)
+                          .filter(b -> b.getObjectTypeName()
+                                        .getName()
                                         .equals("C897VAB"))
                           .count();
 
         long C1117 = all.stream()
-                        .filter(a -> a.getObjectTypeName()
+                        .filter(a -> a.getObjectTypeName() != null)
+                        .filter(b -> b.getObjectTypeName()
+                                      .getName()
                                       .equals("C1117-4p"))
                         .count();
+
+        //
+        long HP = all.stream()
+                     .filter(a -> a.getObjectTypeName() != null)
+                     .filter(b -> b.getObjectTypeName()
+                                   .getName()
+                                   .equals("HP J9050A"))
+                     .count();
+
+        long Aruba = all.stream()
+                        .filter(a -> a.getObjectTypeName() != null)
+                        .filter(b -> b.getObjectTypeName()
+                                      .getName()
+                                      .equals("Aruba 2530 8-PoE+"))
+                        .count();
+        long M300 = all.stream()
+                       .filter(a -> a.getObjectTypeName() != null)
+                       .filter(b -> b.getObjectTypeName()
+                                     .getName()
+                                     .equals("M300"))
+                       .count();
+        long D865 = all.stream()
+                       .filter(a -> a.getObjectTypeName() != null)
+                       .filter(b -> b.getObjectTypeName()
+                                     .getName()
+                                     .equals("D865"))
+                       .count();
+        long D862 = all.stream()
+                       .filter(a -> a.getObjectTypeName() != null)
+                       .filter(b -> b.getObjectTypeName()
+                                     .getName()
+                                     .equals("D862"))
+                       .count();
+        long GLC = all.stream()
+                      .filter(a -> a.getObjectTypeName() != null)
+                      .filter(b -> b.getObjectTypeName()
+                                    .getName()
+                                    .equals("GLC-LH-SM"))
+                      .count();
+        long LC = all.stream()
+                     .filter(a -> a.getObjectTypeName() != null)
+                     .filter(b -> b.getObjectTypeName()
+                                   .getName()
+                                   .equals("LC-SX-MM"))
+                     .count();
+
 
         mapList.put("C927",
                     c927);
@@ -492,10 +560,137 @@ public class ServiceStorageObject{
                     C897VAB);
         mapList.put("C1117",
                     C1117);
+        mapList.put("HP J9050A",
+                    HP);
+        mapList.put("Aruba 2530 8-PoE+",
+                    Aruba);
+        mapList.put("M300",
+                    M300);
+        mapList.put("D865",
+                    D865);
+        mapList.put("D862",
+                    D862);
+        mapList.put("GLC-LH-SM",
+                    GLC);
+        mapList.put("LC-SX-MM",
+                    LC);
 
-        sto.getObjectTypeName().setMin(mapList);
+        return mapList;
+
     }
 
+    //Map mit den Geräten und der Anzahl der Geräte mit stream und map hardcoded 2
+    public Map<String, Long> findAmountOfObjectType2(){
+        Map<String, Long> maxValues = new HashMap<>();
+
+        List<StorageObject> all = repositoryStorageObject.findAll();
+
+        if(all.isEmpty()){
+            throw new ObjectTypeException("Map is empty!");
+        }
+
+        maxValues.put("C927",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("C927"))
+                         .count());
+        maxValues.put("C1111-4p",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("C1111-4p"))
+                         .count());
+        maxValues.put("ASR920-12SZ-IM",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("ASR920-12SZ-IM"))
+                         .count());
+        maxValues.put("C897VAB",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("C897VAB"))
+                         .count());
+        maxValues.put("C1117-4p",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("C1117-4p"))
+                         .count());
+        maxValues.put("HP J9050A",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("HP J9050A"))
+                         .count());
+        maxValues.put("Aruba 2530 8-PoE+",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("Aruba 2530 8-PoE+"))
+                         .count());
+        maxValues.put("M300",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("M300"))
+                         .count());
+        maxValues.put("D865",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("D865"))
+                         .count());
+        maxValues.put("D862",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("D862"))
+                         .count());
+        maxValues.put("GLC-LH-SM",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("GLC-LH-SM"))
+                         .count());
+        maxValues.put("LC-SX-MM",
+                      all.stream()
+                         .filter(a -> a.getObjectTypeName() != null)
+                         .filter(b -> b.getObjectTypeName()
+                                       .getName()
+                                       .equals("LC-SX-MM"))
+                         .count());
+        return maxValues;
+    }
+
+    //Einzelwert für die Anzahl der Geräte holen
+    public Long findAmountOfObjectType2(String objectType){
+        return repositoryStorageObject.findAll()
+                               .stream()
+                               .filter(a -> a.getObjectTypeName() != null)
+                               .filter(b -> b.getObjectTypeName()
+                                             .getName()
+                                             .equals(objectType)).count();
+//        return repositoryStorageObject.findAll()
+//                                      .stream()
+//                                      .filter(name -> name.getObjectTypeName()
+//                                                          .getName()
+//                                                          .equals(objectType))
+//                                      .count();
+    }
 
     //    public Stream<StorageObject> findStorageObjectByUserId(Long id, PageRequest query){
     //        return repositoryStorageObject.findAllByStoredAtUser_Id(id, query).stream();
