@@ -132,4 +132,5 @@ public class ServiceObjectType{
     public Page<ObjectType> findAll(Pageable pageable){
         return repositoryObjectType.findAll(pageable);
     }
+
 }
