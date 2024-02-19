@@ -7,7 +7,6 @@ import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.Storage;
 import com.samic.samic.data.entity.StorageObject;
-import com.samic.samic.exceptions.SamicException;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.services.ServiceObjectType;
 import com.samic.samic.services.ServiceReservation;
@@ -19,7 +18,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -30,8 +28,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.data.domain.PageRequest;
 
@@ -84,10 +80,12 @@ public class FreieLagerobjekteView extends VerticalLayout {
     searchField.setValueChangeMode(ValueChangeMode.EAGER);
 
     grid.addColumn(StorageObject::getId).setHeader("Lager ID").setAutoWidth(true).setFlexGrow(0);
-    grid.addColumn(so -> so.getObjectTypeName() != null ? so.getObjectTypeName().getName() : so.getSupply().getDescription()).setHeader("Gerätetyp").setAutoWidth(true)
+    grid.addColumn(so -> so.getObjectTypeName() != null ? so.getObjectTypeName().getName()
+            : so.getSupply().getDescription()).setHeader("Gerätetyp").setAutoWidth(true)
         .setFlexGrow(1);
     grid.addColumn(StorageObject::getRemark).setHeader("Anmerkung").setAutoWidth(true)
         .setFlexGrow(2);
+    grid.addColumn(so -> so.getStorage().getName()).setHeader("Lager");
     grid.addComponentColumn(item -> new Span(
             new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
             new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)))).setHeader("Aktionen")
@@ -99,7 +97,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
     filterStorage.setItems(storageService.findAll().toList());
     filterStorage.setAllowCustomValue(false);
     filterStorage.setValue(filterStorage.getListDataView()
-                                        .getItem(0));
+        .getItem(0));
     filterStorage.setPlaceholder("Lager auswählen");
 
     filterObjectType.setItemLabelGenerator(ObjectType::getName);
@@ -121,9 +119,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
     }*/
 
     //GridListDataView<StorageObject> finalStorageObjectList = storageObjectList;
-    searchField.addValueChangeListener(e -> listFilteredStorageObjects(e.getValue(), filterStorage.getValue()
-                                                                                                  .getId()));
-    filterStorage.addValueChangeListener(e -> listFilteredStorageObjects(searchField.getValue(), e.getValue().getId()));
+    searchField.addValueChangeListener(
+        e -> listFilteredStorageObjects(e.getValue(), filterStorage.getValue()
+            .getId()));
+    filterStorage.addValueChangeListener(
+        e -> listFilteredStorageObjects(searchField.getValue(), e.getValue().getId()));
 
     add(
         UIFactory.rootComponentContainer("",
@@ -144,7 +144,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
     String filter = "%" + filterString + "%";
     grid.setItems(query ->
         storageObjectService.searchSto(filter,
-                                       PageRequest.of(query.getPage(), query.getPageSize()), storageId));
+            PageRequest.of(query.getPage(), query.getPageSize()), storageId));
   }
 
   private void onCancel() {
@@ -203,11 +203,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
     }
 
     protected void setStorageObject(StorageObject storageObject) {
-        if(storageObject.getRemark() != null){
-            remark.setValue(storageObject.getRemark());
-        }else{
-            remark.setValue("");
-        }
+      if (storageObject.getRemark() != null) {
+        remark.setValue(storageObject.getRemark());
+      } else {
+        remark.setValue("");
+      }
     }
   }
 }
