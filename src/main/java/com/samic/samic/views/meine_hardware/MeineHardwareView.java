@@ -82,7 +82,7 @@ public class MeineHardwareView extends TabSheet {
     add(
         "Meine Reservierungen", UIFactory.LazyComponent(
             () -> {
-              reservationGrid.populate(
+              reservationGrid.setItems(
                   reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
                       .get()).toList());
               reservationGrid.addComponentColumn(item -> new Span(
