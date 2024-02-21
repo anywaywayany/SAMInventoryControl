@@ -75,35 +75,35 @@ insert into producers (id, producer_name, short_name)
 values (4, 'Aruba', 'Aruba');
 
 -- Object Types - Cisco
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (1, 'C927');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (2, 'C1111-4p');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (3, 'ASR920-12SZ-IM');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (4, 'C897VAB');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (5, 'C1117-4p');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_Value)
+values (1, 'C927', 100);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (2, 'C1111-4p', 50);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (3, 'ASR920-12SZ-IM', 100);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (4, 'C897VAB', 30);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (5, 'C1117-4p', 200);
 
 -- Object Types - HP
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (6, 'HP J9050A');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (6, 'HP J9050A', 20);
 -- Object Types - Aruba
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (7, 'Aruba 2530 8-PoE+');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (7, 'Aruba 2530 8-PoE+', 200);
 -- Object Types - Snom
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (8, 'M300');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (9, 'D865');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (10, 'D862');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (8, 'M300', 300);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (9, 'D865', 100);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (10, 'D862', 20);
 -- cisco SFP
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (11, 'GLC-LH-SM');
-insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME)
-values (12, 'LC-SX-MM');
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (11, 'GLC-LH-SM', 30);
+insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
+values (12, 'LC-SX-MM', 200);
 
 
 -- CPE´s SFP´s Supplies --
