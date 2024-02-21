@@ -33,6 +33,13 @@ public class UIFactory {
     return container;
   }
 
+  public static VerticalLayout rootComponentContainerFullHeight(String heading,
+      Component... containers) {
+    VerticalLayout container = rootComponentContainer(heading, containers);
+    container.setHeightFull();
+    return container;
+  }
+
   public static HorizontalLayout childContainer(
       FlexComponent.JustifyContentMode justifyContentMode, Component... components) {
     // Create container
@@ -47,6 +54,13 @@ public class UIFactory {
     // Add optional components passed to method
     childContainer.add(components);
 
+    return childContainer;
+  }
+
+  public static HorizontalLayout childContainerFullHeight(
+      FlexComponent.JustifyContentMode justifyContentMode, Component... components) {
+    HorizontalLayout childContainer = childContainer(justifyContentMode, components);
+    childContainer.setHeightFull();
     return childContainer;
   }
 

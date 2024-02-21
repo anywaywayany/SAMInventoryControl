@@ -92,6 +92,9 @@ public class FreieLagerobjekteView extends VerticalLayout {
         .setAutoWidth(true).setFrozenToEnd(true);
     grid.setItemDetailsRenderer(createStorageObjectDetailsRenderer());
     grid.getStyle().setBorder("0px");
+    grid.setHeightFull();
+
+    setHeightFull();
 
     filterStorage.setItemLabelGenerator(Storage::getName);
     filterStorage.setItems(storageService.findAll().toList());
@@ -105,20 +108,8 @@ public class FreieLagerobjekteView extends VerticalLayout {
     filterObjectType.setPlaceholder("Gerätetyp auswählen");
     filterObjectType.setWidth("250px");
 
-    //GridListDataView<StorageObject> storageObjectList;
+    listFilteredStorageObjects("%", filterStorage.getValue().getId());
 
-    grid.setItems(storageObjectService.findFreeStorageObjects().toList());
-    /*listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
-                                                                    .getId());*/
-/*    try {
-      storageObjectList = grid.setItems(listFilteredStorageObjects(searchField.getValue(), filterStorage.getValue()
-                                                                                                        .getId()));
-    } catch (SamicException e) {
-      storageObjectList = grid.setItems(List.of());
-      UIFactory.notificationError(e.getMessage()).open();
-    }*/
-
-    //GridListDataView<StorageObject> finalStorageObjectList = storageObjectList;
     searchField.addValueChangeListener(
         e -> listFilteredStorageObjects(e.getValue(), filterStorage.getValue()
             .getId()));
@@ -133,8 +124,8 @@ public class FreieLagerobjekteView extends VerticalLayout {
                 filterStorage,
                 filterObjectType
             )),
-        UIFactory.rootComponentContainer("",
-            UIFactory.childContainer(
+        UIFactory.rootComponentContainerFullHeight("",
+            UIFactory.childContainerFullHeight(
                 JustifyContentMode.START,
                 grid)),
         reservationDialog);
@@ -165,6 +156,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
     reservationDialog.close();
 
     UIFactory.notificationSuccess("Reservierung erfolgreich durchgeführt").open();
+    grid.getDataProvider().refreshAll();
   }
 
   private ComponentRenderer<StorageObjectDetailsForm, StorageObject> createStorageObjectDetailsRenderer() {
@@ -186,6 +178,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
     storageObjectService.saveStorageObject(item);
     UIFactory.notificationSuccess("Lagerobjekt erfolgreich deinem Lager hinzugefügt").open();
+    grid.getDataProvider().refreshAll();
   }
 
 
