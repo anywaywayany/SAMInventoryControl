@@ -1,12 +1,10 @@
 package com.samic.samic.views.dashboard;
 
 import com.samic.samic.components.UIFactory;
-import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.foundation.Guard;
-import com.samic.samic.exceptions.SamicException;
-import com.samic.samic.exceptions.StorageObjectException;
 import com.samic.samic.security.AuthenticatedUser;
+import com.samic.samic.services.ServiceObjectType;
 import com.samic.samic.services.ServiceProducer;
 import com.samic.samic.services.ServiceReservation;
 import com.samic.samic.services.ServiceStorageObject;
@@ -15,26 +13,15 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.provider.CallbackDataProvider;
-import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import jakarta.annotation.security.PermitAll;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.domain.PageRequest;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 ;
 
@@ -47,18 +34,21 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private final ServiceReservation reservationService;
   private final ServiceStorageObject storageObjectService;
   private final AuthenticatedUser authenticatedUser;
+  private final ServiceObjectType serviceObjectType;
+
   Grid<StorageObject> reservationGrid = new Grid<>(StorageObject.class, false);
   Grid<StorageObject> hardwareGrid = new Grid<>(StorageObject.class, false);
 
 
   public DashboardView(ServiceReservation reservationService,
-      ServiceStorageObject storageObjectService, AuthenticatedUser authenticatedUser,
-      ServiceProducer producerService) {
+                       ServiceStorageObject storageObjectService, AuthenticatedUser authenticatedUser,
+                       ServiceProducer producerService, ServiceStorageObject storageObjectService1, ServiceObjectType serviceObjectType) {
     this.reservationService = reservationService;
     this.storageObjectService = storageObjectService;
     this.authenticatedUser = authenticatedUser;
+      this.serviceObjectType = serviceObjectType;
 
-    initUI();
+      initUI();
   }
 
   private void initUI() {
@@ -78,12 +68,15 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     map.put("Gerät Typ2", List.of(50, 50));
     map.put("Gerät Typ3", List.of(100, 1));
 
-    map.forEach(
+    storageObjectService.findAmountOfObjectType2().forEach(
         (key, value) -> {
-          Span sp = new Span(key + " " + value.get(0) + "/" + value.get(1));
-          if (value.get(0) / value.get(1) >= 25) {
+          AtomicInteger objectTypeMin = new AtomicInteger();
+          serviceObjectType.findObjectTypeByNameOptional(key).ifPresent(o -> objectTypeMin.set(o.getMinValue().intValue()));
+          Span sp = new Span(key + " " + value + "/" + value);
+
+          if (value / objectTypeMin.get() > 2) {
             sp.getElement().getThemeList().add("badge error");
-          } else if (value.get(0) / value.get(1) >= 2) {
+          } else if (value / objectTypeMin.get() == 2) {
             sp.getElement().getThemeList().add("badge contrast");
           } else {
             sp.getElement().getThemeList().add("badge success");
