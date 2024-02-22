@@ -34,8 +34,7 @@ import java.util.stream.Stream;
 @PageTitle("Lagerobjekt erfassen")
 @Route(value = "lagerobjektErfassen", layout = MainLayout.class)
 @PermitAll
-public class LagerobjektErfassenView extends VerticalLayout implements BeforeLeaveObserver {
-
+public class LagerobjektErfassenView extends VerticalLayout {
 
   private final ServiceProducer producerService;
   private final ServiceStorage storageService;
@@ -43,25 +42,19 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
   private final CPEForm cpeForm;
   private final SFPForm sfpForm;
   private final SupplyForm supplyForm;
-
-
   private final ServiceLagerObjectErfassen lagerObjectErfassenService;
-  private final ServiceProducer getProducerService;
-
-  HorizontalLayout formChildContainer = UIFactory.childContainer(JustifyContentMode.START);
-  ComboBox<Storage> storageComboBox;
-  ComboBox<Type> typeComboBox = new ComboBox<>("Typ auswählen");
-
-  ComboBox<Producer> producerSelect = new ComboBox<>("Hersteller");
-  private VerticalLayout storageContainer;
+  private final HorizontalLayout formChildContainer = UIFactory.childContainer(
+      JustifyContentMode.START);
+  private final ComboBox<Storage> storageComboBox = new ComboBox<>("Lager auswählen");
+  private final ComboBox<Type> typeComboBox = new ComboBox<>("Typ auswählen");
+  private final ComboBox<Producer> producerSelect = new ComboBox<>("Hersteller");
 
   public LagerobjektErfassenView(ServiceStorageObject storageObjectService,
       ServiceProducer producerService,
       ServiceStorage storageService, ServiceObjectType serviceObjectType,
       CPEForm cpeForm,
       SFPForm sfpForm,
-      SupplyForm supplyForm, ServiceLagerObjectErfassen lagerObjectErfassenService,
-      ServiceProducer getProducerService) {
+      SupplyForm supplyForm, ServiceLagerObjectErfassen lagerObjectErfassenService) {
 
     this.producerService = producerService;
     this.storageService = storageService;
@@ -70,37 +63,15 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
     this.sfpForm = sfpForm;
     this.supplyForm = supplyForm;
     this.lagerObjectErfassenService = lagerObjectErfassenService;
-    this.getProducerService = getProducerService;
 
     initUI();
   }
 
   private void initUI() {
-    List<Producer> producers = producerService.findAll().toList();
-    producerSelect.setItemLabelGenerator(Producer::getName);
-    producerSelect.setItems(producers);
-
-    storageComboBox = new ComboBox<>("Lager auswählen");
-    List<Storage> storages = storageService.findAll().toList();
-    storageComboBox.setItems(storages);
-    storageComboBox.setItemLabelGenerator(Storage::getName);
-    storageComboBox.setValue(storages.get(0));
-
-    typeComboBox.setItems(Type.class.getEnumConstants());
-    typeComboBox.setRequired(true);
-    typeComboBox.setItemLabelGenerator(Type::getLongVersion);
-    typeComboBox.addValueChangeListener(
-        event -> changeForm(event.getValue(), storageComboBox.getValue()));
-
-    Stream.of(producerSelect, typeComboBox, storageComboBox).forEach(i -> {
-      i.setRequired(true);
-      i.setAllowCustomValue(false);
-    });
-    this.storageContainer =
+    add(
         UIFactory.rootComponentContainer(
             "",
-            UIFactory.childContainer(JustifyContentMode.START, storageComboBox));
-    add(storageContainer);
+            UIFactory.childContainer(JustifyContentMode.START, storageComboBox)));
 
     VerticalLayout formRootContainer =
         UIFactory.rootComponentContainer(
@@ -117,6 +88,50 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
             UIFactory.btnPrimaryError("Abbrechen", buttonClickEvent -> onCancel())));
 
     add(formRootContainer);
+
+    initProducerSelect();
+    initProducerSelectData();
+    initStorageComboBox();
+    initStorageComboBoxData();
+    initTypeComoBox();
+    initTypeComboBoxData();
+  }
+
+  private void initTypeComoBox() {
+    typeComboBox.setRequired(true);
+    typeComboBox.setItemLabelGenerator(Type::getLongVersion);
+    typeComboBox.addValueChangeListener(
+        event -> changeForm(event.getValue(), storageComboBox.getValue()));
+    typeComboBox.setRequired(true);
+    typeComboBox.setAllowCustomValue(false);
+  }
+
+  private void initTypeComboBoxData() {
+    typeComboBox.setItems(Type.class.getEnumConstants());
+  }
+
+  private void initStorageComboBox() {
+    storageComboBox.setItemLabelGenerator(Storage::getName);
+    storageComboBox.setRequired(true);
+    storageComboBox.setAllowCustomValue(false);
+  }
+
+  private void initStorageComboBoxData() {
+    List<Storage> storages =
+        storageService.findAll().filter(storage -> !storage.getName().equals("Kunde")).toList();
+
+    storageComboBox.setItems(storages);
+    storageComboBox.setValue(storages.get(0));
+  }
+
+  private void initProducerSelect() {
+    producerSelect.setRequired(true);
+    producerSelect.setAllowCustomValue(false);
+    producerSelect.setItemLabelGenerator(Producer::getName);
+  }
+
+  private void initProducerSelectData() {
+    producerSelect.setItems(producerService.findAll().toList());
   }
 
   private void changeForm(Type value, Storage storage) {
@@ -208,10 +223,5 @@ public class LagerobjektErfassenView extends VerticalLayout implements BeforeLea
       }
     }
     changeForm(selectedType, value);
-  }
-
-  @Override
-  public void beforeLeave(BeforeLeaveEvent beforeLeaveEvent) {
-    //storageObjectService.deleteStorageObjectById(storageObject.getId());
   }
 }

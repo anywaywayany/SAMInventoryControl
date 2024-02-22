@@ -17,37 +17,53 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class UserForm extends VerticalLayout {
-  private TextField mail = new TextField("Email");
-  private PasswordField password = new PasswordField("Passwort");
-  private PasswordField passwordConfirm = new PasswordField("Passwort bestätigen");
-  private TextField surename = new TextField("Vorname");
-  private TextField lastname = new TextField("Nachname");
-  private TextField username = new TextField("Benutzername");
-  private ComboBox<Role> role = new ComboBox<>("Rolle");
 
-  private Binder<User> binderUser = new Binder<>(User.class);
+  private final TextField mail = new TextField("Email");
+  private final PasswordField password = new PasswordField("Passwort");
+  private final PasswordField passwordConfirm = new PasswordField("Passwort bestätigen");
+  private final TextField surname = new TextField("Vorname");
+  private final TextField lastname = new TextField("Nachname");
+  private final TextField username = new TextField("Benutzername");
+  private final ComboBox<Role> role = new ComboBox<>("Rolle");
+
+  private final Binder<User> binderUser = new Binder<>(User.class);
 
 
   @PostConstruct
   private void initUI() {
-    binderUser.forField(mail).asRequired().withValidator(new EmailValidator("Eingabe ist keine E-Mail")).bind(User::getMail, User::setMail);
-    binderUser.forField(password).asRequired().bind(User::getHashedPassword, User::setHashedPassword);
-    binderUser.forField(surename).asRequired().bind("profile.firstName");
+    add(
+        UIFactory.childContainer(JustifyContentMode.BETWEEN,
+            role),
+        UIFactory.childContainer(JustifyContentMode.START, mail, password, passwordConfirm),
+        UIFactory.childContainer(JustifyContentMode.START, surname, lastname, username)
+    );
+
+    initBinder();
+    initRolesComboBox();
+    initRolesData();
+  }
+
+  private void initBinder() {
+    binderUser.forField(mail).asRequired()
+        .withValidator(new EmailValidator("Eingabe ist keine E-Mail"))
+        .bind(User::getMail, User::setMail);
+    binderUser.forField(password).asRequired()
+        .bind(User::getHashedPassword, User::setHashedPassword);
+    binderUser.forField(surname).asRequired().bind("profile.firstName");
     binderUser.forField(lastname).asRequired().bind("profile.lastName");
     binderUser.forField(username).bind("profile.username");
     binderUser.forField(role).asRequired().bind(User::getRole, User::setRole);
+  }
 
-    role.setItems(Role.values());
+  private void initRolesComboBox() {
     role.setItemLabelGenerator(Role::getLongVersion);
     role.setAllowCustomValue(false);
     role.setWidth("300px");
     role.setRequired(true);
-    add(
-        UIFactory.childContainer(JustifyContentMode.BETWEEN,
-            role),
-        UIFactory.childContainer(JustifyContentMode.START,mail, password, passwordConfirm),
-        UIFactory.childContainer(JustifyContentMode.START,surename, lastname, username)
-    );
+  }
+
+  private void initRolesData() {
+    role.setItems(Role.values());
   }
 
   public void setBean(User user) {
@@ -58,7 +74,7 @@ public class UserForm extends VerticalLayout {
     return binderUser.getBean();
   }
 
-  public Boolean isValid(){
+  public Boolean isValid() {
     binderUser.validate();
     return binderUser.isValid();
   }
@@ -68,7 +84,6 @@ public class UserForm extends VerticalLayout {
     passwordConfirm.setValue("");
     role.setValue(null);
   }
-
 
 
 }

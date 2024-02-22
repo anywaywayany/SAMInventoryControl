@@ -30,70 +30,17 @@ public class UserManagement extends VerticalLayout {
   private final UserForm userForm;
   private final UserForm userFormDialog;
   VirtualList<User> virtualList = new VirtualList<>();
-  private final ComponentRenderer<com.vaadin.flow.component.Component, User> userComponentRenderer =
-      new ComponentRenderer<>(
-          user -> {
-            HorizontalLayout cardLayout = new HorizontalLayout();
-            cardLayout.setMargin(true);
-
-            Avatar avatar = new Avatar(user.getProfile().getFirstName()
-                + " " + user.getProfile().getLastName()
-                /*person.getPictureUrl()*/);
-            avatar.setHeight("64px");
-            avatar.setWidth("64px");
-
-            VerticalLayout infoLayout = new VerticalLayout();
-            infoLayout.setSpacing(false);
-            infoLayout.setPadding(false);
-            infoLayout.getElement().appendChild(
-                ElementFactory.createStrong(user.getProfile().getFirstName()
-                    + " " + user.getProfile().getLastName()));
-            infoLayout.add(new Div(
-                UIFactory.btnIconWithTooltip(LineAwesomeIcon.BAN_SOLID.create(), "Deaktivieren",
-                    e -> onDeactivate(user)),
-                UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-                    e -> onDelete(user)),
-                UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-                    e -> onEdit(user))
-            ));
-            infoLayout.add(new Div(new Text(user.getRole().getLongVersion())));
-
-            VerticalLayout contactLayout = new VerticalLayout();
-            contactLayout.setSpacing(false);
-            contactLayout.setPadding(false);
-            contactLayout.add(new Div(new Text(user.getMail())));
-            String status =
-                (user.getActivated() != null && user.getActivated()) ? "Aktiviert" : "Deaktiviert";
-            contactLayout
-                .add(new Div(
-                        new Text("Registriert seit: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
-                            .format(user.getCreatedAt()))),
-                    new Div(new Text("Letzer Login: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
-                        .format(user.getLastLogin()))),
-                    new Div(new Text("Status: " + status)));
-            infoLayout
-                .add(new Details("Benutzereigenschaften", contactLayout));
-
-            cardLayout.add(avatar, infoLayout);
-            return cardLayout;
-          });
+  private ComponentRenderer<com.vaadin.flow.component.Component, User> userComponentRenderer;
 
   public UserManagement(ServiceUser userService, UserForm userForm,
       UserForm userFormDialog) {
     this.userService = userService;
     this.userForm = userForm;
     this.userFormDialog = userFormDialog;
-    userForm.setBean(User.builder().profile(Profile.builder().build()).build());
   }
 
   @PostConstruct
   private void initUI() {
-    virtualList.setItems(userService.findAll());
-    virtualList.setRenderer(userComponentRenderer);
-    userForm.add(
-        UIFactory.childContainer(JustifyContentMode.START,
-            UIFactory.btnPrimary("Erstellen", e -> onCreate()),
-            UIFactory.btnPrimary("Abbrechen", e -> onCancel())));
     add(
         UIFactory.childContainer(JustifyContentMode.START,
             UIFactory.rootComponentContainer("Benutzer anlegen",
@@ -101,7 +48,81 @@ public class UserManagement extends VerticalLayout {
             UIFactory.rootComponentContainer("Benutzer",
                 virtualList)));
 
+    initUserForm();
+    initFormActions();
+    initVirtualList();
+    initVirtualListData();
+  }
 
+  private void initFormActions() {
+    userForm.add(
+        UIFactory.childContainer(JustifyContentMode.START,
+            UIFactory.btnPrimary("Erstellen", e -> onCreate()),
+            UIFactory.btnPrimary("Abbrechen", e -> onCancel())));
+  }
+
+  private void initUserForm() {
+    userForm.setBean(User.builder().profile(Profile.builder().build()).build());
+  }
+
+  private void initVirtualList() {
+    initComponentRenderer();
+    virtualList.setRenderer(userComponentRenderer);
+  }
+
+  private void initVirtualListData() {
+    virtualList.setItems(userService.findAll());
+  }
+
+  private void initComponentRenderer() {
+    userComponentRenderer =
+        new ComponentRenderer<>(
+            user -> {
+              HorizontalLayout cardLayout = new HorizontalLayout();
+              cardLayout.setMargin(true);
+
+              Avatar avatar = new Avatar(user.getProfile().getFirstName()
+                  + " " + user.getProfile().getLastName()
+                  /*person.getPictureUrl()*/);
+              avatar.setHeight("64px");
+              avatar.setWidth("64px");
+
+              VerticalLayout infoLayout = new VerticalLayout();
+              infoLayout.setSpacing(false);
+              infoLayout.setPadding(false);
+              infoLayout.getElement().appendChild(
+                  ElementFactory.createStrong(user.getProfile().getFirstName()
+                      + " " + user.getProfile().getLastName()));
+              infoLayout.add(new Div(
+                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.BAN_SOLID.create(), "Deaktivieren",
+                      e -> onDeactivate(user)),
+                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+                      e -> onDelete(user)),
+                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+                      e -> onEdit(user))
+              ));
+              infoLayout.add(new Div(new Text(user.getRole().getLongVersion())));
+
+              VerticalLayout contactLayout = new VerticalLayout();
+              contactLayout.setSpacing(false);
+              contactLayout.setPadding(false);
+              contactLayout.add(new Div(new Text(user.getMail())));
+              String status =
+                  (user.getActivated() != null && user.getActivated()) ? "Aktiviert"
+                      : "Deaktiviert";
+              contactLayout
+                  .add(new Div(
+                          new Text("Registriert seit: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
+                              .format(user.getCreatedAt()))),
+                      new Div(new Text("Letzer Login: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
+                          .format(user.getLastLogin()))),
+                      new Div(new Text("Status: " + status)));
+              infoLayout
+                  .add(new Details("Benutzereigenschaften", contactLayout));
+
+              cardLayout.add(avatar, infoLayout);
+              return cardLayout;
+            });
   }
 
   private void onCancel() {

@@ -42,41 +42,6 @@ public class AppSettings extends VerticalLayout {
     this.objectTypeService = objectTypeService1;
     this.notificationLimitForm = notificationLimitForm;
     this.storageForm = storageForm;
-
-    reservationMaxDuration.setRequired(true);
-    reservationMaxDuration.setValue(dataProvider.getReservationDuration());
-    notificationLimitsGrid.setItems(objectTypeService.findAll().toList());
-    notificationLimitsGrid.addColumn(ObjectType::getName);
-    //TODO add min field to ObjectType
-    //notificationLimitsGrid.addColumn(item -> "Min " + item.getMinAmount().toString());
-    notificationLimitsGrid.getStyle().setBorder("0px");
-    notificationLimitsGrid.setMaxHeight("200px");
-    //notificationLimitsGrid.setWidthFull();
-    notificationLimitsGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS);
-    notificationLimitsGrid.addComponentColumn(item -> new Span(
-        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-            e -> onEdit(item)),
-        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-            e -> onRemove(item)))).setFrozenToEnd(true);
-
-    storageGrid.setItems(storageService.findAll().toList());
-
-    storageGrid.addColumn(Storage::getName);
-    storageGrid.addColumn(storage -> storage.getAddress().getStreet());
-    storageGrid.addColumn(storage -> storage.getAddress().getHouseNo());
-    storageGrid.addColumn(storage -> storage.getAddress().getDoorNo());
-    storageGrid.addColumn(storage -> storage.getAddress().getZipCode());
-    storageGrid.addColumn(storage -> storage.getAddress().getCity());
-    storageGrid.getStyle().setBorder("0px");
-    storageGrid.setMaxHeight("300px");
-    storageGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS);
-    storageGrid.addComponentColumn(item -> !item.getName().equals("Kunde") ? new Span(
-        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-            e -> onEdit(item)),
-        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-            e -> onRemove(item))) : new Span("")).setFrozenToEnd(true);
-
-
   }
 
 
@@ -97,6 +62,61 @@ public class AppSettings extends VerticalLayout {
                 UIFactory.childContainer(JustifyContentMode.START,
                     storageGrid)))
     );
+
+    initStorageGrid();
+    initStorageGridData();
+    initNotificationLimitsGrid();
+    initNotificationLimitsGridData();
+    initMaxDuration();
+    initMaxDurationData();
+  }
+
+  private void initStorageGrid() {
+    storageGrid.addColumn(Storage::getName);
+    storageGrid.addColumn(storage -> storage.getAddress().getStreet());
+    storageGrid.addColumn(storage -> storage.getAddress().getHouseNo());
+    storageGrid.addColumn(storage -> storage.getAddress().getDoorNo());
+    storageGrid.addColumn(storage -> storage.getAddress().getZipCode());
+    storageGrid.addColumn(storage -> storage.getAddress().getCity());
+    storageGrid.getStyle().setBorder("0px");
+    storageGrid.setMaxHeight("300px");
+    storageGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS);
+    storageGrid.addComponentColumn(item -> !item.getName().equals("Kunde") ? new Span(
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+            e -> onEdit(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+            e -> onRemove(item))) : new Span("")).setFrozenToEnd(true);
+  }
+
+  private void initStorageGridData() {
+    storageGrid.setItems(storageService.findAll().toList());
+  }
+
+  private void initNotificationLimitsGrid() {
+    notificationLimitsGrid.addColumn(ObjectType::getName);
+    //TODO add min field to ObjectType
+    //notificationLimitsGrid.addColumn(item -> "Min " + item.getMinAmount().toString());
+    notificationLimitsGrid.getStyle().setBorder("0px");
+    notificationLimitsGrid.setMaxHeight("200px");
+    //notificationLimitsGrid.setWidthFull();
+    notificationLimitsGrid.addThemeVariants(GridVariant.LUMO_NO_ROW_BORDERS);
+    notificationLimitsGrid.addComponentColumn(item -> new Span(
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+            e -> onEdit(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+            e -> onRemove(item)))).setFrozenToEnd(true);
+  }
+
+  private void initNotificationLimitsGridData() {
+    notificationLimitsGrid.setItems(objectTypeService.findAll().toList());
+  }
+
+  private void initMaxDuration() {
+    reservationMaxDuration.setRequired(true);
+  }
+
+  private void initMaxDurationData() {
+    reservationMaxDuration.setValue(dataProvider.getReservationDuration());
   }
 
   private void onRemove(ObjectType item) {
@@ -121,14 +141,13 @@ public class AppSettings extends VerticalLayout {
             UIFactory.childContainer(
                 JustifyContentMode.START,
                 UIFactory.btnPrimary("Speichern", e -> {
-                  onSave();
+                  onSaveNotificationLimit();
                   dialog.close();
                 }),
                 UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close())
             )
         )
     );
-
     dialog.open();
   }
 
@@ -155,7 +174,7 @@ public class AppSettings extends VerticalLayout {
     dialog.open();
   }
 
-  private void onSave() {
+  private void onSaveNotificationLimit() {
     if (notificationLimitForm.isValid()) {
       objectTypeService.saveObjectTypeByObject(notificationLimitForm.saveBean());
       UIFactory.notificationSuccess("Benachrichtigungslimit gespeichert").open();
@@ -174,7 +193,6 @@ public class AppSettings extends VerticalLayout {
     }
     storageGrid.getDataProvider().refreshAll();
   }
-
 
   private void onSave(Integer value) {
     dataProvider.saveReservationDuration(value);

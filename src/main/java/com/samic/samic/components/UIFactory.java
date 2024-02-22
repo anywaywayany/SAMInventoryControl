@@ -80,15 +80,6 @@ public class UIFactory {
     return btnPrimary;
   }
 
-  public static Button btnPrimary(
-      String text,
-      ComponentEventListener<ClickEvent<Button>> listener,
-      HashMap<String, String> cssKeyValuePairs) {
-    Button btnPrimary = UIFactory.btnPrimary(text, cssKeyValuePairs);
-    btnPrimary.addClickListener(listener);
-    return btnPrimary;
-  }
-
   public static Button btnPrimaryError(String text) {
     Button btnPrimary = new Button(text);
     btnPrimary.getStyle().setBackground("#FF3101").setColor("#FFFFFF");
@@ -140,7 +131,7 @@ public class UIFactory {
   ///////////---------------------GridUtils≈---------------------///////////
   public static VerticalLayout LazyComponent(SerializableSupplier<? extends Component> component) {
     VerticalLayout container = UIFactory.rootComponentContainer("");
-
+    container.setHeightFull();
     container.addAttachListener(e -> {
       if (container.getElement().getChildCount() == 1) {
         container.add(component.get());

@@ -14,6 +14,7 @@ public class AdministrationView extends TabSheet {
 
   private final UserManagement userManagement;
   private final AppSettings appSettings;
+
   public AdministrationView(UserManagement userManagement,
       AppSettings appSettings) {
 
@@ -22,9 +23,9 @@ public class AdministrationView extends TabSheet {
 
     initUI();
   }
+
   public void initUI() {
     add("App Einstellungen", appSettings);
     add("Benutzerverwaltung", userManagement);
-
   }
 }

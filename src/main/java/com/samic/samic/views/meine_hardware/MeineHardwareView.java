@@ -32,7 +32,6 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 @PermitAll
 public class MeineHardwareView extends TabSheet {
 
-
   private final ReservationGrid reservationGrid;
   private final ServiceStorageObject storageObjectService;
   private final ServiceStorage storageService;
@@ -40,7 +39,6 @@ public class MeineHardwareView extends TabSheet {
   private final StorageObjectGrid storageObjectGrid;
   private final ServiceReservation reservationService;
   private final AuthenticatedUser authenticatedUser;
-
   private final CPEForm cpeForm;
   private final SFPForm sfpForm;
   private final SupplyForm supplyForm;
@@ -66,32 +64,49 @@ public class MeineHardwareView extends TabSheet {
 
 
   private void initUI() {
+    setHeightFull();
     add("Meine Hardware", UIFactory.LazyComponent(
-        () -> {
-          storageObjectGrid.setItems(
-              storageObjectService.findStorageObjectByGivenUser(authenticatedUser.getUser().get())
-                  .toList());
-          storageObjectGrid.addComponentColumn(item -> new Span(
-              UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(),
-                  "Ins Lager verschieben", e -> moveToStorage(item)),
-              UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT_SOLID.create(), "Bearbeiten",
-                  e -> onEdit(item))));
-          return this.storageObjectGrid;
-        }));
-
+        () -> storageObjectGrid));
     add(
         "Meine Reservierungen", UIFactory.LazyComponent(
-            () -> {
-              reservationGrid.setItems(
-                  reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
-                      .get()).toList());
-              reservationGrid.addComponentColumn(item -> new Span(
-                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
-                      e -> onDelete(item)),
-                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-                      e -> onEdit(item))));
-              return this.reservationGrid;
-            }));
+            () -> reservationGrid));
+
+    initStorageObjectGrid();
+    initStorageObjectGridData();
+    initReservationGrid();
+    initReservationGridData();
+  }
+
+  private void initReservationGrid() {
+    reservationGrid.addComponentColumn(item -> new Span(
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
+            e -> onDelete(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
+            e -> onEdit(item))));
+  }
+
+  private void initReservationGridData() {
+    //TODO backend needs to make sure that no connection exception is thrown
+    // (cut off stream from repository), or make repo return list
+    //TODO reservation does not contain storageobject
+
+    //  reservationGrid.setItems(
+    //    reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
+    //      .get()).toList());
+  }
+
+  private void initStorageObjectGrid() {
+    storageObjectGrid.addComponentColumn(item -> new Span(
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(),
+            "Ins Lager verschieben", e -> moveToStorage(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT_SOLID.create(), "Bearbeiten",
+            e -> onEdit(item))));
+  }
+
+  private void initStorageObjectGridData() {
+    storageObjectGrid.setItems(
+        storageObjectService.findStorageObjectByGivenUser(authenticatedUser.getUser().get())
+            .toList());
   }
 
   private void onEdit(StorageObject item) {
