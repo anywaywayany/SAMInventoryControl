@@ -1,9 +1,11 @@
 package com.samic.samic.components.form;
 
 import com.samic.samic.components.UIFactory;
+import com.samic.samic.data.constants.ConstantsDomain;
 import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -12,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.StringLengthValidator;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import org.springframework.context.annotation.Scope;
@@ -28,10 +31,11 @@ public class SFPForm extends FormLayout {
   private final IntegerField nicSpeed = new IntegerField("NIC Speed Gbps");
   private final Binder<StorageObject> binderStorageObject = new Binder<>(StorageObject.class, true);
   private ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
-  private TextField serialnumber = new TextField("Seriennummer");
+  private final TextField serialnumber = new TextField("Seriennummer");
   private HorizontalLayout projectEquipmentContainer =
       UIFactory.childContainer(
           FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
+  private final TextField remark = new TextField("Anmerkung");
 
   @PostConstruct
   private void initUI() {
@@ -41,6 +45,7 @@ public class SFPForm extends FormLayout {
         serialnumber,
         wavelength,
         nicSpeed,
+        remark,
         isProjectEquipment);
 
     isProjectEquipment.addValueChangeListener(
@@ -82,10 +87,13 @@ public class SFPForm extends FormLayout {
         */
         .bind(StorageObject::getVerbindungsnummer, StorageObject::setVerbindungsnummer);
 
-/*
     binderStorageObject.forField(trackingNumber)
-        .bind(StorageObject::getTrackingNumber, StorageObject::setTrackingNumber);
-*/
+        .bind(StorageObject::getTrackingNo, StorageObject::setTrackingNo);
+
+    binderStorageObject.forField(remark)
+        .withValidator(new StringLengthValidator("Anmerkung zu lang! (max 55 Zeichen)", 0,
+            ConstantsDomain.DEFAULT_LENGTH))
+        .bind(StorageObject::getRemark, StorageObject::setRemark);
   }
 
   public void setSFPBeans(List<ObjectType> objectTypes, StorageObject storageObject) {

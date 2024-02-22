@@ -1,7 +1,7 @@
 package com.samic.samic.components.form;
 
 import com.samic.samic.components.UIFactory;
-import com.samic.samic.data.entity.Customer;
+import com.samic.samic.data.constants.ConstantsDomain;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.validator.StringLengthValidator;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import org.springframework.context.annotation.Scope;
@@ -28,6 +29,7 @@ public class CPEForm extends FormLayout {
   private ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
   private TextField macAdress = new TextField("MAC Adresse");
   private TextField serialnumber = new TextField("Seriennummer");
+  private TextField remark = new TextField("Anmerkung");
   private HorizontalLayout projectEquipmentContainer =
       UIFactory.childContainer(
           FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
@@ -35,7 +37,7 @@ public class CPEForm extends FormLayout {
   @PostConstruct
   private void initUI() {
     macAdress.setRequired(true);
-    add(deviceType, macAdress, serialnumber, isProjectEquipment);
+    add(deviceType, macAdress, serialnumber, remark, isProjectEquipment);
 
     isProjectEquipment.addValueChangeListener(
         event -> {
@@ -73,6 +75,11 @@ public class CPEForm extends FormLayout {
     binderStorageObject.forField(isProjectEquipment)
         .bind(StorageObject::getProjectDevice, StorageObject::setProjectDevice);
 
+    binderStorageObject.forField(remark)
+        .withValidator(new StringLengthValidator("Anmerkung zu lang! (max 55 Zeichen)", 0,
+            ConstantsDomain.DEFAULT_LENGTH))
+        .bind(StorageObject::getRemark, StorageObject::setRemark);
+
     //TODO bind connectionNumber and trackingNumber
     binderStorageObject.forField(connectionNumber)
         .withNullRepresentation("")
@@ -81,8 +88,8 @@ public class CPEForm extends FormLayout {
         */
         .bind(StorageObject::getVerbindungsnummer, StorageObject::setVerbindungsnummer);
 
-//    binderStorageObject.forField(trackingNumber)
-//        .bind(StorageObject::getTrackingNumber, StorageObject::setTrackingNumber);
+    binderStorageObject.forField(trackingNumber)
+        .bind(StorageObject::getTrackingNo, StorageObject::setTrackingNo);
 
   }
 

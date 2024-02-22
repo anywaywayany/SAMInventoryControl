@@ -66,6 +66,8 @@ public class FreieLagerobjekteView extends VerticalLayout {
   }
 
   private void initUI() {
+    setHeightFull();
+
     reservationDialog.add(
         UIFactory.rootComponentContainer("Gerät reservieren", reservationForm,
             UIFactory.childContainer(JustifyContentMode.START,
@@ -97,13 +99,23 @@ public class FreieLagerobjekteView extends VerticalLayout {
 
   private void initValueChangeListeners() {
     searchField.addValueChangeListener(
-        e -> listFilteredStorageObjects(e.getValue(), filterStorage.getValue()
-            .getId()));
+        e -> {
+          listFilteredStorageObjects(e.getValue(), filterStorage.getValue()
+              .getId());
+          filterObjectType.clear();
+        });
     filterStorage.addValueChangeListener(
         e -> listFilteredStorageObjects(searchField.getValue(), e.getValue().getId()));
+    filterObjectType.addValueChangeListener(
+        e -> {
+          searchField.setValue(e.getValue().getName());
+          listFilteredStorageObjectsExactly(e.getValue().getName(),
+              filterStorage.getValue().getId());
+        });
   }
 
   private void initFilterObjectType() {
+    filterStorage.setAllowCustomValue(false);
     filterObjectType.setItemLabelGenerator(ObjectType::getName);
     filterObjectType.setPlaceholder("Gerätetyp auswählen");
     filterObjectType.setWidth("250px");
@@ -122,6 +134,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
   }
 
   private void initFilterStorage() {
+    filterStorage.setAllowCustomValue(false);
     initFilterStorageData();
 
     filterStorage.setItemLabelGenerator(Storage::getName);
@@ -132,7 +145,8 @@ public class FreieLagerobjekteView extends VerticalLayout {
   }
 
   private void initFilterStorageData() {
-    filterStorage.setItems(storageService.findAll().toList());
+    filterStorage.setItems(
+        storageService.findAll().filter(storage -> !storage.getName().equals("Kunde")).toList());
   }
 
   private void initGrid() {
@@ -149,6 +163,7 @@ public class FreieLagerobjekteView extends VerticalLayout {
         .setAutoWidth(true).setFrozenToEnd(true);
     grid.setItemDetailsRenderer(createStorageObjectDetailsRenderer());
     grid.getStyle().setBorder("0px");
+    grid.setHeightFull();
   }
 
   private void initGridData() {
@@ -160,6 +175,11 @@ public class FreieLagerobjekteView extends VerticalLayout {
     grid.setItems(query ->
         storageObjectService.searchSto(filter,
             PageRequest.of(query.getPage(), query.getPageSize()), storageId));
+  }
+
+  private void listFilteredStorageObjectsExactly(String filterString, Long storageId) {
+    grid.setItems(query -> storageObjectService.searchSto(filterString,
+        PageRequest.of(query.getPage(), query.getPageSize()), storageId));
   }
 
   private void onCancel() {

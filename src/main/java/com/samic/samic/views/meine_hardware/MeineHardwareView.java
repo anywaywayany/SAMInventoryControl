@@ -96,6 +96,7 @@ public class MeineHardwareView extends TabSheet {
   }
 
   private void initStorageObjectGrid() {
+    storageObjectGrid.setHeightFull();
     storageObjectGrid.addComponentColumn(item -> new Span(
         UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRUCK_MOVING_SOLID.create(),
             "Ins Lager verschieben", e -> moveToStorage(item)),
