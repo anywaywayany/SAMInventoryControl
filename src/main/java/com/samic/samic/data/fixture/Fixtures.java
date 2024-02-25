@@ -363,7 +363,7 @@ public class Fixtures{
         return StorageObject.builder()
                             .remark("remark1")
                             .objectTypeName(giveObjectType1())
-                            .verbindungsnummer("1234")
+//                            .verbindungsnummer("1234")
                             .projectDevice(false)
                             .status(Status.AVAILABLE)
                             .build();
@@ -374,7 +374,7 @@ public class Fixtures{
         return StorageObject.builder()
                             .remark("remark1")
                             .objectTypeName(giveObjectType2())
-                            .verbindungsnummer("1234")
+//                            .verbindungsnummer("1234")
 
                             .projectDevice(false)
                             .status(Status.AVAILABLE)
@@ -386,7 +386,7 @@ public class Fixtures{
         return StorageObject.builder()
                             .remark("remark1")
                             .objectTypeName(giveObjectType3())
-                            .verbindungsnummer("1234")
+//                            .verbindungsnummer("1234")
 
                             .projectDevice(false)
                             .status(Status.AVAILABLE)
@@ -398,7 +398,7 @@ public class Fixtures{
         return StorageObject.builder()
                             .remark("remark1")
                             .objectTypeName(giveObjectType4())
-                            .verbindungsnummer("1234")
+//                            .verbindungsnummer("1234")
 
                             .projectDevice(false)
                             .status(Status.AVAILABLE)
@@ -410,7 +410,7 @@ public class Fixtures{
         return StorageObject.builder()
                             .remark("remark1")
                             .objectTypeName(giveObjectType5())
-                            .verbindungsnummer("1234")
+//                            .verbindungsnummer("1234")
 
                             .projectDevice(false)
                             .status(Status.AVAILABLE)

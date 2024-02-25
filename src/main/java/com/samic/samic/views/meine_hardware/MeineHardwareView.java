@@ -90,9 +90,9 @@ public class MeineHardwareView extends TabSheet {
     // (cut off stream from repository), or make repo return list
     //TODO reservation does not contain storageobject
 
-    //  reservationGrid.setItems(
-    //    reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
-    //      .get()).toList());
+      reservationGrid.setItems(
+        reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
+          .get()));
   }
 
   private void initStorageObjectGrid() {

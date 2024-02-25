@@ -1,12 +1,16 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.ObjectType;
+import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryObjectType;
+import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
 import com.samic.samic.exceptions.ObjectTypeException;
+import com.samic.samic.exceptions.ReservationException;
 import com.samic.samic.exceptions.StorageObjectException;
+import com.samic.samic.exceptions.UserException;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import jakarta.persistence.EntityManagerFactory;
@@ -33,6 +37,8 @@ public class ServiceStorageObject{
     @Autowired
     private final RepositoryStorageObject repositoryStorageObject;
     @Autowired
+    private final RepositoryReservation repositoryReservation;
+    @Autowired
     private final EntityManagerFactory    emf;
     @Autowired
     private final RepositoryObjectType    repositoryObjectType;
@@ -43,6 +49,18 @@ public class ServiceStorageObject{
 
     @Transactional
     public StorageObject saveStorageObject(StorageObject storageObject){
+
+        /*if(storageObject.getReservation().getReservedFrom() != null){
+            throw new ReservationException("StorageObject has a User set!");
+        }*/
+
+        if(storageObject.getStoredAtUser() != null){
+            if(storageObject.getReservation() != null ){
+                if(storageObject.getReservation().getReservedFrom() != null){
+                    throw new ReservationException("User already set to STO!");
+                }
+            }
+        }
 
         if(storageObject != null){
             //            System.out.println("------------- 1 " + storageObject.getReservation().getReservedFrom());
@@ -695,4 +713,11 @@ public class ServiceStorageObject{
     //    public Stream<StorageObject> findStorageObjectByUserId(Long id, PageRequest query){
     //        return repositoryStorageObject.findAllByStoredAtUser_Id(id, query).stream();
     //    }
+
+    public Stream<Reservation> findStorageObjectByUserId(Long id,
+                                                         PageRequest request){
+        return repositoryReservation.findAllByReservedFrom_Id(id,
+                                                              request)
+                                    .stream();
+    }
 }
