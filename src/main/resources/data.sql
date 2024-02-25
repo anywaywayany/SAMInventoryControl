@@ -17,7 +17,7 @@
 insert into users(id, created_At, last_login, first_name, last_name, user_name, email,
                   hashed_password, phone, role)
 values (1, date '2019-05-26', date '2023-05-26', 'Management', 'User', 'management',
-        'management.toccafondi@viipo.ae',
+        'management.storage@gmail.to',
         '$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.',
         '(762) 444526-5961', 'MANAGMENT');
 
@@ -85,6 +85,8 @@ insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
 values (4, 'C897VAB', 30);
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
 values (5, 'C1117-4p', 200);
+-- insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME,min_value)
+-- values (13, 'S3400-24T4FP', 40);
 
 -- Object Types - HP
 insert into OBJECT_TYPES (ID, OBJECT_TYPE_NAME, min_value)
@@ -1190,16 +1192,132 @@ insert into STORAGE_OBJECTS (id, FK_SFP, FK_OBJECT_TYPE, remark, fk_storage) val
 
 ------------------------------------------------Supplies-------------------------------------------------------------
 
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (766,1, 'LAN', 1);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (767,2, 'LAN', 3);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (768,3, 'LAN Kabel', 3);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (769,4, 'LAN Kabel', 4);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (770,3, 'LAN', 5);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (771,4, 'LAN Kabel Werkzeug', 1);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (772,6, 'LAN', 1);
-insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (773,2, 'WLAN Kabel :D', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (790,1, 'LAN', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (791,2, 'LAN', 3);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (792,3, 'LAN Kabel', 3);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (793,4, 'LAN Kabel', 4);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (794,3, 'LAN', 5);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (795,4, 'LAN Kabel Werkzeug', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (796,6, 'LAN', 1);
+insert into STORAGE_OBJECTS (id, FK_SUPPLY, remark, fk_storage) values (797,2, 'WLAN Kabel :D', 1);
 
 ---------------------------------------------------------------------------------------------------------------------
+
+-- Storage Objects für das Lager STMK - HP und ARUBA Switches
+
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (500, 4, '7F-B0-1C-B8-66-25', 'IRG9694OX91', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (501, 4, '1B-CD-16-4C-86-88', 'NBR8192RX43', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (502, 4, 'A8-0E-20-41-B6-D7', 'MWO6941SB04', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (503, 4, 'E9-8B-5B-02-62-93', 'BAP0746LW26', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (504, 4, 'F7-BF-E7-1E-F3-EB', 'CTJ7418IP63', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (505, 4, 'CF-E7-3B-19-B6-99', 'LND0507NX54', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (506, 4, '93-ED-6A-8E-C6-E5', 'JSD2780QS71', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (507, 2, '78-C5-E2-48-67-36', 'KUP8721OI67', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (508, 2, '4D-FD-BD-E5-15-7B', 'MWR6245EH77', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (509, 2, '4F-3F-2F-02-31-8D', 'AXB1623UY85', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (510, 2, 'D0-F7-BC-3B-F4-6D', 'XOJ3285XE83', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (511, 2, '95-0A-A4-4A-90-23', 'FPP3084MD65', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (512, 2, 'CA-42-BB-94-12-27', 'HEI3365JN64', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (513, 2, '0C-D2-66-33-9D-59', 'UIF8111QT65', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (514, 2, '25-03-86-97-66-A5', 'VPX2858SZ07', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (515, 2, 'A4-A7-1A-8B-AA-55', 'TRD3332WD17', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (516, 2, '3A-3E-35-D8-27-89', 'OIM5725YN54', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (517, 2, '56-F0-4D-DC-9B-26', 'LEM0508CL68', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (518, 2, '08-C1-CF-1A-86-11', 'PEB9656TR15', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (519, 2, '71-85-3C-95-D2-97', 'KQG2035LD75', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (520, 2, 'E0-CC-37-F1-8E-1E', 'GVJ0724TQ31', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (521, 2, 'D7-1F-2E-70-15-F5', 'RXG9262DK58', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (522, 2, '77-58-E0-A1-EC-1A', 'USV7557RV55', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (523, 2, 'B4-98-7B-1D-63-2D', 'PSU3241BY98', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (524, 2, 'E1-27-20-EE-81-F4', 'YJD2600JQ59', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (525, 2, '2B-48-E8-5B-B1-24', 'GLD2147YH82', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (526, 2, 'F1-30-76-24-EA-22', 'RVB8034UV65', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (527, 2, '71-17-19-85-E1-C6', 'EUJ7854IU60', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (528, 2, 'F0-3B-98-D7-E6-AA', 'WLO5722RH95', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (529, 2, '3D-87-BE-12-B6-15', 'KQJ2087FC90', 'SWITCH');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (530, 2, 'A0-FC-79-8F-89-4E', 'CEN3889KR25', 'SWITCH');
+
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (540, 512, 7, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (541, 513, 7, 'refurbed', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (542, 514, 7, 'IOS up to date', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (543, 515, 7, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (544, 516, 7, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (545, 517, 7, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (546, 518, 7, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (547, 519, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (548, 520, 6, 'IOS up to date', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (549, 521, 6, 'refurbed', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (550, 522, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (551, 523, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (552, 524, 6, 'refurbed', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (553, 525, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (554, 526, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (555, 527, 6, 'Netzteil fehlt', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (556, 528, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (557, 529, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (558, 530, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (559, 500, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (560, 501, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (561, 502, 6, 'Netzteil fehlt', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (562, 503, 6, 'refurbed', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (563, 504, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (564, 505, 6, 'IOS up to date', 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (565, 506, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (566, 507, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (567, 508, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (568, 509, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (569, 510, 6, null, 3);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (570, 511, 6, null, 3);
+
+----------------------------------------------------------------------------------------------------------------------
+-- Storage Objects für das Lager STMK - IP_PHONES
+
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (540, 3, 'C0-F1-05-0E-0E-15', 'TOM7433XO51', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (541, 3, '65-85-0C-C6-A0-09', 'ZMO0727NY04', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (542, 3, '18-5A-70-FB-B0-70', 'VZH5780ET21', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (543, 3, '3A-6C-63-28-A8-E5', 'WTY8466EM11', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (544, 3, 'E6-AB-7D-E8-ED-EC', 'RWE5910DB99', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (545, 3, 'FA-EF-7D-C1-E4-3D', 'FLY5716KS64', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (546, 3, '13-9A-EA-CC-E9-50', 'WJX5314NU66', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (547, 3, '09-EA-9B-BF-69-BE', 'RHO3589ZC96', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (548, 3, 'CB-E6-B4-94-62-5A', 'GVG8325ND76', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (549, 3, '6B-74-13-EC-A1-08', 'UOQ3014VU06', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (550, 3, '51-B9-AA-1F-7B-32', 'QGA7037DV67', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (551, 3, '7D-8E-66-BC-FC-BE', 'USF9368FW89', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (552, 3, 'C0-2E-7D-D5-AB-4D', 'CPX7982YJ85', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (553, 3, '97-5A-18-AA-38-B2', 'PVV7703PX19', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (554, 3, '40-F5-C6-5E-F7-86', 'INJ4365EH05', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (555, 3, '37-24-35-19-C9-41', 'JBI7727KR09', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (556, 3, '77-48-FF-DE-F7-51', 'XDI3170FT44', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (557, 3, '2B-0A-46-62-4D-BB', 'AAP4086VF43', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (558, 3, '6F-89-49-2E-BA-CC', 'AHR0418EV86', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (559, 3, 'C7-80-3D-7A-4B-5F', 'IEZ0902GG05', 'IP_PHONE');
+insert into cpes (id, fk_producer, macaddress, serialnumber, type) values (560, 3, 'B5-85-44-85-78-6B', 'QNX7254AA68', 'IP_PHONE');
+
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (766, 549, 8, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (767, 550, 8, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (768, 551, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (769, 552, 8, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (770, 553, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (771, 554, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (772, 555, 8, 'refurbed', 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (773, 556, 8, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (774, 557, 10, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (775, 558, 8, 'refurbed', 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (776, 559, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (777, 560, 10, 'refurbed', 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (778, 540, 10, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (779, 541, 10, 'kein Netzteil', 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (780, 542, 9, 'keine Verpackung', 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (781, 543, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (782, 544, 10, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (783, 545, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (784, 546, 8, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (785, 547, 9, null, 4);
+insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage) values (786, 548, 8, null, 4);
+
+
+
 
 
 -- Storage Objects für das  Lager Kunde
