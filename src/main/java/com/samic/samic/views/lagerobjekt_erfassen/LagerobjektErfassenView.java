@@ -5,7 +5,6 @@ import com.samic.samic.components.form.CPEForm;
 import com.samic.samic.components.form.SFPForm;
 import com.samic.samic.components.form.SupplyForm;
 import com.samic.samic.data.entity.CPE;
-import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.Producer;
 import com.samic.samic.data.entity.SFP;
@@ -23,17 +22,14 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeLeaveEvent;
-import com.vaadin.flow.router.BeforeLeaveObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
-import java.util.stream.Stream;
 
 @PageTitle("Lagerobjekt erfassen")
 @Route(value = "lagerobjektErfassen", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMINISTRATOR"})
 public class LagerobjektErfassenView extends VerticalLayout {
 
   private final ServiceProducer producerService;

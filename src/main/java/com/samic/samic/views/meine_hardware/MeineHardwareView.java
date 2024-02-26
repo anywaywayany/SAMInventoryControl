@@ -23,13 +23,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 @PageTitle("Meine Hardware")
 @Route(value = "meineHardware", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMINISTRATOR"})
 public class MeineHardwareView extends TabSheet {
 
   private final ReservationGrid reservationGrid;
@@ -90,9 +90,9 @@ public class MeineHardwareView extends TabSheet {
     // (cut off stream from repository), or make repo return list
     //TODO reservation does not contain storageobject
 
-      reservationGrid.setItems(
+    reservationGrid.setItems(
         reservationService.findAllReservationByGivenUser(authenticatedUser.getUser()
-          .get()));
+            .get()));
   }
 
   private void initStorageObjectGrid() {

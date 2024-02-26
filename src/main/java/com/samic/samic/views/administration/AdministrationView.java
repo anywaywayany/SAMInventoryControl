@@ -4,12 +4,12 @@ import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 
 
 @PageTitle("Administration")
 @Route(value = "administration", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed("STORAGEADMIN")
 public class AdministrationView extends TabSheet {
 
   private final UserManagement userManagement;

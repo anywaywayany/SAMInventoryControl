@@ -15,15 +15,21 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
-import org.atmosphere.interceptor.AtmosphereResourceStateRecovery.B;
 
 @PageTitle("Abfragen")
 @Route(value = "abfragen", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"MANAGMENT", "STORAGEADMINISTRATOR"})
 public class AbfragenView extends VerticalLayout {
 
+  private static final List<String> MONTH_NAMES = List.of("Januar", "Februar", "März", "April",
+      "Mai",
+      "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
+  private static final List<String> WEEK_DAYS_NAMES = List.of
+      ("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag");
+  private static final List<String> WEEK_DAYS_NAMES_SHORT = List.of("So", "Mo", "Di", "Mi", "Do",
+      "Fr", "Sa");
   private final DatePicker dateFrom = new DatePicker("Von");
   private final DatePicker dateTo = new DatePicker("Bis");
   private final RadioButtonGroup<String> inOut = new RadioButtonGroup<>("Flussrichtung");
@@ -34,14 +40,6 @@ public class AbfragenView extends VerticalLayout {
   private final TextField amountNew = new TextField();
   private final Binder<StatObject> statObjectBinder = new Binder<>(StatObject.class);
   private final DataProviderAbfragen dataProviderAbfragen;
-
-  private static final List<String> MONTH_NAMES = List.of("Januar", "Februar", "März", "April",
-      "Mai",
-      "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
-  private static final List<String> WEEK_DAYS_NAMES = List.of
-      ("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag");
-  private static final List<String> WEEK_DAYS_NAMES_SHORT = List.of("So", "Mo", "Di", "Mi", "Do",
-      "Fr", "Sa");
 
   public AbfragenView(DataProviderAbfragen dataProviderAbfragen) {
     this.dataProviderAbfragen = dataProviderAbfragen;

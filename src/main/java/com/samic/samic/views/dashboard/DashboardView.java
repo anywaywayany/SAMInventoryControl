@@ -6,6 +6,8 @@ import com.samic.samic.components.form.SFPForm;
 import com.samic.samic.components.form.StorageForm;
 import com.samic.samic.components.form.SupplyForm;
 import com.samic.samic.components.form.UserForm;
+import com.samic.samic.components.grid.ReservationGrid;
+import com.samic.samic.components.grid.StorageObjectGrid;
 import com.samic.samic.data.entity.CPE;
 import com.samic.samic.data.entity.Producer;
 import com.samic.samic.data.entity.Profile;
@@ -27,7 +29,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -69,8 +70,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private final ComboBox<Producer> producerComboBox = new ComboBox<>("Hersteller");
 
 
-  Grid<StorageObject> reservationGrid = new Grid<>(StorageObject.class, false);
-  Grid<StorageObject> hardwareGrid = new Grid<>(StorageObject.class, false);
+  private final ReservationGrid reservationGrid;
+  private final StorageObjectGrid hardwareGrid;
 
 
   public DashboardView(ServiceReservation reservationService,
@@ -79,7 +80,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       ServiceObjectType serviceObjectType,
       CPEForm cpeForm, SFPForm sfpForm, SupplyForm supplyForm, UserForm userForm,
       ServiceObjectType objectTypeService, ServiceStorage stoageService,
-      ServiceProducer producerService1, StorageForm storageForm) {
+      ServiceProducer producerService1, StorageForm storageForm, ReservationGrid reservationGrid,
+      StorageObjectGrid hardwareGrid) {
     this.reservationService = reservationService;
     this.storageObjectService = storageObjectService;
     this.authenticatedUser = authenticatedUser;
@@ -92,6 +94,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     this.stoageService = stoageService;
     this.producerService = producerService1;
     this.storageForm = storageForm;
+    this.reservationGrid = reservationGrid;
+    this.hardwareGrid = hardwareGrid;
 
     initUI();
   }
@@ -118,11 +122,11 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
           AtomicInteger objectTypeMin = new AtomicInteger();
           serviceObjectType.findObjectTypeByNameOptional(key)
               .ifPresent(o -> objectTypeMin.set(o.getMinValue().intValue()));
-          Span sp = new Span(key + " " + value + "/" + value);
+          Span sp = new Span(key + " " + value + "/" + objectTypeMin);
 
-          if (value / objectTypeMin.get() > 2) {
+          if (objectTypeMin.get() - value < 5) {
             sp.getElement().getThemeList().add("badge error");
-          } else if (value / objectTypeMin.get() == 2) {
+          } else if (objectTypeMin.get() - value < 50) {
             sp.getElement().getThemeList().add("badge contrast");
           } else {
             sp.getElement().getThemeList().add("badge success");
@@ -134,19 +138,22 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   }
 
   private void initQuickAccess() {
+    var role = authenticatedUser.getUser().get().getRole();
     menuBar.setOpenOnHover(true);
     menuBar.addItem("Lagerobjekt aufnehmen", onClick -> onGetDevice());
     menuBar.setWidth("100%");
     menuBar.getStyle().setJustifyContent(JustifyContent.SPACE_BETWEEN);
 
-    MenuItem addSo = menuBar.addItem("Lagerobjekt erfassen");
-    SubMenu addSoSubmenu = addSo.getSubMenu();
-    addSoSubmenu.addItem("CPE", onClick -> onAddCPE());
-    addSoSubmenu.addItem("SFP", onClick -> onAddSFP());
-    addSoSubmenu.addItem("Verbrauchsmaterial", onClick -> onAddSupply());
+    if (role == Role.STORAGEADMIN || role == Role.FIELDSERVICETECHNICIAN) {
+      menuBar.addItem("Lagerobjekt erfassen", onClick -> onAddCPE());
 
-    if (authenticatedUser.getUser().isPresent()
-        && authenticatedUser.getUser().get().getRole() == Role.MANAGMENT) {
+      MenuItem addSo = menuBar.addItem("Lagerobjekt erfassen");
+      SubMenu addSoSubmenu = addSo.getSubMenu();
+      addSoSubmenu.addItem("CPE", onClick -> onAddCPE());
+      addSoSubmenu.addItem("SFP", onClick -> onAddSFP());
+      addSoSubmenu.addItem("Verbrauchsmaterial", onClick -> onAddSupply());
+    }
+    if (role == Role.STORAGEADMIN) {
       menuBar.addItem("Lager hinzufügen", onClick -> {
         Dialog dialog = new Dialog();
         dialog.add(storageForm);
@@ -320,18 +327,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     reservationGrid.setMaxHeight("300px");
     reservationGrid.getStyle().setBorder("0px");
 
-    reservationGrid.addColumn(so -> Guard.isNotNull.test(so) ? so.getId() : Long.valueOf(12L))
-        .setHeader("Lager ID");
-    reservationGrid.addColumn(
-            so -> Guard.isNotNull.test(so.getReservation()) ? so.getRemark() : "Test")
-        .setHeader("Reservierungsbeschreibung").setAutoWidth(true);
-    reservationGrid.addColumn(
-            so -> Guard.isNotNull.test(so.getReservation()) ? so.getReservation().getReservedAt()
-                : "Test")
-        .setHeader("Reserviert bis(mom. res. am)").setAutoWidth(true); //Fehlt im Backend
-    reservationGrid.addColumn(
-            so -> Guard.isNotNull.test(so.getReservation()) ? so.getObjectTypeName() : "Test")
-        .setHeader("Gerätetyp Name").setAutoWidth(true);
     initReservationData();
 
     // MY RESERVATION - PUT UI TOGETHER
