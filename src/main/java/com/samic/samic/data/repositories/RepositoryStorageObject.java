@@ -48,13 +48,15 @@ public interface RepositoryStorageObject extends JpaRepository<StorageObject, Lo
 
     Stream<StorageObject> findStorageObjectByCpe_Id(Long id);
 
-//    Optional<StorageObject> findStorageObjectByVerbindungsnummer(String verbinNr);
+    //    Optional<StorageObject> findStorageObjectByVerbindungsnummer(String verbinNr);
 
     //    List<StorageObject> findAllByObjectTypeNameLikeIgnoreCase(String keyword, String keyword1, Pageable pageable);
 
     List<StorageObject> findAllByObjectTypeName_Name(String filterString, Pageable pageable);
 
     List<StorageObject> findAllByRemarkIsLikeIgnoreCase(String filterString, Pageable pageable);
+
+    StorageObject findStorageObjectsByReservationId(Long id);
 
     //    @Query("SELECT emp "+"FROM StorageObject emp "+" inner JOIN ObjectType com ON emp.objectTypeName.id = com.id "+"WHERE ( lower(emp.objectTypeName.name) LIKE lower(:keyword) OR lower(emp.objectTypeName.name) LIKE lower(:keyword) )")
     //    List<StorageObject> searchUnemployedWithOr(String keyword, Pageable pageable);

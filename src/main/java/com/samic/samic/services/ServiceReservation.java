@@ -1,6 +1,7 @@
 package com.samic.samic.services;
 
 import com.samic.samic.data.entity.Reservation;
+import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.exceptions.ReservationException;
@@ -24,6 +25,8 @@ public class ServiceReservation{
 
     @Autowired
     private final RepositoryReservation repositoryReservation;
+    @Autowired
+    private final ServiceStorageObject serviceStorageObject;
     //    @Autowired
     //    private final AuthenticatedUser authenticatedUser;
 
@@ -31,17 +34,17 @@ public class ServiceReservation{
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
             if(reservation.getId() == null){
-                System.out.println(reservation.getReservedFrom()+"----------User1");
                 if(reservation.getReservedFrom() != null){
-                    System.out.println(reservation.getReservedFrom()+"----------User2");
                     //                    reservation.setReservedAt(DateTimeFactory.now());
                     if(reservation.getCustomer() != null){
-                        System.out.println(reservation.getReservedFrom()+"----------User3");
                         reservation.setCustomer(reservation.getCustomer());
                     }
-                    System.out.println(reservation.getReservedFrom()+"----------User4");
+                    //                    if(reservation.getCustomer().connectionNo().isEmpty()){
+                    //                        throw new ReservationException("Connection No is not set!");
+                    //                    }
                     //                    reservation.setReservedFrom(authenticatedUser.getUser().get());
-                    System.out.println(reservation.getReservedFrom()+"----------User5");
+
+
                     return repositoryReservation.save(reservation);
 
                 }else{
@@ -94,7 +97,14 @@ public class ServiceReservation{
 
     public void deleteByObject(Reservation reservation){
         if(reservation != null){
-            repositoryReservation.delete(reservation);
+            if(repositoryReservation.findById(reservation.getId()).isPresent()){
+
+                reservation.setReservedFrom(null);
+                StorageObject tempSto = serviceStorageObject.findStorageObjectByReservationID(reservation.getId());
+                tempSto.setReservation(null);
+                repositoryReservation.deleteById(reservation.getId());
+
+            }
         }else{
             throw new ReservationException("Given Reservation is null!");
         }
@@ -155,12 +165,15 @@ public class ServiceReservation{
     }
 
     @Transactional
-    public Stream<Reservation> findAllReservationByGivenUser(User user){
-        Stream<Reservation> reservationOnUser = repositoryReservation.findReservationsByReservedFrom(user);
+    public List<Reservation> findAllReservationByGivenUser(User user){
+        Stream<Reservation> reservationOnUser = repositoryReservation.findReservationsByReservedFrom(user)
+                                                                     .filter(a -> a.getStorageObject() != null)
+                                                                     .filter(u -> u.getReservedFrom() != null)
+                /*.filter(c -> c.getCustomer() != null)*/;
 
-
-        return reservationOnUser/*.peek(u -> System.out.println(u.toString()+"\n"))*/.filter(reservation -> reservation.getReservedFrom()
-                                                                                                                       .getId()
-                                                                                                                       .equals(user.getId()));
+        return reservationOnUser.filter(reservation -> reservation.getReservedFrom()
+                                                                  .getId()
+                                                                  .equals(user.getId()))
+                                .toList();
     }
 }

@@ -2,6 +2,8 @@ package com.samic.samic.data.repositories;
 
 import com.samic.samic.data.entity.Reservation;
 import com.samic.samic.data.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +24,6 @@ public interface RepositoryReservation extends JpaRepository<Reservation, Long>{
 
     Optional<Reservation> findAllByReservedFrom_Id(Long id);
 
+    Page<Reservation> findAllByReservedFrom_Id(Long id,
+                                               Pageable request);
 }

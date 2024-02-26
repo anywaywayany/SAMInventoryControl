@@ -1446,3 +1446,5 @@ insert into reservations (id, reserved_at, fk_user, last_modified, completed, co
 values (2, TIMESTAMP ' 2023-12-25 11:16:47.678165', 1, TIMESTAMP ' 2023-12-25 11:16:47.678504', 0, '123413521',
         'Kunde benötigt PoE fähiges Device');
 
+select * from CPES where id = 260;
+select * from CPES where id = 51;
