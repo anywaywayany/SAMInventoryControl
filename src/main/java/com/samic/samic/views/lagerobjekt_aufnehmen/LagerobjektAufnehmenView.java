@@ -63,8 +63,8 @@ public class LagerobjektAufnehmenView extends VerticalLayout {
           Long.valueOf(storageObjectID.getValue()));
       if (toEdit != null) {
         if (toEdit.getStoredAtUser() == null) {
-//          toEdit.setStoredAtUser(authenticatedUser.getUser()
-//              .orElse(userService.findUserByID(authenticatedUser.getUser().get().getId())));
+          toEdit.setStoredAtUser(authenticatedUser.getUser()
+              .orElse(userService.findUserByID(authenticatedUser.getUser().get().getId())));
           toEdit.setStorage(null);
           storageObjectService.saveStorageObject(toEdit);
           storageObjectID.setValue("");
