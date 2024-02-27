@@ -170,7 +170,7 @@ public class MeineHardwareView extends TabSheet {
     storageObject.setStorage(storage);
     storageObject.setStoredAtUser(null);
     storageObjectService.saveStorageObject(storageObject);
-    storageObjectGrid.getDataProvider().refreshAll();
+    initStorageObjectGridData();
   }
 
 
@@ -188,13 +188,14 @@ public class MeineHardwareView extends TabSheet {
   }
 
   private void onSave() {
-    reservationService.saveReservationByObject(reservationForm.save());
+    reservationService.updateReservation(reservationForm.save());
+    initReservationGridData();
     reservationGrid.getDataProvider().refreshAll();
   }
 
   private void onDelete(Reservation item) {
     reservationService.deleteByObject(item);
-    reservationGrid.getDataProvider().refreshAll();
+    initReservationGridData();
     UIFactory.notificationSuccess("Deleted");
   }
 
