@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 @Transactional
 @RequiredArgsConstructor
 @ComponentScan(basePackages = {"com.samic.samic.security"})
-
 public class ServiceReservation{
 
     @Autowired
@@ -70,7 +69,7 @@ public class ServiceReservation{
                                                                                   .get().getId())){
                 return repositoryReservation.save(reservation);
             }else{
-                throw new ReservationException(reservation.getId() == null ? "Reservation ID is not set!" : "User does not match with Logged in user!");
+                throw new ReservationException(reservation.getId() == null ? "Reservation ID is not set!" : "User does not match with Logged-in user!");
             }
         }else{
             throw new ReservationException("Given Reservation is null");
