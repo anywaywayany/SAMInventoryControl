@@ -2,10 +2,8 @@ package com.samic.samic.components.form;
 
 import com.samic.samic.components.UIFactory;
 import com.samic.samic.data.constants.ConstantsDomain;
-import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.StorageObject;
-import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -30,9 +28,9 @@ public class SFPForm extends FormLayout {
   private final TextField wavelength = new TextField("Wellenlänge");
   private final IntegerField nicSpeed = new IntegerField("NIC Speed Gbps");
   private final Binder<StorageObject> binderStorageObject = new Binder<>(StorageObject.class, true);
-  private ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
+  private final ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
   private final TextField serialnumber = new TextField("Seriennummer");
-  private HorizontalLayout projectEquipmentContainer =
+  private final HorizontalLayout projectEquipmentContainer =
       UIFactory.childContainer(
           FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
   private final TextField remark = new TextField("Anmerkung");

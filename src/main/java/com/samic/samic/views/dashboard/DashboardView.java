@@ -44,7 +44,6 @@ import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.security.PermitAll;
 import java.util.concurrent.atomic.AtomicInteger;
 
-;
 
 @PageTitle("Dashboard")
 @Route(value = "dashboard", layout = MainLayout.class)
@@ -68,7 +67,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private final ComboBox<Storage> storageComboBox = new ComboBox<>("Lager");
   private final ComboBox<Producer> producerComboBox = new ComboBox<>("Hersteller");
 
-
   private final ReservationGrid reservationGrid;
   private final StorageObjectGrid hardwareGrid;
   private final ServiceStorage storageService;
@@ -77,11 +75,10 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
   public DashboardView(ServiceReservation reservationService,
       ServiceStorageObject storageObjectService, AuthenticatedUser authenticatedUser,
-      ServiceProducer producerService, ServiceStorageObject storageObjectService1,
-      ServiceObjectType serviceObjectType,
+      ServiceProducer producerService, ServiceObjectType serviceObjectType,
       CPEForm cpeForm, SFPForm sfpForm, SupplyForm supplyForm, UserForm userForm,
-      ServiceObjectType objectTypeService, ServiceStorage stoageService,
-      ServiceProducer producerService1, StorageForm storageForm, ReservationGrid reservationGrid,
+      ServiceObjectType objectTypeService, ServiceStorage stoageService, StorageForm storageForm,
+      ReservationGrid reservationGrid,
       StorageObjectGrid hardwareGrid, ServiceStorage storageService, ServiceUser userService) {
     this.reservationService = reservationService;
     this.storageObjectService = storageObjectService;
@@ -93,12 +90,12 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     this.userForm = userForm;
     this.objectTypeService = objectTypeService;
     this.stoageService = stoageService;
-    this.producerService = producerService1;
     this.storageForm = storageForm;
     this.reservationGrid = reservationGrid;
     this.hardwareGrid = hardwareGrid;
     this.storageService = storageService;
     this.userService = userService;
+    this.producerService = producerService;
 
     initUI();
   }
@@ -151,7 +148,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       menuBar.addItem("Lager hinzufügen", onClick -> {
         Dialog dialog = new Dialog();
         dialog.add(storageForm);
-        supplyForm.setSupplyBeans(StorageObject.builder().supply(Supply.builder().build()).build());
+        storageForm.setBean(Storage.builder().build());
         dialog.add(UIFactory.btnPrimary("Speichern", e -> {
           dialog.close();
           onSave(storageForm.isValid() ? storageForm.saveBean() : null);
@@ -211,6 +208,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     Dialog dialog = new Dialog();
 
     dialog.setCloseOnOutsideClick(false);
+    dialog.add(storageComboBox);
     dialog.add(supplyForm);
 
     dialog.add(UIFactory.btnPrimary("Speichern", e -> {
@@ -317,7 +315,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       UIFactory.notificationInfoNoDuration("LagerID: " + persisted.getId().toString()).open();
       UIFactory.notificationSuccess("Lagerobjekt erfolgreich gespeichert").open();
     }
-    hardwareGrid.getDataProvider().refreshAll();
   }
 
   private void initHardware() {

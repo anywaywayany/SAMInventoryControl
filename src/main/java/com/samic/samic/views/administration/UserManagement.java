@@ -26,10 +26,10 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 public class UserManagement extends VerticalLayout {
 
   private static final String DATE_PATTERN = "dd.MM.yyyy";
+  final VirtualList<User> virtualList = new VirtualList<>();
   private final ServiceUser userService;
   private final UserForm userForm;
   private final UserForm userFormDialog;
-  VirtualList<User> virtualList = new VirtualList<>();
   private ComponentRenderer<com.vaadin.flow.component.Component, User> userComponentRenderer;
 
   public UserManagement(ServiceUser userService, UserForm userForm,

@@ -26,11 +26,11 @@ public class CPEForm extends FormLayout {
   private final TextField trackingNumber = new TextField("Sendungsnummer");
   private final BeanValidationBinder<StorageObject> binderStorageObject = new BeanValidationBinder<>(
       StorageObject.class, true);
-  private ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
-  private TextField macAdress = new TextField("MAC Adresse");
-  private TextField serialnumber = new TextField("Seriennummer");
-  private TextField remark = new TextField("Anmerkung");
-  private HorizontalLayout projectEquipmentContainer =
+  private final ComboBox<ObjectType> deviceType = new ComboBox<>("Gerätetyp");
+  private final TextField macAdress = new TextField("MAC Adresse");
+  private final TextField serialnumber = new TextField("Seriennummer");
+  private final TextField remark = new TextField("Anmerkung");
+  private final HorizontalLayout projectEquipmentContainer =
       UIFactory.childContainer(
           FlexComponent.JustifyContentMode.START, connectionNumber, trackingNumber);
 

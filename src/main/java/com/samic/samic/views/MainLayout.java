@@ -37,10 +37,9 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class MainLayout extends AppLayout {
 
+  private final AccessAnnotationChecker accessChecker;
+  private final AuthenticatedUser authenticatedUser;
   private H2 viewTitle;
-
-  private AuthenticatedUser authenticatedUser;
-  private AccessAnnotationChecker accessChecker;
 
   public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
     this.authenticatedUser = authenticatedUser;
@@ -92,46 +91,46 @@ public class MainLayout extends AppLayout {
               LagerobjektErfassenView.class,
               LineAwesomeIcon.DASHCUBE.create()));
     }
-		if (accessChecker.hasAccess(LagerobjektAufnehmenView.class)) {
-			nav.addItem(
-					new SideNavItem(
-							"Lagerobjekt aufnehmen",
-							LagerobjektAufnehmenView.class,
-							LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
-		}
-		if (accessChecker.hasAccess(FreieLagerobjekteView.class)) {
-			nav.addItem(
-					new SideNavItem(
-							"Freie Lagerobjekte",
-							FreieLagerobjekteView.class,
-							LineAwesomeIcon.SEARCH_SOLID.create()));
-		}
-		if (accessChecker.hasAccess(MeineHardwareView.class)) {
-			nav.addItem(
-					new SideNavItem(
-							"Meine Hardware",
-							MeineHardwareView.class,
-							LineAwesomeIcon.STRIPE.create()));
-		}
+    if (accessChecker.hasAccess(LagerobjektAufnehmenView.class)) {
+      nav.addItem(
+          new SideNavItem(
+              "Lagerobjekt aufnehmen",
+              LagerobjektAufnehmenView.class,
+              LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
+    }
+    if (accessChecker.hasAccess(FreieLagerobjekteView.class)) {
+      nav.addItem(
+          new SideNavItem(
+              "Freie Lagerobjekte",
+              FreieLagerobjekteView.class,
+              LineAwesomeIcon.SEARCH_SOLID.create()));
+    }
+    if (accessChecker.hasAccess(MeineHardwareView.class)) {
+      nav.addItem(
+          new SideNavItem(
+              "Meine Hardware",
+              MeineHardwareView.class,
+              LineAwesomeIcon.STRIPE.create()));
+    }
 
-		if (accessChecker.hasAccess(AbfragenView.class)) {
-			nav.addItem(
-					new SideNavItem(
-							"Abfragen",
-							AbfragenView.class,
-							LineAwesomeIcon.QUESTION_CIRCLE_SOLID.create()
-					)
-			);
-		}
-		if (accessChecker.hasAccess(AdministrationView.class)) {
-			nav.addItem(
-					new SideNavItem(
-							"Administration",
-							AdministrationView.class,
-							LineAwesomeIcon.COG_SOLID.create()
-					)
-			);
-		}
+    if (accessChecker.hasAccess(AbfragenView.class)) {
+      nav.addItem(
+          new SideNavItem(
+              "Abfragen",
+              AbfragenView.class,
+              LineAwesomeIcon.QUESTION_CIRCLE_SOLID.create()
+          )
+      );
+    }
+    if (accessChecker.hasAccess(AdministrationView.class)) {
+      nav.addItem(
+          new SideNavItem(
+              "Administration",
+              AdministrationView.class,
+              LineAwesomeIcon.COG_SOLID.create()
+          )
+      );
+    }
 
     return nav;
   }
@@ -159,9 +158,7 @@ public class MainLayout extends AppLayout {
           .getSubMenu()
           .addItem(
               "Sign out",
-              e -> {
-                authenticatedUser.logout();
-              });
+              e -> authenticatedUser.logout());
 
       layout.add(userMenu);
     } else {
