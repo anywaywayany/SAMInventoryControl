@@ -738,8 +738,8 @@ public class ServiceStorageObject{
 
     public void moveFromReservationToMeineHardware(Reservation reservation){
         if(reservation != null){
-            if(reservation.getReservedFrom() == authenticatedUser.getUser()
-                                                                 .get()){
+            if(reservation.getReservedFrom().getId() == authenticatedUser.getUser()
+                                                                 .get().getId()){
                 if(reservation.getId() != null && repositoryReservation.existsById(reservation.getId())){
                     Reservation reservationById = repositoryReservation.findById(reservation.getId())
                                                                        .get();
