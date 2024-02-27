@@ -5,6 +5,7 @@ import com.samic.samic.components.form.ReservationForm;
 import com.samic.samic.data.entity.Customer;
 import com.samic.samic.data.entity.ObjectType;
 import com.samic.samic.data.entity.Reservation;
+import com.samic.samic.data.entity.Role;
 import com.samic.samic.data.entity.Storage;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.security.AuthenticatedUser;
@@ -157,10 +158,13 @@ public class FreieLagerobjekteView extends VerticalLayout {
     grid.addColumn(StorageObject::getRemark).setHeader("Anmerkung").setAutoWidth(true)
         .setFlexGrow(2);
     grid.addColumn(so -> so.getStorage().getName()).setHeader("Lager");
-    grid.addComponentColumn(item -> new Span(
-            new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
-            new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)))).setHeader("Aktionen")
-        .setAutoWidth(true).setFrozenToEnd(true);
+    if (authenticatedUser.getUser().get().getRole() == Role.STORAGEADMIN
+        || authenticatedUser.getUser().get().getRole() == Role.FIELDSERVICETECHNICIAN) {
+      grid.addComponentColumn(item -> new Span(
+              new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
+              new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)))).setHeader("Aktionen")
+          .setAutoWidth(true).setFrozenToEnd(true);
+    }
     grid.setItemDetailsRenderer(createStorageObjectDetailsRenderer());
     grid.getStyle().setBorder("0px");
     grid.setHeightFull();

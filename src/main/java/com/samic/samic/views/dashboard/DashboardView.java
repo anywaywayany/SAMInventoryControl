@@ -24,6 +24,7 @@ import com.samic.samic.services.ServiceProducer;
 import com.samic.samic.services.ServiceReservation;
 import com.samic.samic.services.ServiceStorage;
 import com.samic.samic.services.ServiceStorageObject;
+import com.samic.samic.services.ServiceUser;
 import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -41,8 +42,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.security.PermitAll;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 ;
@@ -72,6 +71,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
   private final ReservationGrid reservationGrid;
   private final StorageObjectGrid hardwareGrid;
+  private final ServiceStorage storageService;
+  private final ServiceUser userService;
 
 
   public DashboardView(ServiceReservation reservationService,
@@ -81,7 +82,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       CPEForm cpeForm, SFPForm sfpForm, SupplyForm supplyForm, UserForm userForm,
       ServiceObjectType objectTypeService, ServiceStorage stoageService,
       ServiceProducer producerService1, StorageForm storageForm, ReservationGrid reservationGrid,
-      StorageObjectGrid hardwareGrid) {
+      StorageObjectGrid hardwareGrid, ServiceStorage storageService, ServiceUser userService) {
     this.reservationService = reservationService;
     this.storageObjectService = storageObjectService;
     this.authenticatedUser = authenticatedUser;
@@ -96,6 +97,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     this.storageForm = storageForm;
     this.reservationGrid = reservationGrid;
     this.hardwareGrid = hardwareGrid;
+    this.storageService = storageService;
+    this.userService = userService;
 
     initUI();
   }
@@ -111,11 +114,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     // STATS - Container
     VerticalLayout statsContainer = UIFactory.rootComponentContainer("Statistiken");
     HorizontalLayout statsComponents = UIFactory.childContainer(JustifyContentMode.START);
-
-    HashMap<String, List<Integer>> map = new HashMap<>();
-    map.put("Gerät Typ1", List.of(100, 50));
-    map.put("Gerät Typ2", List.of(50, 50));
-    map.put("Gerät Typ3", List.of(100, 1));
 
     storageObjectService.findAmountOfObjectType2().forEach(
         (key, value) -> {
@@ -143,8 +141,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     menuBar.getStyle().setJustifyContent(JustifyContent.SPACE_BETWEEN);
 
     if (role == Role.STORAGEADMIN || role == Role.FIELDSERVICETECHNICIAN) {
-      menuBar.addItem("Lagerobjekt erfassen", onClick -> onAddCPE());
-
       MenuItem addSo = menuBar.addItem("Lagerobjekt erfassen");
       SubMenu addSoSubmenu = addSo.getSubMenu();
       addSoSubmenu.addItem("CPE", onClick -> onAddCPE());
@@ -156,12 +152,20 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
         Dialog dialog = new Dialog();
         dialog.add(storageForm);
         supplyForm.setSupplyBeans(StorageObject.builder().supply(Supply.builder().build()).build());
+        dialog.add(UIFactory.btnPrimary("Speichern", e -> {
+          dialog.close();
+          onSave(storageForm.isValid() ? storageForm.saveBean() : null);
+        }), UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close()));
         dialog.open();
       });
       menuBar.addItem("Benutzer hinzufügen", onClick -> {
         Dialog dialog = new Dialog();
         dialog.add(userForm);
         userForm.setBean(User.builder().profile(Profile.builder().build()).build());
+        dialog.add(UIFactory.btnPrimary("Speichern", e -> {
+          dialog.close();
+          onSave(userForm.isValid() ? userForm.saveBean() : null);
+        }), UIFactory.btnPrimaryError("Abbrechen", e -> dialog.close()));
         dialog.open();
       });
 
@@ -271,6 +275,24 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     hardwareGrid.getDataProvider().refreshAll();
   }
 
+  private void onSave(User user) {
+    if (user == null) {
+      UIFactory.notificationError("Benutzer konnte nicht gespeichert werden").open();
+      return;
+    }
+    var persisted = userService.saveUser(user);
+    UIFactory.notificationSuccess("Benutzer erfolgreich gespeichert").open();
+  }
+
+  private void onSave(Storage storage) {
+    if (storage == null) {
+      UIFactory.notificationError("Lager konnte nicht gespeichert werden").open();
+      return;
+    }
+    var persisted = storageService.saveStorageByObject(storage);
+    UIFactory.notificationSuccess("Lager erfolgreich gespeichert").open();
+  }
+
 
   private void onSave(StorageObject storageObject) {
     if (storageObject == null) {
@@ -333,17 +355,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
 
 
   void initReservationData() {
-   /* try {
-      System.out.println("Placeholder");
-      reservationGrid.setItems(new CallbackDataProvider.FetchCallback<Reservation, Void>(){
-        @Override
-        public Stream<Reservation> fetch(Query<Reservation, Void> query){
-          return storageObjectService.findStorageObjectByUserId(authenticatedUser.getUser().get().getId(), VaadinSpringDataHelpers.toSpringPageRequest(query));
-        }
-      });
-    } catch (StorageObjectException e) {
-      UIFactory.NotificationError(e.getMessage()).open();
-    }*/
+    reservationGrid.setItems(
+        reservationService.findAllReservationByGivenUser(authenticatedUser.getUser().get()));
   }
 
 
