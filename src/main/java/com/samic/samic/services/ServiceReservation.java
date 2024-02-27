@@ -33,7 +33,6 @@ public class ServiceReservation{
     @Autowired
     private final ServiceStorageObjectHistory serviceStorageObjectHistory;
 
-
     @Transactional
     public Reservation saveReservationByObject(Reservation reservation){
         if(reservation != null){
