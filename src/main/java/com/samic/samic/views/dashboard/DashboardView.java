@@ -103,8 +103,12 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private void initUI() {
     initStats();
     initQuickAccess();
-    initReservation();
-    initHardware();
+
+    if (authenticatedUser.getUser().get().getRole() == Role.STORAGEADMIN
+        || authenticatedUser.getUser().get().getRole() == Role.FIELDSERVICETECHNICIAN) {
+      initReservation();
+      initHardware();
+    }
   }
 
   private void initStats() {

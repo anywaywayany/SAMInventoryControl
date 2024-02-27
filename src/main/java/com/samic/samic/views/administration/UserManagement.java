@@ -4,6 +4,7 @@ import com.samic.samic.components.UIFactory;
 import com.samic.samic.components.form.UserForm;
 import com.samic.samic.data.entity.Profile;
 import com.samic.samic.data.entity.User;
+import com.samic.samic.security.UserDetailsServiceImpl;
 import com.samic.samic.services.ServiceUser;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -30,13 +31,15 @@ public class UserManagement extends VerticalLayout {
   private final ServiceUser userService;
   private final UserForm userForm;
   private final UserForm userFormDialog;
+  private final UserDetailsServiceImpl userDetailsService;
   private ComponentRenderer<com.vaadin.flow.component.Component, User> userComponentRenderer;
 
   public UserManagement(ServiceUser userService, UserForm userForm,
-      UserForm userFormDialog) {
+      UserForm userFormDialog, UserDetailsServiceImpl userDetailsService) {
     this.userService = userService;
     this.userForm = userForm;
     this.userFormDialog = userFormDialog;
+    this.userDetailsService = userDetailsService;
   }
 
   @PostConstruct
@@ -62,7 +65,7 @@ public class UserManagement extends VerticalLayout {
   }
 
   private void initUserForm() {
-    userForm.setBean(User.builder().profile(Profile.builder().build()).build());
+    userForm.setBean(User.builder().activated(false).profile(Profile.builder().build()).build());
   }
 
   private void initVirtualList() {
@@ -94,13 +97,16 @@ public class UserManagement extends VerticalLayout {
                   ElementFactory.createStrong(user.getProfile().getFirstName()
                       + " " + user.getProfile().getLastName()));
               infoLayout.add(new Div(
-                  UIFactory.btnIconWithTooltip(LineAwesomeIcon.BAN_SOLID.create(), "Deaktivieren",
-                      e -> onDeactivate(user)),
+                  user.getActivated() ?
+                      UIFactory.btnIconWithTooltip(LineAwesomeIcon.BAN_SOLID.create(),
+                          "Deaktivieren",
+                          e -> onDeactivate(user)) :
+                      UIFactory.btnIconWithTooltip(LineAwesomeIcon.CHECK_SOLID.create(),
+                          "Aktivieren", e -> onActivate(user)),
                   UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
                       e -> onDelete(user)),
                   UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-                      e -> onEdit(user))
-              ));
+                      e -> onEdit(user))));
               infoLayout.add(new Div(new Text(user.getRole().getLongVersion())));
 
               VerticalLayout contactLayout = new VerticalLayout();
@@ -114,8 +120,10 @@ public class UserManagement extends VerticalLayout {
                   .add(new Div(
                           new Text("Registriert seit: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
                               .format(user.getCreatedAt()))),
-                      new Div(new Text("Letzer Login: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
-                          .format(user.getLastLogin()))),
+                      new Div(user.getLastLogin() != null
+                          ? new Text("Letzer Login: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
+                          .format(user.getLastLogin()))
+                          : new Text("Nie")),
                       new Div(new Text("Status: " + status)));
               infoLayout
                   .add(new Details("Benutzereigenschaften", contactLayout));
@@ -125,15 +133,25 @@ public class UserManagement extends VerticalLayout {
             });
   }
 
+  private void onActivate(User user) {
+    user.setActivated(true);
+    userService.saveUser(user);
+    virtualList.getDataProvider().refreshAll();
+    initVirtualListData();
+    UIFactory.notificationSuccess("Benutzer aktiviert").open();
+  }
+
   private void onCancel() {
     userForm.clearFields();
   }
 
   private void onCreate() {
     if (userForm.isValid()) {
-      userService.saveUser(userForm.saveBean());
+      userDetailsService.register(userForm.saveBean());
       userForm.clearFields();
       virtualList.getDataProvider().refreshAll();
+      initVirtualListData();
+      initComponentRenderer();
       UIFactory.notificationSuccess("Benutzer angelegt").open();
     } else {
       UIFactory.notificationError("Benutzer konnte nicht angelegt werden").open();
@@ -160,6 +178,7 @@ public class UserManagement extends VerticalLayout {
       userService.saveUser(userForm.saveBean());
       UIFactory.notificationSuccess("Benutzer gespeichert").open();
       virtualList.getDataProvider().refreshAll();
+      initVirtualListData();
     } else {
       UIFactory.notificationError("Benutzer konnte nicht geändert werden").open();
     }
@@ -175,6 +194,7 @@ public class UserManagement extends VerticalLayout {
     user.setActivated(false);
     userService.saveUser(user);
     virtualList.getDataProvider().refreshAll();
+    initVirtualListData();
     UIFactory.notificationSuccess("Benutzer deaktiviert").open();
   }
 }

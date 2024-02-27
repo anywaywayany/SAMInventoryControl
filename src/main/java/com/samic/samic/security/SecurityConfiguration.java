@@ -14,23 +14,26 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfiguration extends VaadinWebSecurity {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-        http.authorizeHttpRequests(
-                authorize -> authorize.requestMatchers(new AntPathRequestMatcher("/images/*.png")).permitAll());
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 
-        // Icons from the line-awesome addon
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/line-awesome/**/*.svg")).permitAll());
+    http.authorizeHttpRequests(
+        authorize -> authorize.requestMatchers(new AntPathRequestMatcher("/images/*.png"))
+            .permitAll());
 
-        super.configure(http);
-        setLoginView(http, LoginView.class);
-    }
+    // Icons from the line-awesome addon
+    http.authorizeHttpRequests(authorize -> authorize
+        .requestMatchers(new AntPathRequestMatcher("/line-awesome/**/*.svg")).permitAll());
+
+    super.configure(http);
+    setLoginView(http, LoginView.class);
+  }
+
 
 }
