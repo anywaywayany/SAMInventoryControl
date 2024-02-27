@@ -29,7 +29,7 @@ import java.util.List;
 
 @PageTitle("Lagerobjekt erfassen")
 @Route(value = "lagerobjektErfassen", layout = MainLayout.class)
-@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMINISTRATOR"})
+@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMIN"})
 public class LagerobjektErfassenView extends VerticalLayout {
 
   private final ServiceProducer producerService;

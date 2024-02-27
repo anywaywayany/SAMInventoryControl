@@ -29,7 +29,7 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 
 @PageTitle("Meine Hardware")
 @Route(value = "meineHardware", layout = MainLayout.class)
-@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMINISTRATOR"})
+@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMIN"})
 public class MeineHardwareView extends TabSheet {
 
   private final ReservationGrid reservationGrid;

@@ -20,7 +20,7 @@ import java.util.List;
 
 @PageTitle("Abfragen")
 @Route(value = "abfragen", layout = MainLayout.class)
-@RolesAllowed({"MANAGMENT", "STORAGEADMINISTRATOR"})
+@RolesAllowed({"MANAGMENT", "STORAGEADMIN"})
 public class AbfragenView extends VerticalLayout {
 
   private static final List<String> MONTH_NAMES = List.of("Januar", "Februar", "März", "April",

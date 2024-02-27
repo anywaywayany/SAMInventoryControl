@@ -124,10 +124,8 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
               .ifPresent(o -> objectTypeMin.set(o.getMinValue().intValue()));
           Span sp = new Span(key + " " + value + "/" + objectTypeMin);
 
-          if (objectTypeMin.get() - value < 5) {
+          if (value <= objectTypeMin.get()) {
             sp.getElement().getThemeList().add("badge error");
-          } else if (objectTypeMin.get() - value < 50) {
-            sp.getElement().getThemeList().add("badge contrast");
           } else {
             sp.getElement().getThemeList().add("badge success");
           }

@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 
 @PageTitle("Lagerobjekt aufnehmen")
 @Route(value = "lagerobjektAufnehmen", layout = MainLayout.class)
-@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMINISTRATOR"})
+@RolesAllowed({"FIELDSERVICETECHNICIAN", "STORAGEADMIN"})
 public class LagerobjektAufnehmenView extends VerticalLayout {
 
   private final ServiceStorageObject storageObjectService;
