@@ -5,6 +5,7 @@ import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.exceptions.ReservationException;
+import com.samic.samic.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class ServiceReservation{
     @Autowired
     private final RepositoryReservation repositoryReservation;
     @Autowired
-    private final ServiceStorageObject serviceStorageObject;
-    //    @Autowired
-    //    private final AuthenticatedUser authenticatedUser;
+    private final ServiceStorageObject  serviceStorageObject;
+    @Autowired
+    private final AuthenticatedUser     authenticatedUser;
 
     @Transactional
     public Reservation saveReservationByObject(Reservation reservation){
@@ -55,6 +56,20 @@ public class ServiceReservation{
             }
         }else{
             throw new ReservationException("Reservation is null!");
+        }
+    }
+
+    public Reservation updateReservation(Reservation reservation){
+        if(reservation != null){
+            if(reservation.getId() != null && reservation.getReservedFrom()
+                                                         .equals(authenticatedUser.getUser()
+                                                                                  .get())){
+                return repositoryReservation.save(reservation);
+            }else{
+                throw new ReservationException(reservation.getId() == null ? "Reservation ID is not set!" : "User does not match with Logged in user!");
+            }
+        }else{
+            throw new ReservationException("Given Reservation is null");
         }
     }
 
@@ -97,7 +112,8 @@ public class ServiceReservation{
 
     public void deleteByObject(Reservation reservation){
         if(reservation != null){
-            if(repositoryReservation.findById(reservation.getId()).isPresent()){
+            if(repositoryReservation.findById(reservation.getId())
+                                    .isPresent()){
 
                 reservation.setReservedFrom(null);
                 StorageObject tempSto = serviceStorageObject.findStorageObjectByReservationID(reservation.getId());
