@@ -3,6 +3,8 @@ package com.samic.samic.data.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -36,8 +38,8 @@ public class StorageObjectHistory extends AbstractIdentityClass<Long>{
 
     @JoinColumn(name = "fk_reservation",
                 foreignKey = @ForeignKey(name = "fk_reservation_2_storageObjectHistory"))
-    @ManyToOne(fetch = FetchType.EAGER,
-               cascade = {CascadeType.MERGE})
+    @ManyToOne( fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Reservation reservation;
 
     /*

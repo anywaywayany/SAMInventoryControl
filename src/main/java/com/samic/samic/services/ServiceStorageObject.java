@@ -1,18 +1,18 @@
 package com.samic.samic.services;
 
-import com.samic.samic.data.entity.ObjectType;
-import com.samic.samic.data.entity.Reservation;
-import com.samic.samic.data.entity.StorageObject;
-import com.samic.samic.data.entity.User;
+import com.samic.samic.data.entity.*;
+import com.samic.samic.data.foundation.DateTimeFactory;
 import com.samic.samic.data.repositories.RepositoryObjectType;
 import com.samic.samic.data.repositories.RepositoryReservation;
 import com.samic.samic.data.repositories.RepositoryStorageObject;
+import com.samic.samic.data.repositories.RepositoryStorageObjectHistory;
 import com.samic.samic.exceptions.ObjectTypeException;
 import com.samic.samic.exceptions.ReservationException;
 import com.samic.samic.exceptions.StorageObjectException;
-import com.samic.samic.exceptions.UserException;
+import com.samic.samic.security.AuthenticatedUser;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,16 +32,26 @@ import java.util.stream.Stream;
 @Transactional
 @RequiredArgsConstructor
 @ComponentScan(basePackages = "com.samic.samic.data.services")
+@ComponentScan(basePackages = {"com.samic.samic.security"})
+
 public class ServiceStorageObject{
 
     @Autowired
     private final RepositoryStorageObject repositoryStorageObject;
     @Autowired
-    private final RepositoryReservation repositoryReservation;
+    private final RepositoryReservation   repositoryReservation;
     @Autowired
     private final EntityManagerFactory    emf;
     @Autowired
-    private final RepositoryObjectType    repositoryObjectType;
+    private final RepositoryObjectType           repositoryObjectType;
+    @Autowired
+    private final RepositoryStorageObjectHistory repositoryStorageObjectHistory;
+    @Autowired
+    private final ServiceStorageObjectHistory serviceStorageObjectHistory;
+    //    @Autowired
+    //    private final ServiceReservation      serviceReservation;
+    @Autowired
+    private final AuthenticatedUser              authenticatedUser;
     //    private final Logger                  log = LoggerFactory.getLogger(this.getClass());
     //    public ServiceStorageObject(@Qualifier("storageObject") RepositoryStorageObject repositoryStorageObject){
     //        this.repositoryStorageObject = repositoryStorageObject;
@@ -55,8 +65,9 @@ public class ServiceStorageObject{
         }*/
 
         if(storageObject.getStoredAtUser() != null){
-            if(storageObject.getReservation() != null ){
-                if(storageObject.getReservation().getReservedFrom() != null){
+            if(storageObject.getReservation() != null){
+                if(storageObject.getReservation()
+                                .getReservedFrom() != null){
                     throw new ReservationException("User already set to STO!");
                 }
             }
@@ -110,6 +121,7 @@ public class ServiceStorageObject{
                             log.debug("saveStorageObejct() | given StorageObject is set to fetched StorageObject, fetchedStorageObject: {},\n storageObject: {}",
                                       fetchedStorageObject,
                                       storageObject);
+                            serviceStorageObjectHistory.setStorageOBjectHistory(fetchedStorageObject);
                             return repositoryStorageObject.save(fetchedStorageObject);
                         }else{
                             log.debug("saveStorageObject() | fetched StorageObject does not match with given StorageObject, fetchedStorageObject: {},\nStorageObject: {}",
@@ -126,12 +138,14 @@ public class ServiceStorageObject{
                 }else{
                     log.debug("saveStorageObject() | StorageObject does not exist in DB, ID: {},\nStorageObject: {}",
                               storageObject.getId());
+                    serviceStorageObjectHistory.setStorageOBjectHistory(storageObject);
                     return repositoryStorageObject.save(storageObject);
 
                 }
             }else{
                 log.debug("saveStorageObject() | StorageObject id is null, Saving StorageObject: {}",
                           storageObject); //TODO T3600
+                serviceStorageObjectHistory.setStorageOBjectHistory(storageObject);
                 StorageObject saved = repositoryStorageObject.save(storageObject);
                 return saved;
             }
@@ -697,17 +711,18 @@ public class ServiceStorageObject{
     //Einzelwert für die Anzahl der Geräte holen
     public Long findAmountOfObjectType2(String objectType){
         return repositoryStorageObject.findAll()
-                               .stream()
-                               .filter(a -> a.getObjectTypeName() != null)
-                               .filter(b -> b.getObjectTypeName()
-                                             .getName()
-                                             .equals(objectType)).count();
-//        return repositoryStorageObject.findAll()
-//                                      .stream()
-//                                      .filter(name -> name.getObjectTypeName()
-//                                                          .getName()
-//                                                          .equals(objectType))
-//                                      .count();
+                                      .stream()
+                                      .filter(a -> a.getObjectTypeName() != null)
+                                      .filter(b -> b.getObjectTypeName()
+                                                    .getName()
+                                                    .equals(objectType))
+                                      .count();
+        //        return repositoryStorageObject.findAll()
+        //                                      .stream()
+        //                                      .filter(name -> name.getObjectTypeName()
+        //                                                          .getName()
+        //                                                          .equals(objectType))
+        //                                      .count();
     }
 
     //    public Stream<StorageObject> findStorageObjectByUserId(Long id, PageRequest query){
@@ -719,5 +734,37 @@ public class ServiceStorageObject{
         return repositoryReservation.findAllByReservedFrom_Id(id,
                                                               request)
                                     .stream();
+    }
+
+    public void moveFromReservationToMeineHardware(Reservation reservation){
+        if(reservation != null){
+            if(reservation.getReservedFrom() == authenticatedUser.getUser()
+                                                                 .get()){
+                if(reservation.getId() != null && repositoryReservation.existsById(reservation.getId())){
+                    Reservation reservationById = repositoryReservation.findById(reservation.getId())
+                                                                       .get();
+
+                    StorageObject storageObjectByReservationId = repositoryStorageObject.findStorageObjectByReservation_Id(reservationById.getId());
+                    storageObjectByReservationId.setRemark(reservationById.getReservedDescription());
+
+                    //                    reservationById.setReservedFrom(null);
+                    //                    storageObjectByReservationId.setReservation(null);
+                    reservationById.setReservedFrom(null);
+                    storageObjectByReservationId.setReservation(null);
+                    repositoryReservation.deleteById(Objects.requireNonNull(reservationById.getId()));
+                    //                    serviceReservation.deleteByObject(reservationById);
+
+                    serviceStorageObjectHistory.setStorageOBjectHistory(storageObjectByReservationId);
+                    saveStorageObject(storageObjectByReservationId);
+
+                }else{
+                    throw new StorageObjectException(reservation.getId() == null ? "Reservation ID is null!" : "Reservation doesn't exist in DB!");
+                }
+            }else{
+                throw new StorageObjectException("User does not match with the logged-in User!");
+            }
+        }else{
+            throw new StorageObjectException("Given Reservation is null!");
+        }
     }
 }

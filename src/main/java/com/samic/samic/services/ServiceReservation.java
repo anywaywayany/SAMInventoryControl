@@ -9,6 +9,7 @@ import com.samic.samic.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,7 @@ import java.util.stream.Stream;
 @Service
 @Transactional
 @RequiredArgsConstructor
-//@ComponentScan(basePackages = {"com.samic.samic.security"})
-
+@ComponentScan(basePackages = {"com.samic.samic.security"})
 public class ServiceReservation{
 
     @Autowired
@@ -30,6 +30,9 @@ public class ServiceReservation{
     private final ServiceStorageObject  serviceStorageObject;
     @Autowired
     private final AuthenticatedUser     authenticatedUser;
+    @Autowired
+    private final ServiceStorageObjectHistory serviceStorageObjectHistory;
+
 
     @Transactional
     public Reservation saveReservationByObject(Reservation reservation){
@@ -61,12 +64,12 @@ public class ServiceReservation{
 
     public Reservation updateReservation(Reservation reservation){
         if(reservation != null){
-            if(reservation.getId() != null && reservation.getReservedFrom()
+            if(reservation.getId() != null && reservation.getReservedFrom().getId()
                                                          .equals(authenticatedUser.getUser()
-                                                                                  .get())){
+                                                                                  .get().getId())){
                 return repositoryReservation.save(reservation);
             }else{
-                throw new ReservationException(reservation.getId() == null ? "Reservation ID is not set!" : "User does not match with Logged in user!");
+                throw new ReservationException(reservation.getId() == null ? "Reservation ID is not set!" : "User does not match with Logged-in user!");
             }
         }else{
             throw new ReservationException("Given Reservation is null");
@@ -114,10 +117,12 @@ public class ServiceReservation{
         if(reservation != null){
             if(repositoryReservation.findById(reservation.getId())
                                     .isPresent()){
-
+                StorageObject storageObjectByReservationID = serviceStorageObject.findStorageObjectByReservationID(reservation.getId());
                 reservation.setReservedFrom(null);
                 StorageObject tempSto = serviceStorageObject.findStorageObjectByReservationID(reservation.getId());
                 tempSto.setReservation(null);
+                storageObjectByReservationID.setReservation(null);
+                serviceStorageObjectHistory.setStorageOBjectHistory(tempSto);
                 repositoryReservation.deleteById(reservation.getId());
 
             }

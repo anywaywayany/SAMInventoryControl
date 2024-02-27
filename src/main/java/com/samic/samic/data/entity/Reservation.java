@@ -30,7 +30,7 @@ public class Reservation extends AbstractIdentityClass<Long>{
 
     @OneToMany(mappedBy = "reservation",
                fetch = FetchType.LAZY,
-               cascade = {CascadeType.PERSIST})
+               cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<StorageObjectHistory> storageObjectHistory = new ArrayList<>();
 
     @JoinColumn(name = "fk_user",
