@@ -152,6 +152,7 @@ public class UserManagement extends VerticalLayout {
       virtualList.getDataProvider().refreshAll();
       initVirtualListData();
       initComponentRenderer();
+      initUserForm();
       UIFactory.notificationSuccess("Benutzer angelegt").open();
     } else {
       UIFactory.notificationError("Benutzer konnte nicht angelegt werden").open();
