@@ -17,7 +17,6 @@ import com.samic.samic.data.entity.Storage;
 import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.Supply;
 import com.samic.samic.data.entity.User;
-import com.samic.samic.data.foundation.Guard;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.services.ServiceObjectType;
 import com.samic.samic.services.ServiceProducer;
@@ -327,10 +326,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     hardwareGrid.setMaxHeight("300px");
     hardwareGrid.getStyle().setBorder("0px");
 
-    hardwareGrid.addColumn(StorageObject::getId).setHeader("Lager ID").setAutoWidth(true);
-    hardwareGrid.addColumn(so ->
-            Guard.isNotNull.test(so.getObjectTypeName()) ? so.getObjectTypeName().getName() : "")
-        .setHeader("Gerätetyp Name").setAutoWidth(true);
     initHardwareData();
     // MY_HARDWARE - PUT UI TOGETHER
     add(UIFactory.rootComponentContainer("Meine Hardware", hardwareGrid));
