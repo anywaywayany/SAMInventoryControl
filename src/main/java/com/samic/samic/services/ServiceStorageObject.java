@@ -68,7 +68,7 @@ public class ServiceStorageObject{
             if(storageObject.getReservation() != null){
                 if(storageObject.getReservation()
                                 .getReservedFrom() != null){
-                    throw new ReservationException("User already set to STO!");
+                    throw new ReservationException(("Storageobject is reserved by '%s'.".formatted(storageObject.getStoredAtUser().getProfile().getUsername())));
                 }
             }
         }
