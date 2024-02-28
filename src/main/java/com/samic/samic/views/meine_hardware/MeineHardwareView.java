@@ -90,7 +90,9 @@ public class MeineHardwareView extends TabSheet {
 
   private void moveToUser(Reservation item) {
     storageObjectService.moveFromReservationToMeineHardware(item);
-    
+    initReservationGridData();
+    initStorageObjectGridData();
+
   }
 
   private void initReservationGridData() {

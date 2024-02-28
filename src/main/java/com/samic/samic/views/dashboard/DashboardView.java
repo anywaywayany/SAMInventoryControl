@@ -8,6 +8,7 @@ import com.samic.samic.components.form.SupplyForm;
 import com.samic.samic.components.form.UserForm;
 import com.samic.samic.components.grid.ReservationGrid;
 import com.samic.samic.components.grid.StorageObjectGrid;
+import com.samic.samic.data.entity.Address;
 import com.samic.samic.data.entity.CPE;
 import com.samic.samic.data.entity.Producer;
 import com.samic.samic.data.entity.Profile;
@@ -163,7 +164,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       menuBar.addItem("Lager hinzufügen", onClick -> {
         Dialog dialog = new Dialog();
         dialog.add(storageForm);
-        storageForm.setBean(Storage.builder().build());
+        storageForm.setBean(Storage.builder().address(Address.builder().build()).build());
         dialog.add(UIFactory.btnPrimary("Speichern", e -> {
           dialog.close();
           onSave(storageForm.isValid() ? storageForm.saveBean() : null);
