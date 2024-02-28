@@ -82,7 +82,15 @@ public class MeineHardwareView extends TabSheet {
         UIFactory.btnIconWithTooltip(LineAwesomeIcon.TRASH_SOLID.create(), "Löschen",
             e -> onDelete(item)),
         UIFactory.btnIconWithTooltip(LineAwesomeIcon.EDIT.create(), "Bearbeiten",
-            e -> onEdit(item))));
+            e -> onEdit(item)),
+        UIFactory.btnIconWithTooltip(LineAwesomeIcon.GET_POCKET.create(), "Gerät zu sich "
+                + "holen",
+            e -> moveToUser(item))));
+  }
+
+  private void moveToUser(Reservation item) {
+    storageObjectService.moveFromReservationToMeineHardware(item);
+    
   }
 
   private void initReservationGridData() {

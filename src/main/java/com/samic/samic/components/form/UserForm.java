@@ -1,15 +1,22 @@
 package com.samic.samic.components.form;
 
+import com.nulabinc.zxcvbn.Zxcvbn;
 import com.samic.samic.components.UIFactory;
 import com.samic.samic.data.entity.Profile;
 import com.samic.samic.data.entity.Role;
 import com.samic.samic.data.entity.User;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.EmailValidator;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -25,8 +32,10 @@ public class UserForm extends VerticalLayout {
   private final TextField lastname = new TextField("Nachname");
   private final TextField username = new TextField("Benutzername");
   private final ComboBox<Role> role = new ComboBox<>("Rolle");
-
   private final Binder<User> binderUser = new Binder<>(User.class);
+  private final Zxcvbn zxcvbn = new Zxcvbn();
+  private Icon checkIcon = VaadinIcon.CHECK.create();
+  private Span passwordStrengthText;
 
 
   @PostConstruct
@@ -41,6 +50,28 @@ public class UserForm extends VerticalLayout {
     initBinder();
     initRolesComboBox();
     initRolesData();
+    initPasswordfield();
+  }
+
+  private void initPasswordfield() {
+    checkIcon.setVisible(false);
+    password.setClassName("Password");
+    checkIcon.getStyle().set("color", "var(--lumo-success-color)");
+    password.setSuffixComponent(checkIcon);
+
+    Div passwordStrength = new Div();
+    passwordStrengthText = new Span();
+    passwordStrength.add(new Text("Password strength: "),
+        passwordStrengthText);
+    password.setHelperComponent(passwordStrength);
+
+    password.setValueChangeMode(ValueChangeMode.EAGER);
+    password.addValueChangeListener(e -> {
+      String password = e.getValue();
+      updateHelper(password);
+    });
+    updateHelper("");
+
   }
 
   private void initBinder() {
@@ -53,6 +84,37 @@ public class UserForm extends VerticalLayout {
     binderUser.forField(lastname).asRequired().bind("profile.lastName");
     binderUser.forField(username).bind("profile.username");
     binderUser.forField(role).asRequired().bind(User::getRole, User::setRole);
+  }
+
+  private void updateHelper(String password) {
+    int strength = zxcvbn.measure(password).getScore();
+
+    passwordStrengthText.setText(String.valueOf(strength));
+
+    switch (strength) {
+      case 0 -> {
+        passwordStrengthText.setText("very weak");
+        passwordStrengthText.getStyle().set("color", "#FF0800");
+      }
+      case 1 -> {
+        passwordStrengthText.setText("weak");
+        passwordStrengthText.getStyle().set("color", "#FF5601");
+      }
+      case 2 -> {
+        passwordStrengthText.setText("medium");
+        passwordStrengthText.getStyle().set("color", "#FF9B01");
+      }
+      case 3 -> {
+        passwordStrengthText.setText("strong");
+        passwordStrengthText.getStyle().set("color", "#300A233");
+        checkIcon.setVisible(true);
+      }
+      case 4 -> {
+        passwordStrengthText.setText("very strong");
+        passwordStrengthText.getStyle().set("color", "#00A233");
+        checkIcon.setVisible(true);
+      }
+    }
   }
 
   private void initRolesComboBox() {
@@ -76,11 +138,12 @@ public class UserForm extends VerticalLayout {
 
   public Boolean isValid() {
     binderUser.validate();
-    return binderUser.isValid();
+    return binderUser.isValid()
+        /*&& zxcvbn.measure(binderUser.getBean().getHashedPassword()).getScore() > 3*/;
   }
 
   public void clearFields() {
-    binderUser.setBean(User.builder().profile(Profile.builder().build()).build());
+    binderUser.setBean(User.builder().activated(false).profile(Profile.builder().build()).build());
     passwordConfirm.setValue("");
     role.setValue(null);
   }

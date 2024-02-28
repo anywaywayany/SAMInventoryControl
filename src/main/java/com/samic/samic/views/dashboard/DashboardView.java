@@ -18,12 +18,12 @@ import com.samic.samic.data.entity.StorageObject;
 import com.samic.samic.data.entity.Supply;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.security.AuthenticatedUser;
+import com.samic.samic.security.UserDetailsServiceImpl;
 import com.samic.samic.services.ServiceObjectType;
 import com.samic.samic.services.ServiceProducer;
 import com.samic.samic.services.ServiceReservation;
 import com.samic.samic.services.ServiceStorage;
 import com.samic.samic.services.ServiceStorageObject;
-import com.samic.samic.services.ServiceUser;
 import com.samic.samic.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -61,24 +61,24 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private final UserForm userForm;
   private final StorageForm storageForm;
   private final ServiceObjectType objectTypeService;
-  private final ServiceStorage stoageService;
+  private final ServiceStorage storageService;
   private final ServiceProducer producerService;
   private final ComboBox<Storage> storageComboBox = new ComboBox<>("Lager");
   private final ComboBox<Producer> producerComboBox = new ComboBox<>("Hersteller");
 
   private final ReservationGrid reservationGrid;
   private final StorageObjectGrid hardwareGrid;
-  private final ServiceStorage storageService;
-  private final ServiceUser userService;
+  private final UserDetailsServiceImpl userDetailsService;
 
 
   public DashboardView(ServiceReservation reservationService,
       ServiceStorageObject storageObjectService, AuthenticatedUser authenticatedUser,
       ServiceProducer producerService, ServiceObjectType serviceObjectType,
       CPEForm cpeForm, SFPForm sfpForm, SupplyForm supplyForm, UserForm userForm,
-      ServiceObjectType objectTypeService, ServiceStorage stoageService, StorageForm storageForm,
+      ServiceObjectType objectTypeService, ServiceStorage storageService, StorageForm storageForm,
       ReservationGrid reservationGrid,
-      StorageObjectGrid hardwareGrid, ServiceStorage storageService, ServiceUser userService) {
+      StorageObjectGrid hardwareGrid,
+      UserDetailsServiceImpl userDetailsService) {
     this.reservationService = reservationService;
     this.storageObjectService = storageObjectService;
     this.authenticatedUser = authenticatedUser;
@@ -88,15 +88,16 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     this.supplyForm = supplyForm;
     this.userForm = userForm;
     this.objectTypeService = objectTypeService;
-    this.stoageService = stoageService;
+    this.storageService = storageService;
     this.storageForm = storageForm;
     this.reservationGrid = reservationGrid;
     this.hardwareGrid = hardwareGrid;
-    this.storageService = storageService;
-    this.userService = userService;
     this.producerService = producerService;
+    this.userDetailsService = userDetailsService;
 
     initUI();
+    initDropdowns();
+
   }
 
   private void initUI() {
@@ -108,6 +109,17 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       initReservation();
       initHardware();
     }
+  }
+
+  private void initDropdowns() {
+    storageComboBox.setItems(storageService.findAll().toList());
+    producerComboBox.setItems(producerService.findAll().toList());
+
+    storageComboBox.setItemLabelGenerator(Storage::getName);
+    storageComboBox.setAllowCustomValue(false);
+
+    producerComboBox.setAllowCustomValue(false);
+    producerComboBox.setItemLabelGenerator(Producer::getName);
   }
 
   private void initStats() {
@@ -190,12 +202,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     Dialog dialog = new Dialog();
 
     dialog.setCloseOnOutsideClick(false);
-    storageComboBox.setItems(stoageService.findAll().toList());
-    storageComboBox.setItemLabelGenerator(Storage::getName);
-    storageComboBox.setAllowCustomValue(false);
-    producerComboBox.setItems(producerService.findAll().toList());
-    producerComboBox.setAllowCustomValue(false);
-    producerComboBox.setItemLabelGenerator(Producer::getName);
     dialog.add(producerComboBox, storageComboBox, sfpForm);
 
     dialog.add(UIFactory.btnPrimary("Speichern", e -> {
@@ -237,12 +243,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
     Dialog dialog = new Dialog();
 
     dialog.setCloseOnOutsideClick(false);
-    storageComboBox.setItems(stoageService.findAll().toList());
-    storageComboBox.setItemLabelGenerator(Storage::getName);
-    storageComboBox.setAllowCustomValue(false);
-    producerComboBox.setItems(producerService.findAll().toList());
-    producerComboBox.setAllowCustomValue(false);
-    producerComboBox.setItemLabelGenerator(Producer::getName);
     dialog.add(producerComboBox, storageComboBox, form);
 
     dialog.add(UIFactory.btnPrimary("Speichern", e -> {
@@ -271,7 +271,7 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   private void onSetUser(String id) {
     StorageObject storageObject = storageObjectService.findStorageObjectById(Long.valueOf(id));
     storageObject.setStoredAtUser(authenticatedUser.getUser().get());
-    UIFactory.notificationSuccess("Lagerobjekt umgebucht").open();
+    UIFactory.notificationSuccess("Lagerobjekt umgebucht").close();
     storageObjectService.saveStorageObject(storageObject);
     hardwareGrid.getDataProvider().refreshAll();
   }
@@ -281,8 +281,9 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
       UIFactory.notificationError("Benutzer konnte nicht gespeichert werden").open();
       return;
     }
-    var persisted = userService.saveUser(user);
+    userDetailsService.register(user);
     UIFactory.notificationSuccess("Benutzer erfolgreich gespeichert").open();
+    userForm.clearFields();
   }
 
   private void onSave(Storage storage) {
@@ -321,13 +322,11 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   }
 
   private void initHardware() {
-    // MY_HARDWARE - PREPARE GRID
     hardwareGrid.isAllRowsVisible();
     hardwareGrid.setMaxHeight("300px");
     hardwareGrid.getStyle().setBorder("0px");
 
     initHardwareData();
-    // MY_HARDWARE - PUT UI TOGETHER
     add(UIFactory.rootComponentContainer("Meine Hardware", hardwareGrid));
   }
 
@@ -338,7 +337,6 @@ public class DashboardView extends VerticalLayout implements BeforeEnterObserver
   }
 
   private void initReservation() {
-    // MY_RESERVATIONS
     reservationGrid.isAllRowsVisible();
     reservationGrid.setMaxHeight("300px");
     reservationGrid.getStyle().setBorder("0px");

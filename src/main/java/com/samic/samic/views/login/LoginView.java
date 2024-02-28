@@ -4,7 +4,10 @@ import com.samic.samic.security.AuthenticatedUser;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.internal.RouteUtil;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -14,46 +17,50 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route(value = "login")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-private final AuthenticatedUser authenticatedUser;
+  private static final String USERNAME_LABEL = "Benutzername";
+  private static final String PASSWORD_LABEL = "Passwort";
+  private static final boolean HAS_FORGOT_PASSWORD = false;
+  private static final String ANMELDE_BUTTON = "Anmelden";
+  private static final String ERROR_MESSAGE = "Benutzername/Passwort ungültig";
+  private static final String ERROR_TITLE = "Fehler beim Anmelden";
+  private final AuthenticatedUser authenticatedUser;
+  private final LoginOverlay loginOverlay = new LoginOverlay();
 
-private final LoginOverlay loginOverlay = new LoginOverlay();
-private static final String USERNAME_LABEL = "Username";
-private static final String PASSWORD_LABEL = "Password";
-private static final boolean HAS_FORGOT_PASSWORD = false;
+  public LoginView(AuthenticatedUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
+    initUI();
+  }
 
-public LoginView(AuthenticatedUser authenticatedUser) {
-	this.authenticatedUser = authenticatedUser;
-	initUI();
-}
+  private void initUI() {
+    LoginI18n i18n = LoginI18n.createDefault();
+    i18n.setHeader(new LoginI18n.Header());
+    i18n.getForm().setUsername(USERNAME_LABEL);
+    i18n.getForm().setPassword(PASSWORD_LABEL);
+    i18n.getForm().setSubmit(ANMELDE_BUTTON);
+    i18n.getErrorMessage().setMessage(ERROR_MESSAGE);
+    i18n.getErrorMessage().setTitle(ERROR_TITLE);
+    loginOverlay.setI18n(i18n);
+    loginOverlay.setForgotPasswordButtonVisible(HAS_FORGOT_PASSWORD);
+    loginOverlay.setOpened(true);
+    add(loginOverlay);
+    // Prevent the example from stealing focus when browsing the
+    // documentation
+    loginOverlay.getElement().setAttribute("no-autofocus", "");
+    // Login does not work without this one
+    loginOverlay.setAction(
+        RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
+  }
 
-private void initUI() {
-	LoginI18n i18n = LoginI18n.createDefault();
-	i18n.setHeader(new LoginI18n.Header());
-	i18n.getForm().setUsername(USERNAME_LABEL);
-	i18n.getForm().setPassword(PASSWORD_LABEL);
+  @Override
+  public void beforeEnter(BeforeEnterEvent event) {
 
-	loginOverlay.setI18n(i18n);
-	loginOverlay.setForgotPasswordButtonVisible(HAS_FORGOT_PASSWORD);
-	loginOverlay.setOpened(true);
-	add(loginOverlay);
-	// Prevent the example from stealing focus when browsing the
-	// documentation
-	loginOverlay.getElement().setAttribute("no-autofocus", "");
-	// Login does not work without this one
-	loginOverlay.setAction(
-		RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
-}
+    if (authenticatedUser.getUser().isPresent()) {
+      // Already logged in
+      // setOpened(false);
+      event.forwardTo("");
+    }
 
-@Override
-public void beforeEnter(BeforeEnterEvent event) {
-
-	if (authenticatedUser.getUser().isPresent()) {
-	// Already logged in
-	// setOpened(false);
-	event.forwardTo("");
-	}
-
-	loginOverlay.setError(
-		event.getLocation().getQueryParameters().getParameters().containsKey("error"));
-}
+    loginOverlay.setError(
+        event.getLocation().getQueryParameters().getParameters().containsKey("error"));
+  }
 }
