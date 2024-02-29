@@ -28,6 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Autowired
   private final PasswordEncoder passwordEncoder;
+  @Autowired
+  private final AuthenticatedUser authenticatedUser;
 
   private static List<GrantedAuthority> getAuthorities(User user) {
     Role userRole = user.getRole();
@@ -67,4 +69,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     repositoryUser.save(user);
   }
 
+  public Boolean oldPasswordMatches(String oldPassword) {
+    return passwordEncoder.matches(oldPassword,
+        repositoryUser.findById(authenticatedUser.getUser().get().getId()).get()
+            .getHashedPassword());
+  }
+
+  public void changePassword(String value) {
+    repositoryUser.findById(authenticatedUser.getUser().get().getId()).ifPresent(user -> {
+      user.setHashedPassword(passwordEncoder.encode(value));
+      repositoryUser.save(user);
+    });
+  }
 }

@@ -17,14 +17,15 @@ public class StorageForm extends FormLayout {
   private final TextField street = new TextField("Straße");
   private final IntegerField houseNo = new IntegerField("Hausnummer");
   private final IntegerField doorNo = new IntegerField("Türnummer");
-  private final IntegerField zipCode = new IntegerField("Türnummer");
+  private final IntegerField zipCode = new IntegerField("Postleitzahl");
   private final TextField city = new TextField("Stadt");
 
   private final Binder<Storage> storageBinder = new Binder<>(Storage.class);
+
   @PostConstruct
   private void initUI() {
     add(name, street, houseNo, doorNo, zipCode, city);
-    storageBinder.bind(name, Storage::getName, Storage::setName);
+    storageBinder.forField(name).asRequired().bind(Storage::getName, Storage::setName);
     storageBinder.forField(street).bind("address.street");
     storageBinder.forField(houseNo).bind("address.houseNo");
     storageBinder.forField(doorNo).bind("address.doorNo");
