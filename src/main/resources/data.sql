@@ -40,7 +40,7 @@ insert into users(id, created_At, last_login, first_name, last_name, user_name, 
 values (4, date '2019-05-26', date '2023-05-26', 'Max', 'Technician', 'MaxTec',
         'max.technician@gmail.to',
         '$2a$10$jpLNVNeA7Ar/ZQ2DKbKCm.MuT2ESe.Qop96jipKMq7RaUgCoQedV.',
-        '(762) 444526-5961', 'FIELDSERVICETECHNICIAN', 1);
+        '(762) 444526-5961', 'STORAGEADMIN', 1);
 
 
 -- Storages --
@@ -2435,32 +2435,32 @@ insert into STORAGE_OBJECTS (id, FK_CPE, FK_OBJECT_TYPE, remark, fk_storage)
 values (591, 491, 6, 'Test Kundenlager', 2);
 
 ---------------------------------------------------------------------------------------------------------------------
--- Storageobjects beim User Mgmt
+-- Storageobjects beim User SusIns
 
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (1, 1, 1, 1);
+values (1, 1, 1, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (2, 2, 2, 1);
+values (2, 2, 2, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (3, 3, 3, 1);
+values (3, 3, 3, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (4, 4, 4, 1);
+values (4, 4, 4, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (5, 5, 5, 1);
+values (5, 5, 5, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (711, 257, 7, 1);
+values (711, 257, 7, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (666, 309, 8, 1);
+values (666, 309, 8, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (691, 310, 10, 1);
+values (691, 310, 10, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (695, 311, 9, 1);
+values (695, 311, 9, 3);
 insert into STORAGE_OBJECTS (ID, FK_CPE, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (698, 363, 6, 1);
+values (698, 363, 6, 3);
 insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (701, 1, 11, 1);
+values (701, 1, 11, 3);
 insert into STORAGE_OBJECTS (ID, FK_SFP, FK_OBJECT_TYPE, STORAGE_OBJECTS.FK_STORAED_AT_USER)
-values (709, 2, 12, 1);
+values (709, 2, 12, 3);
 ---------------------------------------------------------------------------------------------------------------------
 -- Stroageobjecst bei User MaxTec 4
 -- CPEs Router
