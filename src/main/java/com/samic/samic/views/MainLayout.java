@@ -1,5 +1,6 @@
 package com.samic.samic.views;
 
+import com.samic.samic.components.form.ChangePasswordForm;
 import com.samic.samic.data.entity.User;
 import com.samic.samic.security.AuthenticatedUser;
 import com.samic.samic.views.abfragen.AbfragenView;
@@ -39,11 +40,14 @@ public class MainLayout extends AppLayout {
 
   private final AccessAnnotationChecker accessChecker;
   private final AuthenticatedUser authenticatedUser;
+  private final ChangePasswordForm changePasswordForm;
   private H2 viewTitle;
 
-  public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
+  public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker,
+      ChangePasswordForm changePasswordForm) {
     this.authenticatedUser = authenticatedUser;
     this.accessChecker = accessChecker;
+    this.changePasswordForm = changePasswordForm;
 
     setPrimarySection(Section.DRAWER);
     addDrawerContent();
@@ -154,10 +158,13 @@ public class MainLayout extends AppLayout {
       div.getElement().getStyle().set("align-items", "center");
       div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
       userName.add(div);
+      userName.getSubMenu()
+          .addItem("Passwort ändern", e -> changePasswordForm.setBean(User.builder()
+              .build()).open());
       userName
           .getSubMenu()
           .addItem(
-              "Sign out",
+              "Abmelden",
               e -> authenticatedUser.logout());
 
       layout.add(userMenu);

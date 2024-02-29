@@ -61,7 +61,7 @@ public class UserForm extends VerticalLayout {
 
     Div passwordStrength = new Div();
     passwordStrengthText = new Span();
-    passwordStrength.add(new Text("Password strength: "),
+    passwordStrength.add(new Text(""),
         passwordStrengthText);
     password.setHelperComponent(passwordStrength);
 
@@ -80,9 +80,13 @@ public class UserForm extends VerticalLayout {
         .bind(User::getMail, User::setMail);
     binderUser.forField(password).asRequired()
         .bind(User::getHashedPassword, User::setHashedPassword);
+    binderUser.forField(passwordConfirm).asRequired()
+        .withValidator(p -> p.equals(password.getValue()),
+            "Passwörter stimmen nicht überein")
+        .bind(User::getHashedPassword, User::setHashedPassword);
     binderUser.forField(surname).asRequired().bind("profile.firstName");
     binderUser.forField(lastname).asRequired().bind("profile.lastName");
-    binderUser.forField(username).bind("profile.username");
+    binderUser.forField(username).asRequired().bind("profile.username");
     binderUser.forField(role).asRequired().bind(User::getRole, User::setRole);
   }
 
@@ -93,24 +97,24 @@ public class UserForm extends VerticalLayout {
 
     switch (strength) {
       case 0 -> {
-        passwordStrengthText.setText("very weak");
+        passwordStrengthText.setText("sehr unsicher");
         passwordStrengthText.getStyle().set("color", "#FF0800");
       }
       case 1 -> {
-        passwordStrengthText.setText("weak");
+        passwordStrengthText.setText("unsicher");
         passwordStrengthText.getStyle().set("color", "#FF5601");
       }
       case 2 -> {
-        passwordStrengthText.setText("medium");
+        passwordStrengthText.setText("mittelmäßig");
         passwordStrengthText.getStyle().set("color", "#FF9B01");
       }
       case 3 -> {
-        passwordStrengthText.setText("strong");
+        passwordStrengthText.setText("stark");
         passwordStrengthText.getStyle().set("color", "#300A233");
         checkIcon.setVisible(true);
       }
       case 4 -> {
-        passwordStrengthText.setText("very strong");
+        passwordStrengthText.setText("sehr stark");
         passwordStrengthText.getStyle().set("color", "#00A233");
         checkIcon.setVisible(true);
       }
