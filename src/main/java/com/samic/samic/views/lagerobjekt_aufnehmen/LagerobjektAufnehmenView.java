@@ -70,7 +70,7 @@ public class LagerobjektAufnehmenView extends VerticalLayout {
           storageObjectID.setValue("");
           UIFactory.notificationSuccess("Lagerobjekt wurde aufgenommen").open();
         } else {
-          UIFactory.notificationError("Das Lagerobjekt ist nicht verfügbar!").open();
+          UIFactory.notificationErrorCenter("Das Lagerobjekt ist nicht verfügbar!").open();
         }
       }
     } catch (NoSuchElementException e) {

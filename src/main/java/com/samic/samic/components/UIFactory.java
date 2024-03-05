@@ -118,6 +118,13 @@ public class UIFactory {
     return notification;
   }
 
+  public static Notification notificationErrorCenter(String text) {
+    var notification = notificationError(text);
+    notification.setPosition(Notification.Position.MIDDLE);
+    
+    return notification;
+  }
+
   public static Notification notificationInfoNoDuration(String text) {
     Notification notification = new Notification();
     notification.setPosition(Notification.Position.BOTTOM_CENTER);

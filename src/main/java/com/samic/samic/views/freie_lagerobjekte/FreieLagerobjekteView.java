@@ -14,7 +14,6 @@ import com.samic.samic.services.ServiceReservation;
 import com.samic.samic.services.ServiceStorage;
 import com.samic.samic.services.ServiceStorageObject;
 import com.samic.samic.views.MainLayout;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -161,8 +160,10 @@ public class FreieLagerobjekteView extends VerticalLayout {
     if (authenticatedUser.getUser().get().getRole() == Role.STORAGEADMIN
         || authenticatedUser.getUser().get().getRole() == Role.FIELDSERVICETECHNICIAN) {
       grid.addComponentColumn(item -> new Span(
-              new Button(VaadinIcon.BOOKMARK.create(), e -> openReservationForm(item)),
-              new Button(VaadinIcon.INSERT.create(), e -> addToUser(item)))).setHeader("Aktionen")
+              UIFactory.btnIconWithTooltip(VaadinIcon.BOOKMARK.create(),
+                  "Reservieren", e -> openReservationForm(item)),
+              UIFactory.btnIconWithTooltip(VaadinIcon.INSERT.create(),
+                  "Aufnehmen", e -> addToUser(item)))).setHeader("Aktionen")
           .setAutoWidth(true).setFrozenToEnd(true);
     }
     grid.setItemDetailsRenderer(createStorageObjectDetailsRenderer());
