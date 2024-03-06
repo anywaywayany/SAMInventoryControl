@@ -121,7 +121,7 @@ public class UserManagement extends VerticalLayout {
                           new Text("Registriert seit: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
                               .format(user.getCreatedAt()))),
                       new Div(user.getLastLogin() != null
-                          ? new Text("Letzer Login: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
+                          ? new Text("Letzter Login: " + DateTimeFormatter.ofPattern(DATE_PATTERN)
                           .format(user.getLastLogin()))
                           : new Text("Nie")),
                       new Div(new Text("Status: " + status)));
